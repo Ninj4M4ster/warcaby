@@ -2,7 +2,6 @@ package klient;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import klient.kontroller.KontrolerAplikacji;
 public class Aplikacja extends javafx.application.Application {
