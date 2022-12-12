@@ -12,6 +12,7 @@ public class Aplikacja extends javafx.application.Application {
   public void start(Stage stage) throws Exception {
     kontroler_ = new KontrolerAplikacji();
     scena_ = kontroler_.utworzPodstawowaScene();
+    stage.setTitle("Warcaby");
     stage.setScene(scena_);
     stage.show();
   }
