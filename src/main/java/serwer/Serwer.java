@@ -1,5 +1,7 @@
 package serwer;
 
+import jdk.internal.org.objectweb.asm.ClassReader;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,24 +10,29 @@ import java.util.List;
 public class Serwer {
   private List<Gracz> gracze;
   private List<Pokoj> pokoje;
-  private ServerSocket ss;
+  private static Socket socket;
 
-  public void main(String[] args) {
-
+  public static void main(String[] args) {
+  ServerSocket ss = null;
+    
     try {
       ss = new ServerSocket(6666);
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      System.out.println("IO exception");
+    }
 
-      while(true) {
+
+    while(true) {
+      try {
         Socket socket = ss.accept();
 
-        InputStream input = socket.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-        OutputStream output = socket.getOutputStream();
-        PrintWriter writer = new PrintWriter(output, true);
+        SerwerThread st = new SerwerThread();
+        st.start();
+      } catch(Exception e) {
+        e.printStackTrace();
+        System.out.println("Problem z połączeniem");
       }
-    } catch (IOException ioe) {
-      System.out.println("IO exception");
     }
   }
 }
