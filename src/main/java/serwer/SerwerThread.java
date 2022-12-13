@@ -8,8 +8,6 @@ import java.net.Socket;
 
 public class SerwerThread extends Thread {
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
 
     public SerwerThread(Socket socket) {
         this.socket = socket;
@@ -17,6 +15,12 @@ public class SerwerThread extends Thread {
 
     @Override
     public void run() {
+        BufferedReader in = null;
+        PrintWriter out = null;
+
+        boolean[][] plansza;
+        String plansza_str;
+
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
@@ -24,6 +28,20 @@ public class SerwerThread extends Thread {
             System.out.println("Problem IO z wątkiem serwera");
         }
 
-
+        while (true) {
+            try {
+                plansza_str = in.readLine();
+                if ((plansza_str == null) || plansza_str.equalsIgnoreCase("QUIT")) {
+                    socket.close();
+                    return;
+                } else {
+                    out.println(plansza_str);
+                    out.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
     }
 }

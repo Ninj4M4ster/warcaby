@@ -1,7 +1,5 @@
 package serwer;
 
-import jdk.internal.org.objectweb.asm.ClassReader;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
