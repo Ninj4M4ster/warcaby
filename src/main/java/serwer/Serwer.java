@@ -1,9 +1,9 @@
 package serwer;
 
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Serwer {
   private Gracz gracze;
-
-  public static void main(String[] args) {
-
-  }
+  private ServerSocket ss;
 }
