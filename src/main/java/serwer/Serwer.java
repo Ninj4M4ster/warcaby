@@ -27,7 +27,7 @@ public class Serwer {
       try {
         Socket socket = ss.accept();
 
-        SerwerThread st = new SerwerThread();
+        SerwerThread st = new SerwerThread(socket);
         st.start();
       } catch(Exception e) {
         e.printStackTrace();
