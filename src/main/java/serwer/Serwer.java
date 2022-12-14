@@ -1,5 +1,8 @@
 package serwer;
 
+import serwer.dane.Gracz;
+import serwer.dane.Pokoj;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;

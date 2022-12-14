@@ -17,9 +17,10 @@ public class SerwerThread extends Thread {
     public void run() {
         BufferedReader in = null;
         PrintWriter out = null;
+        PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
 
         boolean[][] plansza;
-        String plansza_str;
+        String komenda;
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -30,14 +31,10 @@ public class SerwerThread extends Thread {
 
         while (true) {
             try {
-                plansza_str = in.readLine();
-                if ((plansza_str == null) || plansza_str.equalsIgnoreCase("QUIT")) {
-                    socket.close();
-                    return;
-                } else {
-                    out.println(plansza_str);
-                    out.flush();
-                }
+                komenda = in.readLine();
+                pw.getWiadomosc(komenda);
+
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

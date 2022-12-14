@@ -1,4 +1,4 @@
-package serwer;
+package serwer.dane;
 
 public class Gracz {
     private int id_gracza;
@@ -12,5 +12,9 @@ public class Gracz {
     public Gracz(int id_gracza, boolean kolor) {
         this.id_gracza = id_gracza;
         this.kolor = kolor;
+    }
+
+    boolean getKolor() {
+        return kolor;
     }
 }
