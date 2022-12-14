@@ -25,15 +25,12 @@ import javafx.scene.text.Font;
 import klient.kontroller.KontrolerWidoku;
 import klient.kontroller.KontrolerWidokuGraczyOnline;
 import klient.model.ModelGraczyOnline;
-import klient.model.ModelWidoku;
+import klient.model.Model;
 
 public class WidokGraczyOnline implements Widok {
 
-  private VBox listaGraczy_;
-  private BorderPane oknoGlowne_;
+  private VBox okno_;
   private TextField poleWprowadzaniaNazwy_;
-  private VBox kontenerOpisuListyGraczy_;
-  private ScrollPane kontenerListyGraczy_;
 
   /** Zmienna kontrolera, pozwala zapobiec przypisaniu dwoch kontrolerow do jednego widoku */
   private KontrolerWidokuGraczyOnline kontroler_;
@@ -41,7 +38,7 @@ public class WidokGraczyOnline implements Widok {
 
 
   @Override
-  public Scene utworzWidok(KontrolerWidoku kontroler, ModelWidoku model, boolean statusPolaczenia) {
+  public Scene utworzWidok(KontrolerWidoku kontroler, Model model, boolean statusPolaczenia) {
     //TODO(Jakub Drzewiecki) przerobić w późniejszym etapie całość na
     // StackPane i dodać w tle więcej elementów (np pionki)
     if(this.model_ != null || this.kontroler_ != null)
@@ -49,11 +46,20 @@ public class WidokGraczyOnline implements Widok {
     this.kontroler_ = (KontrolerWidokuGraczyOnline) kontroler;
     this.model_ = (ModelGraczyOnline) model;
 
+    this.utworzMenu();
+    this.utworzWidokWprowadzaniaNazwy();
+    this.utworzWidokPoWprowadzeniuNazwy();
+
+    return new Scene(okno_);
+  }
+
+  private void utworzMenu() {
+
     // glowne okno, w nim znajduja sie wszystkie elementy
-    VBox okno = new VBox();
-    okno.setPadding(new Insets(20, 200, 20, 200));
-    okno.setAlignment(Pos.CENTER);
-    okno.setBackground(Background.fill(Color.valueOf("#242424")));
+    okno_ = new VBox();
+    okno_.setPadding(new Insets(20, 200, 20, 200));
+    okno_.setAlignment(Pos.CENTER);
+    okno_.setBackground(Background.fill(Color.valueOf("#242424")));
 
     // kontener napisu z nazwa aplikacji
     HBox poleGlownegoOpisu = new HBox();
@@ -75,10 +81,12 @@ public class WidokGraczyOnline implements Widok {
     poleGlownegoOpisu.getChildren().add(glownyOpis);
 
     // kontener w centrum, z nim klient prowadzi interakcje
-    oknoGlowne_ = new BorderPane();
-    oknoGlowne_.setPrefSize(400, 200);
-    oknoGlowne_.setMaxSize(600, 600);
-    oknoGlowne_.setBorder(
+    BorderPane oknoGlowne = new BorderPane();
+    oknoGlowne.centerProperty().bind(this.model_.centrumMenu());
+    oknoGlowne.topProperty().bind(this.model_.goraMenu());
+    oknoGlowne.setPrefSize(400, 200);
+    oknoGlowne.setMaxSize(600, 600);
+    oknoGlowne.setBorder(
         new Border(
             new BorderStroke(
                 Color.valueOf("#ffffff2a"),
@@ -88,7 +96,7 @@ public class WidokGraczyOnline implements Widok {
             )
         )
     );
-    oknoGlowne_.setBackground(
+    oknoGlowne.setBackground(
         new Background(
             new BackgroundFill(
                 Color.valueOf("#ffffff7a"),
@@ -98,14 +106,7 @@ public class WidokGraczyOnline implements Widok {
         )
     );
 
-    this.utworzWidokWprowadzaniaNazwy();
-    this.utworzWidokPoWprowadzeniuNazwy();
-
-    // TODO(Jakub Drzewiecki) Stworzyć kustomowy obiekt prezentujacy gracza,
-    //  który można nacisnąć i zaprosić gracza do wybranego trybu
-
-    okno.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
-    return new Scene(okno);
+    okno_.getChildren().addAll(poleGlownegoOpisu, oknoGlowne);
   }
 
   private void utworzWidokWprowadzaniaNazwy() {
@@ -124,6 +125,7 @@ public class WidokGraczyOnline implements Widok {
     poleWprowadzaniaNazwy_ = new TextField();
     poleWprowadzaniaNazwy_.setBackground(Background.fill(Color.valueOf("#ffffff")));
 
+    // przycisk zatwierdzenia nazwy gracza
     Button przyciskZatwierdzeniaNazwy = new Button("Zatwierdź");
     przyciskZatwierdzeniaNazwy.setPrefSize(200, 30);
     przyciskZatwierdzeniaNazwy.setFont(new Font("Book Antiqua", 18));
@@ -135,15 +137,23 @@ public class WidokGraczyOnline implements Widok {
     cien.setColor(Color.valueOf("#2e2e2e"));
     przyciskZatwierdzeniaNazwy.setEffect(cien);
 
-    kontenerWprowadzaniaNazwy.getChildren().addAll(opisWprowadzaniaNazwy, poleWprowadzaniaNazwy_, przyciskZatwierdzeniaNazwy);
-    oknoGlowne_.setCenter(kontenerWprowadzaniaNazwy);
+    // zatwierdzenie nazwy gracza i przejscie do widoku graczy online
+    przyciskZatwierdzeniaNazwy.setOnMouseClicked((event) ->
+        kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText()));
+
+    kontenerWprowadzaniaNazwy.getChildren().addAll(
+        opisWprowadzaniaNazwy,
+        poleWprowadzaniaNazwy_,
+        przyciskZatwierdzeniaNazwy);
+    // ustawienie centum menu
+    this.model_.ustawCentrumMenu(kontenerWprowadzaniaNazwy);
   }
 
   private void utworzWidokPoWprowadzeniuNazwy() {
     // kontener na opis listy graczy online, zostanie wyswietlony po wprowadzeniu swojej nazwy
-    kontenerOpisuListyGraczy_ = new VBox();
-    kontenerOpisuListyGraczy_.setAlignment(Pos.CENTER);
-    kontenerOpisuListyGraczy_.setPadding(new Insets(5, 0, 5, 0));
+    VBox kontenerOpisuListyGraczy = new VBox();
+    kontenerOpisuListyGraczy.setAlignment(Pos.CENTER);
+    kontenerOpisuListyGraczy.setPadding(new Insets(5, 0, 5, 0));
 
     // opis listy graczy online
     Label opisOkna = new Label("Gracze online");
@@ -151,7 +161,7 @@ public class WidokGraczyOnline implements Widok {
         Color.valueOf("ffffff")
     );
     opisOkna.setFont(new Font("Book Antiqua", 20));
-    kontenerOpisuListyGraczy_.getChildren().add(opisOkna);
+    kontenerOpisuListyGraczy.getChildren().add(opisOkna);
 
     // linia oddzielajaca opis okna listy graczy i liste
     Rectangle linia = new Rectangle();
@@ -161,17 +171,24 @@ public class WidokGraczyOnline implements Widok {
     linia.setWidth(300);
     linia.setFill(Color.valueOf("ffffff"));
 
-    kontenerOpisuListyGraczy_.getChildren().add(linia);
+    kontenerOpisuListyGraczy.getChildren().add(linia);
+    this.model_.ustawKontenerOpisuListyGraczy(kontenerOpisuListyGraczy);
 
     // kontener ze scrollem na pola z graczami online, zostanie wyswietlone po wprowadzeniu nazwy
-    kontenerListyGraczy_ = new ScrollPane();
-    kontenerListyGraczy_.setVbarPolicy(ScrollBarPolicy.NEVER);
-    kontenerListyGraczy_.setPadding(new Insets(10, 2, 15, 2));
-    kontenerListyGraczy_.setStyle("-fx-background: rgba(255,255,255,0);"
+    ScrollPane kontenerListyGraczy = new ScrollPane();
+    kontenerListyGraczy.setVbarPolicy(ScrollBarPolicy.NEVER);
+    kontenerListyGraczy.setPadding(new Insets(10, 2, 15, 2));
+    kontenerListyGraczy.setStyle("-fx-background: rgba(255,255,255,0);"
         + "-fx-background-color: rgba(255,255,255,0);");
 
-    listaGraczy_ = new VBox();
-    listaGraczy_.setSpacing(5);
-    kontenerListyGraczy_.setContent(listaGraczy_);
+    // TODO(Jakub Drzewiecki) Stworzyć kustomowy obiekt prezentujacy gracza,
+    //  który można nacisnąć i zaprosić gracza do wybranego trybu
+
+    VBox listaGraczy = new VBox();
+    listaGraczy.setSpacing(5);
+    this.model_.ustawListeGraczy(listaGraczy);
+
+    kontenerListyGraczy.setContent(listaGraczy);
+    this.model_.ustawKontenerListyGraczy(kontenerListyGraczy);
   }
 }

@@ -2,10 +2,10 @@ package klient.widoki;
 
 import javafx.scene.Scene;
 import klient.kontroller.KontrolerWidoku;
-import klient.model.ModelWidoku;
+import klient.model.Model;
 
 public interface Widok {
   Scene utworzWidok(KontrolerWidoku kontroler,
-      ModelWidoku model,
+      Model model,
       boolean statusPolaczenia);
 }

@@ -1,7 +1,8 @@
 package klient.kontroller;
 
-import klient.model.ModelWidoku;
+import klient.model.Model;
 
 public interface KontrolerWidoku {
-  void przekazModel(ModelWidoku model);
+  void przekazModel(Model model);
+  void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny);
 }
