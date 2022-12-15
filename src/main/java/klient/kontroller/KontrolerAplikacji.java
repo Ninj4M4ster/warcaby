@@ -23,7 +23,8 @@ public class KontrolerAplikacji {
   }
 
   public Scene utworzPodstawowaScene() {
-    KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE);
+    KontrolerWidoku kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE);
     assert kontroler != null;
     kontroler.przekazModel(model_.dajModelGraczyOnline());
     kontroler.przekazGlownyKontroler(this);
@@ -39,5 +40,12 @@ public class KontrolerAplikacji {
     System.out.println(nazwaGracza);
     // TODO(Jakub Drzewiecki): należy utworzyć klasę służącą do przekazywania danych do klienta
     //  i wysłać jej nazwę
+  }
+
+  public void zaktualizujListeGraczy(String nazwaGracza, boolean czyDolaczyl) {
+    if(czyDolaczyl)
+      this.model_.dajModelGraczyOnline().dodajGraczaDoListy(nazwaGracza);
+    else
+      this.model_.dajModelGraczyOnline().usunGraczaLista(nazwaGracza);
   }
 }

@@ -1,7 +1,9 @@
 package klient.widoki;
 
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,11 +28,14 @@ import klient.kontroller.KontrolerWidoku;
 import klient.kontroller.KontrolerWidokuGraczyOnline;
 import klient.model.ModelGraczyOnline;
 import klient.model.Model;
+import klient.widoki.eventy.OknoKlikniete;
 
 public class WidokGraczyOnline implements Widok {
 
   private VBox okno_;
+  private BorderPane oknoGlowne_;
   private TextField poleWprowadzaniaNazwy_;
+  private VBox listaGraczy_;
 
   /** Zmienna kontrolera, pozwala zapobiec przypisaniu dwoch kontrolerow do jednego widoku */
   private KontrolerWidokuGraczyOnline kontroler_;
@@ -49,6 +54,10 @@ public class WidokGraczyOnline implements Widok {
     this.utworzMenu();
     this.utworzWidokWprowadzaniaNazwy();
     this.utworzWidokPoWprowadzeniuNazwy();
+
+    okno_.setOnMouseClicked(mouseEvent ->
+        listaGraczy_.fireEvent(new OknoKlikniete((Node)mouseEvent.getTarget(),
+            mouseEvent.getTarget())));
 
     return new Scene(okno_);
   }
@@ -81,12 +90,12 @@ public class WidokGraczyOnline implements Widok {
     poleGlownegoOpisu.getChildren().add(glownyOpis);
 
     // kontener w centrum, z nim klient prowadzi interakcje
-    BorderPane oknoGlowne = new BorderPane();
-    oknoGlowne.centerProperty().bind(this.model_.centrumMenu());
-    oknoGlowne.topProperty().bind(this.model_.goraMenu());
-    oknoGlowne.setPrefSize(400, 200);
-    oknoGlowne.setMaxSize(600, 600);
-    oknoGlowne.setBorder(
+    oknoGlowne_ = new BorderPane();
+    oknoGlowne_.centerProperty().bind(this.model_.centrumMenu());
+    oknoGlowne_.topProperty().bind(this.model_.goraMenu());
+    oknoGlowne_.setPrefSize(400, 200);
+    oknoGlowne_.setMaxSize(600, 600);
+    oknoGlowne_.setBorder(
         new Border(
             new BorderStroke(
                 Color.valueOf("#ffffff2a"),
@@ -96,7 +105,7 @@ public class WidokGraczyOnline implements Widok {
             )
         )
     );
-    oknoGlowne.setBackground(
+    oknoGlowne_.setBackground(
         new Background(
             new BackgroundFill(
                 Color.valueOf("#ffffff7a"),
@@ -106,7 +115,7 @@ public class WidokGraczyOnline implements Widok {
         )
     );
 
-    okno_.getChildren().addAll(poleGlownegoOpisu, oknoGlowne);
+    okno_.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
   }
 
   private void utworzWidokWprowadzaniaNazwy() {
@@ -139,14 +148,17 @@ public class WidokGraczyOnline implements Widok {
 
     // zatwierdzenie nazwy gracza i przejscie do widoku graczy online
     przyciskZatwierdzeniaNazwy.setOnMouseClicked((event) ->
-        kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText()));
+        kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText(),
+            oknoGlowne_));
 
     kontenerWprowadzaniaNazwy.getChildren().addAll(
         opisWprowadzaniaNazwy,
         poleWprowadzaniaNazwy_,
         przyciskZatwierdzeniaNazwy);
-    // ustawienie centum menu
-    this.model_.ustawCentrumMenu(kontenerWprowadzaniaNazwy);
+
+    // ustawienie centum menu jesli jest to robione po raz pierwszy
+    if(this.model_.centrumMenu().get() == null)
+      this.model_.ustawCentrumMenu(kontenerWprowadzaniaNazwy);
   }
 
   private void utworzWidokPoWprowadzeniuNazwy() {
@@ -177,6 +189,9 @@ public class WidokGraczyOnline implements Widok {
     // kontener ze scrollem na pola z graczami online, zostanie wyswietlone po wprowadzeniu nazwy
     ScrollPane kontenerListyGraczy = new ScrollPane();
     kontenerListyGraczy.setVbarPolicy(ScrollBarPolicy.NEVER);
+    kontenerListyGraczy.setHbarPolicy(ScrollBarPolicy.NEVER);
+    kontenerListyGraczy.setFitToWidth(true);
+    kontenerListyGraczy.setFitToHeight(true);
     kontenerListyGraczy.setPadding(new Insets(10, 2, 15, 2));
     kontenerListyGraczy.setStyle("-fx-background: rgba(255,255,255,0);"
         + "-fx-background-color: rgba(255,255,255,0);");
@@ -184,11 +199,18 @@ public class WidokGraczyOnline implements Widok {
     // TODO(Jakub Drzewiecki) Stworzyć kustomowy obiekt prezentujacy gracza,
     //  który można nacisnąć i zaprosić gracza do wybranego trybu
 
-    VBox listaGraczy = new VBox();
-    listaGraczy.setSpacing(5);
-    this.model_.ustawListeGraczy(listaGraczy);
+    // lista graczy online
+    listaGraczy_ = new VBox();
+    listaGraczy_.setSpacing(5);
+    listaGraczy_.setAlignment(Pos.TOP_CENTER);
+    listaGraczy_.setMaxHeight(600);
+    listaGraczy_.addEventHandler(OknoKlikniete.OKNO_KLIKNIETE,
+        event -> kontroler_.uruchomWydarzenieNaKazdymDziecku(event));
+    listaGraczy_.getChildren().addListener((ListChangeListener<Node>) change ->
+        kontroler_.przypiszFunkcjeKafelkowi(change));
+    this.model_.ustawListeGraczy(listaGraczy_);
 
-    kontenerListyGraczy.setContent(listaGraczy);
+    kontenerListyGraczy.setContent(listaGraczy_);
     this.model_.ustawKontenerListyGraczy(kontenerListyGraczy);
   }
 }

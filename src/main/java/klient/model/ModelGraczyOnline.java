@@ -4,9 +4,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import klient.widoki.widgety.KafelekGraczaOnline;
 
 public class ModelGraczyOnline implements Model {
   private final StringProperty nazwaGracza_ = new SimpleStringProperty();
@@ -59,6 +61,16 @@ public class ModelGraczyOnline implements Model {
 
   public ScrollPane kontenerListyGraczy() {
     return this.kontenerListyGraczy_;
+  }
+
+  public void dodajGraczaDoListy(String nazwaGracza) {
+    listaGraczy_.getChildren().add(new KafelekGraczaOnline(nazwaGracza));
+  }
+
+  public void usunGraczaLista(String nazwaGracza) {
+    ObservableList<Node> lista = listaGraczy_.getChildren();
+    lista.removeIf(node -> node instanceof KafelekGraczaOnline &&
+        ((KafelekGraczaOnline) node).nazwaGracza().equals(nazwaGracza));
   }
 
 }

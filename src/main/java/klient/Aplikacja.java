@@ -12,8 +12,15 @@ public class Aplikacja extends javafx.application.Application {
   public void start(Stage stage) throws Exception {
     kontroler_ = new KontrolerAplikacji();
     scena_ = kontroler_.utworzPodstawowaScene();
+    // dummy gracze, po skonczeniu GUI trzeba ich usunac
+    kontroler_.zaktualizujListeGraczy("Gracz1", true);
+    kontroler_.zaktualizujListeGraczy("Gracz2", true);
+    kontroler_.zaktualizujListeGraczy("Gracz3", true);
+    kontroler_.zaktualizujListeGraczy("Gracz4", true);
     stage.setTitle("Warcaby");
     stage.setScene(scena_);
+    stage.setWidth(1000);
+    stage.setHeight(800);
     stage.show();
   }
 
