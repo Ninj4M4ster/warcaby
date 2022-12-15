@@ -1,8 +1,6 @@
 package serwer.komendy;
 
 import serwer.komendy.zasady.Zasady1;
-import serwer.komendy.zasady.Zasady2;
-import serwer.komendy.zasady.Zasady3;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class WybierzTrybGry implements Komenda{
