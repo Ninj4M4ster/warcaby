@@ -150,6 +150,7 @@ public class WidokGraczyOnline implements Widok {
     przyciskZatwierdzeniaNazwy.setOnMouseClicked((event) ->
         kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText(),
             oknoGlowne_));
+    // TODO(Jakub Drzewiecki): Trzeba dodac mozliwosc wprowadzenia nazwy enterem
 
     kontenerWprowadzaniaNazwy.getChildren().addAll(
         opisWprowadzaniaNazwy,
