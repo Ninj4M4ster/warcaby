@@ -5,6 +5,8 @@ public class TworcaKontrolera {
     switch(typ) {
       case KONTROLER_GRACZY_ONLINE:
         return new KontrolerWidokuGraczyOnline();
+      case KONTROLER_POKOJU:
+        return new KontrolerPokoju();
     }
     return null;
   }

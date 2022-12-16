@@ -6,8 +6,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -17,12 +21,26 @@ import klient.widoki.eventy.OknoKlikniete;
 public class KafelekGraczaOnline extends VBox {
   private final String nazwaGracza_;
   private final HBox pasekOpcje_;
+  private final Button przyciskZapros_;
   public KafelekGraczaOnline(String nazwaGracza) {
     super();
     this.nazwaGracza_ = nazwaGracza;
     this.setPadding(new Insets(5,0,5,0));
     this.setAlignment(Pos.CENTER);
-    this.setBackground(Background.fill(Color.valueOf("#ffffffaa")));
+    this.setBackground(
+        new Background(
+            new BackgroundFill(
+                Color.valueOf("#d1d1d1"),
+                new CornerRadii(10),
+                null)
+        )
+    );
+    DropShadow cien = new DropShadow();
+    cien.setRadius(10.0);
+    cien.setOffsetX(1.0);
+    cien.setOffsetY(1.0);
+    cien.setColor(Color.valueOf("#303030"));
+    this.setEffect(cien);
 
     HBox pasekNazwaGracza = new HBox();
     pasekNazwaGracza.setAlignment(Pos.CENTER);
@@ -37,10 +55,14 @@ public class KafelekGraczaOnline extends VBox {
     pasekOpcje_.setManaged(false);
     pasekOpcje_.setVisible(false);
 
-    Label opcje = new Label("Opcje");
-    opcje.setFont(new Font("Book Antiqua", 18));
+    przyciskZapros_ = new Button("Zaproś gracza do gry");
+    przyciskZapros_.setFont(new Font("Book Antiqua", 16));
+    przyciskZapros_.setPrefWidth(300);
+    przyciskZapros_.setStyle("-fx-background-color: '#4f4f4f';");
+    przyciskZapros_.setTextFill(Color.valueOf("#ffffff"));
+    przyciskZapros_.setEffect(cien);
 
-    pasekOpcje_.getChildren().add(opcje);
+    pasekOpcje_.getChildren().add(przyciskZapros_);
 
     this.getChildren().addAll(pasekNazwaGracza, pasekOpcje_);
     this.setOnMouseClicked((event) -> pokazOpcje());
@@ -49,6 +71,10 @@ public class KafelekGraczaOnline extends VBox {
 
   public String nazwaGracza() {
     return nazwaGracza_;
+  }
+
+  public Button przyciskZapros() {
+    return przyciskZapros_;
   }
 
   private void pokazOpcje() {

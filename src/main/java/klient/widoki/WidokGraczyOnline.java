@@ -4,7 +4,7 @@ import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -43,7 +43,7 @@ public class WidokGraczyOnline implements Widok {
 
 
   @Override
-  public Scene utworzWidok(KontrolerWidoku kontroler, Model model, boolean statusPolaczenia) {
+  public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
     //TODO(Jakub Drzewiecki) przerobić w późniejszym etapie całość na
     // StackPane i dodać w tle więcej elementów (np pionki)
     if(this.model_ != null || this.kontroler_ != null)
@@ -59,7 +59,7 @@ public class WidokGraczyOnline implements Widok {
         listaGraczy_.fireEvent(new OknoKlikniete((Node)mouseEvent.getTarget(),
             mouseEvent.getTarget())));
 
-    return new Scene(okno_);
+    return okno_;
   }
 
   private void utworzMenu() {

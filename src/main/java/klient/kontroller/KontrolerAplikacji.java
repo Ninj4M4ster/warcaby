@@ -1,7 +1,8 @@
 package klient.kontroller;
 
 import java.io.IOException;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
+import klient.Aplikacja;
 import klient.Klient;
 import klient.model.GlownyModel;
 import klient.widoki.TworcaWidoku;
@@ -19,10 +20,10 @@ public class KontrolerAplikacji {
     } catch (IOException e) {
       czyPolaczono_ = false;
     }
-    model_ = new GlownyModel();
+    model_ = new GlownyModel(czyPolaczono_);
   }
 
-  public Scene utworzPodstawowaScene() {
+  public Parent utworzPodstawowaScene() {
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE);
     assert kontroler != null;
@@ -33,7 +34,20 @@ public class KontrolerAplikacji {
     assert widok != null;
     // TODO(Jakub Drzewiecki): zmienna czyPolaczono musi byc elementem modelu i
     //  miec swoj wlasny widok dostepny z poziomu wszystkich widokow
-    return widok.utworzWidok(kontroler, model_.dajModelGraczyOnline(), czyPolaczono_);
+    return widok.utworzWidok(kontroler, model_.dajModelGraczyOnline());
+  }
+
+  public void utworzPokoj(String zaproszonyGracz) {
+    // TODO(Jakub Drzewiecki): wysłać do serwera nazwe zaproszonego gracza
+    KontrolerWidoku kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
+    assert kontroler != null;
+    kontroler.przekazModel(model_.dajModelPokoju());
+    kontroler.przekazGlownyKontroler(this);
+
+    Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
+    assert widok != null;
+    Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.dajModelPokoju()));
   }
 
   public void przekazNazweDoSerwera(String nazwaGracza) {

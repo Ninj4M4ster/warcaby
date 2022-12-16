@@ -11,7 +11,7 @@ public class Aplikacja extends javafx.application.Application {
   @Override
   public void start(Stage stage) throws Exception {
     kontroler_ = new KontrolerAplikacji();
-    scena_ = kontroler_.utworzPodstawowaScene();
+    scena_ = new Scene(kontroler_.utworzPodstawowaScene());
     // dummy gracze, po skonczeniu GUI trzeba ich usunac
     kontroler_.zaktualizujListeGraczy("Gracz1", true);
     kontroler_.zaktualizujListeGraczy("Gracz2", true);
@@ -28,7 +28,7 @@ public class Aplikacja extends javafx.application.Application {
     launch();
   }
 
-  public static void ustawNowaScene(Parent nowaScena) {
-    scena_.setRoot(nowaScena);
+  public static void ustawNowyKorzen(Parent nowyKorzen) {
+    scena_.setRoot(nowyKorzen);
   }
 }

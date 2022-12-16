@@ -1,5 +1,6 @@
 package klient.kontroller;
 
+import java.util.List;
 import javafx.collections.ListChangeListener.Change;
 import javafx.event.Event;
 import javafx.scene.Node;
@@ -8,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import klient.model.Model;
 import klient.model.ModelGraczyOnline;
 import klient.widoki.eventy.OknoKlikniete;
+import klient.widoki.widgety.KafelekGraczaOnline;
 
 public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   private ModelGraczyOnline model_;
@@ -44,6 +46,15 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   }
 
   public void przypiszFunkcjeKafelkowi(Change<? extends Node> change) {
-    // TODO(Jakub Drzewiecki): Trzeba zbindowac akcje do opcji ktore ma nowy kafelek gracza
+    while(change.next()) {
+      if(change.wasAdded()) {
+        List<? extends Node> lista = change.getAddedSubList();
+        for(Node node: lista) {
+          KafelekGraczaOnline kafelek = (KafelekGraczaOnline) node;
+          kafelek.przyciskZapros().setOnMouseClicked(
+              (mouseEvent) -> this.kontrolerGlowny_.utworzPokoj(kafelek.nazwaGracza()));
+        }
+      }
+    }
   }
 }
