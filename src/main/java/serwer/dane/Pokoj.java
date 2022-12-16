@@ -1,7 +1,5 @@
 package serwer.dane;
 
-import serwer.dane.Gracz;
-
 public class Pokoj {
     Gracz mistrz, gosc;
     public Pokoj(Gracz mistrz) {
