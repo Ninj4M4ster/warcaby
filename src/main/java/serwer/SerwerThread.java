@@ -1,5 +1,7 @@
 package serwer;
 
+import serwer.komendy.Komenda;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +21,6 @@ public class SerwerThread extends Thread {
         PrintWriter out = null;
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
 
-        boolean[][] plansza;
         String komenda;
 
         try {
@@ -32,7 +33,7 @@ public class SerwerThread extends Thread {
         while (true) {
             try {
                 komenda = in.readLine();
-                pw.getWiadomosc(komenda);
+                Komenda kom = pw.getWiadomosc(komenda);
 
 
             } catch (IOException e) {

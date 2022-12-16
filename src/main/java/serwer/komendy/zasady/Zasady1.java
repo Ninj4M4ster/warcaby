@@ -1,18 +1,18 @@
 package serwer.komendy.zasady;
 
-public class Zasady1 implements ZasadyGry{
+public class Zasady1 extends ZasadyGry {
     @Override
-    public boolean ruchPionem() {
+    boolean ruchPionem(int x, int y) {
         return false;
     }
 
     @Override
-    public boolean ruchKrolowa() {
+    public boolean ruchKrolowa(int x, int y) {
         return false;
     }
 
     @Override
-    public boolean bicie() {
+    public boolean bicie(int x, int y) {
         return false;
     }
 

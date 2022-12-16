@@ -4,11 +4,11 @@ import serwer.komendy.Komenda;
 import serwer.komendy.TworcaKomendy;
 
 public class PrzetwarzaczWiadomosci {
-    String wiadomosc;
-    String[] slowa;
-    String komenda;
-    String reszta;
-    Komenda getWiadomosc(String wiadomosc) {
+    private String wiadomosc;
+    private String[] slowa;
+    private String komenda;
+    private String reszta;
+    protected Komenda getWiadomosc(String wiadomosc) {
         this.wiadomosc = wiadomosc;
         slowa = wiadomosc.split(" ", 2);
 
@@ -18,7 +18,7 @@ public class PrzetwarzaczWiadomosci {
         return komenda_objekt;
     }
 
-    void Dekoder() {
+    private void Dekoder() {
         komenda = slowa[0];
         reszta = slowa[1];
     }

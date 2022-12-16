@@ -1,10 +1,11 @@
 package serwer.komendy.zasady;
 
-public interface ZasadyGry {
-    boolean ruchPionem();
-    boolean ruchKrolowa();
+public abstract class ZasadyGry {
+    abstract boolean ruchPionem(int x, int y);
 
-    boolean bicie();
+    abstract boolean ruchKrolowa(int x, int y);
 
-    boolean promocja();
+    abstract boolean bicie(int x, int y);
+
+    abstract boolean promocja();
 }
