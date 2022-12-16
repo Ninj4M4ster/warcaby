@@ -14,8 +14,8 @@ public class PrzetwarzaczWiadomosci {
 
         Dekoder();
         TworcaKomendy tk = new TworcaKomendy();
-        Komenda komenda_objekt = tk.tworzKomende(komenda, reszta);
-        return komenda_objekt;
+        Komenda objekt = tk.tworzKomende(komenda, reszta);
+        return objekt;
     }
 
     private void Dekoder() {

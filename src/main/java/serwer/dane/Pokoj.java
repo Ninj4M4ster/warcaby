@@ -4,7 +4,7 @@ import serwer.dane.Gracz;
 
 public class Pokoj {
     Gracz mistrz, gosc;
-    public Pokoj(Gracz mistrz, Gracz gosc) {
+    public Pokoj(Gracz mistrz) {
         this.mistrz = mistrz;
         this.gosc = gosc;
     }

@@ -23,12 +23,12 @@ public class Serwer {
       System.out.println("IO exception");
     }
 
-
+    int gracze_id = 1;
     while(true) {
       try {
         Socket socket = ss.accept();
 
-        SerwerThread st = new SerwerThread(socket);
+        SerwerThread st = new SerwerThread(socket, gracze_id);
         st.start();
       } catch(Exception e) {
         e.printStackTrace();
