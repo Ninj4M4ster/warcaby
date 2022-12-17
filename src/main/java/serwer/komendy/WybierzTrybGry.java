@@ -38,16 +38,16 @@ public class WybierzTrybGry implements Komenda{
         plansza = new int[plansza_rozmiar][plansza_rozmiar];
         for(int x = 0; x < plansza_rozmiar; x += 1) {
             for(int y = 0; y < plansza_rozmiar; y += 1) {
-                if(y != 3 && y !=4 && (x + y) % 2 == 1) {
-                    if(y > 4) {
-                        plansza[x][7 - y] = 1;
+                if(y != ((plansza_rozmiar/2)-1) && y != (plansza_rozmiar/2) && (x + y) % 2 == 0) {
+                    if(y < (plansza_rozmiar/2)) {
+                        plansza[x][y] = 1;
                     }
                     else {
-                        plansza[x][7 - y] = 2;
+                        plansza[x][y] = 2;
                     }
                 }
                 else {
-                    plansza[x][7 - y] = 0;
+                    plansza[x][y] = 0;
                 }
             }
         }

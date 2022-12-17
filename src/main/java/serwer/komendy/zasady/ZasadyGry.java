@@ -12,14 +12,17 @@ public abstract class ZasadyGry {
         if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || (przesuniecie_x != przesuniecie_y && przesuniecie_y != -przesuniecie_x)) {
             return false;
         }
-        else if(plansza[x][y] == 1 && przesuniecie_y == -1) {
+        else if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
+            return false;
+        }
+        else if(plansza[x][y] == 1 && przesuniecie_y == 1) {
             plansza[x][y] = 0;
             plansza[x+przesuniecie_x][y+przesuniecie_y] = 1;
             return true;
         }
-        else if(plansza[x][y] == 2 && przesuniecie_y == 1) {
+        else if(plansza[x][y] == 2 && przesuniecie_y == -1) {
             plansza[x][y] = 0;
-            plansza[x+przesuniecie_x][y+przesuniecie_y] = 1;
+            plansza[x+przesuniecie_x][y+przesuniecie_y] = 2;
             return true;
         }
         return false;
