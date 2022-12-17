@@ -1,11 +1,12 @@
 package serwer.komendy;
 
 import serwer.komendy.WybierzTrybGry;
+import serwer.komendy.zasady.ZasadyGry;
 
 public class WybierzTrybGryTest {
     public static void main(String args[]) {
         WybierzTrybGry wbg = new WybierzTrybGry();
-        wbg.setPlansza_rozmiar(8);
+        ZasadyGry zg = wbg.wybierz("0");
         boolean prawda = wbg.Wykonaj();
 
         int[][] plansza;

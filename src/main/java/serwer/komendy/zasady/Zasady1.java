@@ -1,9 +1,8 @@
 package serwer.komendy.zasady;
 
 public class Zasady1 extends ZasadyGry {
-    @Override
-    boolean ruchPionem(int x, int y) {
-        return false;
+    public Zasady1(int[][] plansza) {
+        super(plansza);
     }
 
     @Override

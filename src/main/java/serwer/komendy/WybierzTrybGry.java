@@ -13,13 +13,20 @@ public class WybierzTrybGry implements Komenda{
      * +<br>
      *  0 = puste<br>
      *  1 = biale<br>
-     *  2 = biale
+     *  2 = czarne
      */
     int[][] plansza;
     public ZasadyGry wybierz(String rodzaj) {
         switch (rodzaj) {
             case "0":
-                return new Zasady1();
+                setPlansza_rozmiar(8);
+                return new Zasady1(plansza);
+            case "1":
+                setPlansza_rozmiar(10);
+                return new Zasady1(plansza);
+            case "2":
+                setPlansza_rozmiar(12);
+                return new Zasady1(plansza);
             default:
                 return null;
         }
@@ -51,7 +58,7 @@ public class WybierzTrybGry implements Komenda{
         return plansza;
     }
 
-    public void setPlansza_rozmiar(int plansza_rozmiar) {
+    private void setPlansza_rozmiar(int plansza_rozmiar) {
         this.plansza_rozmiar = plansza_rozmiar;
     }
 }
