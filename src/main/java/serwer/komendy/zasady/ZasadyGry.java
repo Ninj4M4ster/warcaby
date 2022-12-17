@@ -1,23 +1,32 @@
 package serwer.komendy.zasady;
 
 public abstract class ZasadyGry {
-    int[][] plansza;
+    private int[][] plansza;
 
     public ZasadyGry(int[][] plansza) {
         this.plansza = plansza;
     }
 
-    private boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
+    public void setPlansza(int[][] plansza) {
+        this.plansza = plansza;
+    }
+
+    public int[][] getPlansza() {
+        return plansza;
+    }
+
+    public boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
-        if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || (przesuniecie_x != przesuniecie_y && przesuniecie_y != -przesuniecie_x)) {
+        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
             return false;
         }
-        else if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
+        if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
-        else if(plansza[x][y] == 1 && przesuniecie_y == 1) {
-            plansza[x][y] = 0;
-            plansza[x+przesuniecie_x][y+przesuniecie_y] = 1;
+        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
+            return false;
+        }
+        if(plansza[x][y] == 1 && przesuniecie_y == 1) {
             return true;
         }
         else if(plansza[x][y] == 2 && przesuniecie_y == -1) {
@@ -28,9 +37,24 @@ public abstract class ZasadyGry {
         return false;
     }
 
-    abstract boolean ruchKrolowa(int x, int y);
+    public boolean ruchKrolowa(int x, int y, int przesuniecie_x, int przesuniecie_y) {
+        int kolor = plansza[x][y];
+        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
+            return false;
+        }
+        if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+            return false;
+        }
+        int licznik = 0;
+        for(int i = 0; i < przesuniecie_x; i += 1) {
+            if(plansza[x + (i * przesuniecie_x/Math.abs(przesuniecie_x))][y + (i * przesuniecie_y/Math.abs(przesuniecie_y))] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-    abstract boolean bicie(int x, int y);
+    abstract public boolean bicie(int x, int y);
 
-    abstract boolean promocja();
+    abstract public boolean promocja();
 }

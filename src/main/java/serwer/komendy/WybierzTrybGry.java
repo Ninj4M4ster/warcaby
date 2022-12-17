@@ -4,6 +4,7 @@ import serwer.komendy.zasady.Zasady1;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class WybierzTrybGry implements Komenda{
+    ZasadyGry zasady_gry;
     private int plansza_rozmiar;
     /**
      * plansza - tablica zawierająca informacje o umiejscowieniu pionkow<br>
@@ -20,13 +21,16 @@ public class WybierzTrybGry implements Komenda{
         switch (rodzaj) {
             case "0":
                 setPlansza_rozmiar(8);
-                return new Zasady1(plansza);
+                zasady_gry = new Zasady1(plansza);
+                return zasady_gry;
             case "1":
                 setPlansza_rozmiar(10);
-                return new Zasady1(plansza);
+                zasady_gry = new Zasady1(plansza);
+                return zasady_gry;
             case "2":
                 setPlansza_rozmiar(12);
-                return new Zasady1(plansza);
+                zasady_gry = new Zasady1(plansza);
+                return zasady_gry;
             default:
                 return null;
         }
