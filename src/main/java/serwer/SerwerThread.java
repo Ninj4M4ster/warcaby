@@ -41,7 +41,7 @@ public class SerwerThread extends Thread {
         while (true) {
             try {
                 komenda = in.readLine();
-                Komenda kom = pw.getWiadomosc(komenda);
+                Komenda kom = pw.getWiadomosc(komenda, gracz);
                 kom.Wykonaj();
 
             } catch (IOException e) {
