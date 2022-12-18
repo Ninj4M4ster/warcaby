@@ -1,19 +1,18 @@
 package klient.widoki;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -27,6 +26,7 @@ public class WidokPokoju implements Widok {
   private KontrolerPokoju kontroler_;
   private ModelPokoju model_;
   private StackPane okno_;
+  private BorderPane kontenerWidoku_;
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
     if(this.model_ != null || this.kontroler_ != null)
@@ -38,11 +38,25 @@ public class WidokPokoju implements Widok {
     // stackpane jako korzen widoku
     this.okno_ = new StackPane();
     this.okno_.setAlignment(Pos.CENTER);
+    this.okno_.setOnKeyPressed(keyEvent -> {
+      if(keyEvent.getCode() == KeyCode.ENTER) {
+        this.kontroler_.wyslijWiadomosc();
+      }
+    });
 
     // kontener elementy dotyczace bezposrednio pokoju
-    BorderPane kontenerWidoku = new BorderPane();
+    kontenerWidoku_ = new BorderPane();
 
+    // utworz widgety i dodaj je do widoku
+    this.utworzChat();
+    this.utworzInformacjeOpcje();
 
+    this.okno_.getChildren().add(kontenerWidoku_);
+
+    return this.okno_;
+  }
+
+  private void utworzChat() {
     // kontener na chat
     BorderPane kontenerChatu = new BorderPane();
     kontenerChatu.setBackground(Background.fill(Color.valueOf("#525252")));
@@ -50,7 +64,17 @@ public class WidokPokoju implements Widok {
     // kontener na wyswietlanie historii chatu
     ScrollPane kontenerHistoriiChatu = new ScrollPane();
     kontenerHistoriiChatu.setStyle("-fx-background: #525252; -fx-background-color: #525252;");
-    HBox historiaChatu = new HBox();
+    kontenerHistoriiChatu.setFitToWidth(true);
+    kontenerHistoriiChatu.setFitToHeight(true);
+    kontenerHistoriiChatu.setHbarPolicy(ScrollBarPolicy.NEVER);
+    kontenerHistoriiChatu.setVbarPolicy(ScrollBarPolicy.NEVER);
+
+    // kontener na dymki chatu
+    VBox historiaChatu = this.model_.historiaChatu();
+    historiaChatu.setAlignment(Pos.BOTTOM_CENTER);
+    historiaChatu.setFillWidth(true);
+    historiaChatu.heightProperty().addListener(
+        (observable) -> kontenerHistoriiChatu.setVvalue(kontenerHistoriiChatu.getVmax()));
 
     kontenerHistoriiChatu.setContent(historiaChatu);
     kontenerChatu.setCenter(kontenerHistoriiChatu);
@@ -67,17 +91,23 @@ public class WidokPokoju implements Widok {
     // pole tekstowe
     TextField poleTekstowe = new TextField();
     poleTekstowe.setPrefHeight(30);
+    poleTekstowe.textProperty().bindBidirectional(this.model_.tekstWiadomosci());
 
     // przycisk do wyslania wiadomosci
     Button przyciskWyslijWiadomosc = new Button("Wyślij");
     przyciskWyslijWiadomosc.setMaxWidth(Double.MAX_VALUE);
     przyciskWyslijWiadomosc.setPrefHeight(30);
+    przyciskWyslijWiadomosc.setOnMouseClicked(mouseEvent -> this.kontroler_.wyslijWiadomosc());
 
     kontenerPolaTekstowego.add(poleTekstowe, 0, 0);
     kontenerPolaTekstowego.add(przyciskWyslijWiadomosc, 1, 0);
 
     kontenerChatu.setBottom(kontenerPolaTekstowego);
 
+    kontenerWidoku_.setCenter(kontenerChatu);
+  }
+
+  private void utworzInformacjeOpcje() {
     // kontener opcji gry oraz informacji o graczach w lobby
     GridPane kontenerInformacji = new GridPane();
     RowConstraints rzad1 = new RowConstraints();
@@ -86,7 +116,6 @@ public class WidokPokoju implements Widok {
     rzad2.setPercentHeight(50);
     kontenerInformacji.getRowConstraints().addAll(rzad1, rzad2);
     kontenerInformacji.setPrefWidth(300);
-//    kontenerInformacji.setAlignment(Pos.CENTER);
 
     // kontener informacji o graczach w lobby
     VBox kontenerGraczy = new VBox();
@@ -103,11 +132,8 @@ public class WidokPokoju implements Widok {
 
     // wybor trybu gry
     ComboBox<String> trybyGry = new ComboBox<>();
-    trybyGry.getItems().addAll(
-        "Warcaby klasyczne (brazylijskie)",
-        "Warcaby polskie",
-        "Warcaby kanadyjskie");
-    trybyGry.setValue("Warcaby klasyczne (brazylijskie)");
+    trybyGry.itemsProperty().bind(this.model_.dostepneTryby());
+    trybyGry.setValue(this.model_.domyslnyTryb());
 
     // przejscie do rozgrywki
     Button przyciskRozpocznijGre = new Button("Start");
@@ -116,11 +142,6 @@ public class WidokPokoju implements Widok {
     kontenerInformacji.add(kontenerOpcjiGry, 0, 1);
 
     // ustawienie widgetow w kontenerze
-    kontenerWidoku.setRight(kontenerInformacji);
-    kontenerWidoku.setCenter(kontenerChatu);
-
-    this.okno_.getChildren().add(kontenerWidoku);
-
-    return this.okno_;
+    kontenerWidoku_.setRight(kontenerInformacji);
   }
 }
