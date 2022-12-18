@@ -6,11 +6,12 @@ import serwer.dane.Pokoj;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Serwer {
-  private List<Gracz> gracze;
-  private static List<Pokoj> pokoje;
+  private List<Gracz> gracze = new ArrayList<Gracz>();
+  private static List<Pokoj> pokoje = new ArrayList<Pokoj>();
   private Socket socket;
 
   public static void main(String[] args) {
