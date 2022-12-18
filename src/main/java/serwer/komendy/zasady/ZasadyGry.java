@@ -3,10 +3,6 @@ package serwer.komendy.zasady;
 public abstract class ZasadyGry {
     private int[][] plansza;
 
-    public ZasadyGry(int[][] plansza) {
-        this.plansza = plansza;
-    }
-
     public void setPlansza(int[][] plansza) {
         this.plansza = plansza;
     }

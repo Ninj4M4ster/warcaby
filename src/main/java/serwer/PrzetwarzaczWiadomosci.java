@@ -9,18 +9,25 @@ public class PrzetwarzaczWiadomosci {
     private String[] slowa;
     private String komenda;
     private String reszta;
-    protected Komenda getWiadomosc(String wiadomosc, Gracz gracz) {
+    protected void setWiadomosc(String wiadomosc) {
         this.wiadomosc = wiadomosc;
         slowa = wiadomosc.split(" ", 2);
 
         Dekoder();
+    }
+
+    public void Dekoder() {
+        komenda = slowa[0];
+        reszta = slowa[1];
+    }
+
+    public Komenda getKomenda(Gracz gracz) {
         TworcaKomendy tk = new TworcaKomendy();
-        Komenda kom = tk.tworzKomende(komenda, reszta, gracz);
+        Komenda kom = tk.tworzKomende(komenda, gracz);
         return kom;
     }
 
-    private void Dekoder() {
-        komenda = slowa[0];
-        reszta = slowa[1];
+    public String getReszta() {
+        return reszta;
     }
 }

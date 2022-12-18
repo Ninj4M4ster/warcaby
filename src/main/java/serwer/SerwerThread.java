@@ -12,7 +12,7 @@ import java.net.Socket;
 
 public class SerwerThread extends Thread {
     private Socket socket;
-    private Pokoj pokoj;
+    private Pokoj pokoj = null;
     private Gracz gracz;
 
 
@@ -29,7 +29,7 @@ public class SerwerThread extends Thread {
         PrintWriter out = null;
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
 
-        String komenda;
+        String wiadomosc;
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -40,9 +40,10 @@ public class SerwerThread extends Thread {
 
         while (true) {
             try {
-                komenda = in.readLine();
-                Komenda kom = pw.getWiadomosc(komenda, gracz);
-                kom.Wykonaj();
+                wiadomosc = in.readLine();
+                pw.setWiadomosc(wiadomosc);
+                Komenda kom = pw.getKomenda(gracz);
+                boolean czy_wykonane = kom.Wykonaj(pw.getReszta(), pokoj);
 
             } catch (IOException e) {
                 e.printStackTrace();

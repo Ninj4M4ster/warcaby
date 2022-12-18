@@ -1,31 +1,32 @@
 package serwer.komendy;
 
-import serwer.komendy.zasady.ZasadyGry;
+import serwer.dane.Pokoj;
 
 public class RuchPionka implements Komenda{
-
-    ZasadyGry zasady_gry;
     int x, y, przesuniecie_x, przesuniecie_y;
     int[][] plansza;
 
-    public RuchPionka(ZasadyGry zasady_gry, int[][] plansza, int x, int y, int przesuniecie_x, int przesuniecie_y) {
-        this.zasady_gry = zasady_gry;
-        this.plansza = plansza;
-        this.x = x;
-        this.y = y;
-        this.przesuniecie_x = przesuniecie_x;
-        this.przesuniecie_y = przesuniecie_y;
-    }
-
     @Override
-    public boolean Wykonaj() {
-        if(zasady_gry.ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || zasady_gry.ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
+    public boolean Wykonaj(String reszta, Pokoj pokoj) {
+        plansza = pokoj.getPlansza();
+
+        try {
+            x = Integer.parseInt(reszta.split(" ")[0]);
+            y = Integer.parseInt(reszta.split(" ")[1]);
+            przesuniecie_x = Integer.parseInt(reszta.split(" ")[2]);
+            przesuniecie_y = Integer.parseInt(reszta.split(" ")[3]);
+        } catch(NumberFormatException nfe) {
+            return false;
+        }
+        pokoj.getZasady_gry().setPlansza(plansza);
+        if(pokoj.getZasady_gry().ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || pokoj.getZasady_gry().ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
             int pionek = plansza[x][y];
             plansza[x][y] = 0;
             plansza[x + przesuniecie_x][y + przesuniecie_y] = pionek;
-            zasady_gry.setPlansza(plansza);
+            pokoj.getZasady_gry().setPlansza(plansza);
             return true;
         }
+
         return false;
     }
 }

@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Serwer {
   private List<Gracz> gracze;
-  private List<Pokoj> pokoje;
-  private static Socket socket;
+  private static List<Pokoj> pokoje;
+  private Socket socket;
 
   public static void main(String[] args) {
   ServerSocket ss = null;
@@ -35,5 +35,13 @@ public class Serwer {
         System.out.println("Problem z połączeniem");
       }
     }
+  }
+
+  public static List<Pokoj> getPokoje() {
+    return pokoje;
+  }
+
+  public static void addPokoj(Pokoj pokoj) {
+    pokoje.add(pokoj);
   }
 }
