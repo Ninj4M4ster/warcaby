@@ -13,18 +13,23 @@ public class WejdzDoPokoju implements Komenda {
             return true;
         }
         else if(pokoj == null) {
-            for(Pokoj pokoj_temp : Serwer.getPokoje()) {
-                int id;
+            int id;
 
-                try {
-                    id = Integer.parseInt(reszta);
-                }
-                catch(NumberFormatException nfe) {
-                    return false;
-                }
+            try {
+                id = Integer.parseInt(reszta);
+            }
+            catch(NumberFormatException nfe) {
+                return false;
+            }
+            for(Pokoj pokoj_temp : Serwer.getPokoje()) {
 
                 if(pokoj_temp.getId() == id) {
-                    pokoj_temp.setGosc(gracz);
+                    if(pokoj_temp.getMistrz() == null) {
+                        pokoj_temp.setMistrz(gracz);
+                    }
+                    else {
+                        pokoj_temp.setGosc(gracz);
+                    }
                     return true;
                 }
             }

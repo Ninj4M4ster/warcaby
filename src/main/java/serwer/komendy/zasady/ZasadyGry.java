@@ -1,5 +1,7 @@
 package serwer.komendy.zasady;
 
+import serwer.dane.KontrolerStanuGry;
+
 public abstract class ZasadyGry {
     private int[][] plansza;
 
@@ -38,7 +40,11 @@ public abstract class ZasadyGry {
         if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
             return false;
         }
-        if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+        if(kolor == 0 ||
+                (kolor == 1 && (pokoj.stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH || pokoj.stan_gry == KontrolerStanuGry.StanGry.SKONCZONA)) ||
+                (kolor == 2 && (pokoj.stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH || pokoj.stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || pokoj.stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA)) ||
+                plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 ||
+                Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
         int licznik = 0;
