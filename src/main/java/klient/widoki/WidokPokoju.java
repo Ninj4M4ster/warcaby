@@ -137,6 +137,8 @@ public class WidokPokoju implements Widok {
 
     // przejscie do rozgrywki
     Button przyciskRozpocznijGre = new Button("Start");
+    przyciskRozpocznijGre.setOnMouseClicked(
+        mouseEvent -> this.kontroler_.rozpocznijGre(trybyGry.getValue()));
 
     kontenerOpcjiGry.getChildren().addAll(trybyGry, przyciskRozpocznijGre);
     kontenerInformacji.add(kontenerOpcjiGry, 0, 1);

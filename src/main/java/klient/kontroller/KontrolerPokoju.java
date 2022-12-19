@@ -10,11 +10,16 @@ public class KontrolerPokoju implements KontrolerWidoku{
 
   @Override
   public void przekazModel(Model model) {
+    if(this.model_ != null)
+      throw new IllegalStateException("Nie mozna dwa razy przekazac modelu do kontrolera widoku.");
     this.model_ = (ModelPokoju) model;
   }
 
   @Override
   public void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny) {
+    if(this.kontrolerGlowny_ != null)
+      throw new IllegalStateException("Nie mozna dwa razy przekaza kontrolera aplikacji "
+          + "do kontrolera widoku.");
     this.kontrolerGlowny_ = kontrolerGlowny;
   }
 
@@ -26,5 +31,9 @@ public class KontrolerPokoju implements KontrolerWidoku{
       model_.dodajWiadomoscDoHistorii(nodeWiadomosc);
       this.model_.ustawTekstWiadomosci("");
     }
+  }
+
+  public void rozpocznijGre(String tryb) {
+    this.kontrolerGlowny_.rozpocznijGre(tryb);
   }
 }

@@ -7,6 +7,8 @@ public class TworcaKontrolera {
         return new KontrolerWidokuGraczyOnline();
       case KONTROLER_POKOJU:
         return new KontrolerPokoju();
+      case KONTROLER_GRY:
+        return new KontrolerGry();
     }
     return null;
   }

@@ -9,6 +9,7 @@ import klient.widoki.TworcaWidoku;
 import klient.widoki.TypyWidokow;
 import klient.widoki.Widok;
 
+// TODO(Jakub Drzewiecki): Ta klasa mogłaby implementować wzorzec singleton.
 public class KontrolerAplikacji {
   private Klient klient_;
   private boolean czyPolaczono_;
@@ -61,5 +62,18 @@ public class KontrolerAplikacji {
       this.model_.dajModelGraczyOnline().dodajGraczaDoListy(nazwaGracza);
     else
       this.model_.dajModelGraczyOnline().usunGraczaLista(nazwaGracza);
+  }
+
+  public void rozpocznijGre(String tryb) {
+    // TODO(Jakub Drzewiecki): Należy wysłać wybrany tryb gry do serwera i
+    //  na podstawie odpowiedzi najpierw ustawić rozmiar planszy w modelu a nastepnie utworzyć widok.
+    KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY);
+    assert kontroler != null;
+    kontroler.przekazModel(model_.dajModelGry());
+    kontroler.przekazGlownyKontroler(this);
+
+    Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_GRY);
+    assert widok != null;
+    Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.dajModelGry()));
   }
 }
