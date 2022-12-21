@@ -1,11 +1,12 @@
 package klient.kontroller;
 
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.PickResult;
 import javafx.scene.shape.Circle;
 import klient.model.Model;
 import klient.model.ModelGry;
 import klient.widoki.widgety.Pionek;
+import klient.widoki.widgety.PolePlanszy;
 
 /**
  * Klasa kontrolera widoku gry.
@@ -22,6 +23,8 @@ public class KontrolerGry implements KontrolerWidoku {
 
   /** Czy jakis pionek jest aktualnie przesuwany? */
   private boolean pionekPrzesuwany_;
+
+  private boolean przyciskMyszkiTrzymany_;
 
   /**
    * Metoda odpowiedzialna za przechowanie modelu widoku gry.
@@ -54,24 +57,29 @@ public class KontrolerGry implements KontrolerWidoku {
    * @param kontenerPrzesuwanegoPionka Kontener przesuwanego pionka.
    */
   public void zacznijPrzesuwacPionek(MouseEvent mouseEvent, Pionek kontenerPrzesuwanegoPionka) {
-    kontenerPrzesuwanegoPionka.ustawStartowaPozycjaX(mouseEvent.getSceneX());
-    kontenerPrzesuwanegoPionka.ustawStartowaPozycjaY(mouseEvent.getSceneY());
-    kontenerPrzesuwanegoPionka.getParent().toFront();
+    if(kontenerPrzesuwanegoPionka.kolorPionka().equals(this.model_.kolorPionkow())) {
+      kontenerPrzesuwanegoPionka.ustawStartowaPozycjaX(mouseEvent.getSceneX());
+      kontenerPrzesuwanegoPionka.ustawStartowaPozycjaY(mouseEvent.getSceneY());
+      kontenerPrzesuwanegoPionka.getParent().toFront();
 
-    kontenerAktualniePrzesuwanegoPionka_ = kontenerPrzesuwanegoPionka;
-    pionekPrzesuwany_ = true;
+      this.kontenerAktualniePrzesuwanegoPionka_ = kontenerPrzesuwanegoPionka;
+      this.pionekPrzesuwany_ = true;
+    }
   }
 
   /**
    * Metoda odpowiedzialna za przesuwanie pionka za myszka.
    *
-   * @param mouseEvent Wydarzenie przesuniecia myszka po ekranie.
+   * @param mouseEvent                 Wydarzenie przesuniecia myszka po ekranie.
    * @param kontenerPrzesuwanegoPionka Kontener przesuwanego pionka.
-   * @param pionek Trzymany pionek.
    */
-  public void przesunPionek(MouseEvent mouseEvent, Pionek kontenerPrzesuwanegoPionka, Circle pionek) {
-    pionek.setTranslateX(mouseEvent.getSceneX() - kontenerPrzesuwanegoPionka.startowaPozycjaX());
-    pionek.setTranslateY(mouseEvent.getSceneY() - kontenerPrzesuwanegoPionka.startowaPozycjaY());
+  public void przesunPionek(MouseEvent mouseEvent, Pionek kontenerPrzesuwanegoPionka) {
+    if(this.pionekPrzesuwany_) {
+      kontenerPrzesuwanegoPionka.setTranslateX(
+          mouseEvent.getSceneX() - kontenerPrzesuwanegoPionka.startowaPozycjaX());
+      kontenerPrzesuwanegoPionka.setTranslateY(
+          mouseEvent.getSceneY() - kontenerPrzesuwanegoPionka.startowaPozycjaY());
+    }
   }
 
   /**
@@ -80,8 +88,10 @@ public class KontrolerGry implements KontrolerWidoku {
    * @param pionek Przesuwany pionek.
    */
   public void skonczPrzesuwacPionek(Circle pionek) {
-    pionek.setTranslateX(0);
-    pionek.setTranslateY(0);
+    if(this.pionekPrzesuwany_) {
+      kontenerAktualniePrzesuwanegoPionka_.setTranslateX(0);
+      kontenerAktualniePrzesuwanegoPionka_.setTranslateY(0);
+    }
   }
 
   /**
@@ -89,13 +99,20 @@ public class KontrolerGry implements KontrolerWidoku {
    *
    * @param pole Pole nad ktorym znajdowala sie myszka po puszczeniu pionka.
    */
-  public void puszczonoMyszkeNadPolem(StackPane pole) {
-    if(pionekPrzesuwany_) {
-      StackPane startowePole = (StackPane) kontenerAktualniePrzesuwanegoPionka_.getParent();
-      startowePole.getChildren().remove(kontenerAktualniePrzesuwanegoPionka_);
-      pole.getChildren().add(kontenerAktualniePrzesuwanegoPionka_);
-      System.out.println(pole);
-      pionekPrzesuwany_ = false;
+  public void puszczonoMyszkeNadPolem(PolePlanszy pole, PickResult wynikWydarzenia) {
+    if(this.pionekPrzesuwany_
+        && wynikWydarzenia.getIntersectedNode() instanceof Circle) {
+      PolePlanszy startowePole =
+          (PolePlanszy) this.kontenerAktualniePrzesuwanegoPionka_.getParent();
+      int kolumnaStartowa = startowePole.kolumna();
+      int rzadStartowy = startowePole.rzad();
+
+      int docelowaKolumna = pole.kolumna();
+      int docelowyRzad = pole.rzad();
+
+      startowePole.getChildren().remove(this.kontenerAktualniePrzesuwanegoPionka_);
+      pole.getChildren().add(this.kontenerAktualniePrzesuwanegoPionka_);
     }
+    this.pionekPrzesuwany_ = false;
   }
 }

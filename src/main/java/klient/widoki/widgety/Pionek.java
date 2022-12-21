@@ -16,6 +16,9 @@ public class Pionek extends StackPane {
   /** Startowa pozycja y myszki podczas przesuwania pionka */
   private double startowaPozycjaY_ = 0.0;
 
+  /** Zmienna reprezentujaca kolor pionka - 'bialy' lub 'czarny' */
+  private final String kolorPionka_;
+
   /**
    * Konstruktor, tworzy kolo reprezentujace pionek i dodaje do niego wszystkie wymagane wydarzenia.
    * @param kolor Kolor kola.
@@ -26,8 +29,10 @@ public class Pionek extends StackPane {
   public Pionek(Color kolor,
       Color kolorObramowki,
       ReadOnlyDoubleProperty propertySzerokoscPola,
-      KontrolerGry kontroler) {
+      KontrolerGry kontroler,
+      String kolorPionka) {
     super();
+    this.kolorPionka_ = kolorPionka;
 
     Circle kolo = new Circle();
     kolo.setFill(kolor);
@@ -38,7 +43,7 @@ public class Pionek extends StackPane {
     kolo.setOnMousePressed(
         mouseEvent -> kontroler.zacznijPrzesuwacPionek(mouseEvent, this));
     kolo.setOnMouseDragged(
-        mouseEvent -> kontroler.przesunPionek(mouseEvent, this, kolo));
+        mouseEvent -> kontroler.przesunPionek(mouseEvent, this));
     kolo.setOnMouseReleased(mouseEvent -> kontroler.skonczPrzesuwacPionek(kolo));
     this.getChildren().add(kolo);
   }
@@ -77,5 +82,14 @@ public class Pionek extends StackPane {
    */
   public void ustawStartowaPozycjaY(double y) {
     this.startowaPozycjaY_ = y;
+  }
+
+  /**
+   * Metoda zwracajaca napis reprezentujacy kolor pionka.
+   *
+   * @return Kolor pionka - 'bialy' lub 'czarny'.
+   */
+  public String kolorPionka() {
+    return this.kolorPionka_;
   }
 }

@@ -3,7 +3,6 @@ package klient.widoki;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.ColumnConstraints;
@@ -16,6 +15,7 @@ import klient.kontroller.KontrolerWidoku;
 import klient.model.Model;
 import klient.model.ModelGry;
 import klient.widoki.widgety.Pionek;
+import klient.widoki.widgety.PolePlanszy;
 
 /**
  * Klasa reprezentujaca widok rozgrywki w warcaby.
@@ -73,8 +73,6 @@ public class WidokGry implements Widok {
     planszaGry_.maxHeightProperty().bind(this.okno_.heightProperty().multiply(0.98));
     planszaGry_.maxWidthProperty().bind(planszaGry_.maxHeightProperty());
     planszaGry_.setAlignment(Pos.CENTER);
-    planszaGry_.addEventFilter(MouseEvent.DRAG_DETECTED ,
-        mouseEvent -> planszaGry_.startFullDrag());
 
     int iloscPol = this.model_.iloscPol();
 
@@ -273,12 +271,12 @@ public class WidokGry implements Widok {
     // i - kolumny, j - rzedy
     for(int i=0; i < iloscPol; i+=2) {
       for(int j=0; j < iloscPol; j += 2) {
-        listaPol[i][j] = this.utworzPolePlanszy(Color.BEIGE);
-        listaPol[i][j+1] = this.utworzPolePlanszy(Color.valueOf("#212121"));
+        listaPol[i][j] = this.utworzPolePlanszy(Color.BEIGE, i, j);
+        listaPol[i][j+1] = this.utworzPolePlanszy(Color.valueOf("#212121"), i, j + 1);
       }
       for(int j=0; j < iloscPol; j += 2) {
-        listaPol[i+1][j] = this.utworzPolePlanszy(Color.valueOf("#212121"));
-        listaPol[i+1][j+1] = this.utworzPolePlanszy(Color.BEIGE);
+        listaPol[i+1][j] = this.utworzPolePlanszy(Color.valueOf("#212121"), i + 1, j);
+        listaPol[i+1][j+1] = this.utworzPolePlanszy(Color.BEIGE, i + 1, j + 1);
       }
     }
     return listaPol;
@@ -288,14 +286,17 @@ public class WidokGry implements Widok {
    * Metoda tworzaca widget reprezentujacy pole planszy.
    *
    * @param kolor Kolor pola planszy.
+   * @param kolumna Numer kolumny, w ktorej dodawany jest pionek.
+   * @param rzad Numer rzedu, w ktorym dodawany jest pionek.
    * @return Widget reprezentujacy pole planszy.
    */
-  private StackPane utworzPolePlanszy(Color kolor) {
-    StackPane kafelek = new StackPane();
-    kafelek.setBackground(Background.fill(kolor));
-    kafelek.setAlignment(Pos.CENTER);
-    kafelek.setOnMouseEntered(mouseDragEvent -> kontroler_.puszczonoMyszkeNadPolem(kafelek));
-    return kafelek;
+  private PolePlanszy utworzPolePlanszy(Color kolor, int kolumna, int rzad) {
+    PolePlanszy pole = new PolePlanszy(kolumna, rzad);
+    pole.setBackground(Background.fill(kolor));
+    pole.setAlignment(Pos.CENTER);
+    pole.setOnMouseEntered(
+        mouseDragEvent -> kontroler_.puszczonoMyszkeNadPolem(pole, mouseDragEvent.getPickResult()));
+    return pole;
   }
 
   /**
@@ -312,7 +313,8 @@ public class WidokGry implements Widok {
               rzad,
               listaPol,
               Color.valueOf("#363636"),
-              Color.valueOf("#424242"));
+              Color.valueOf("#424242"),
+              "czarny");
         }
       }
     }
@@ -323,7 +325,8 @@ public class WidokGry implements Widok {
               rzad,
               listaPol,
               Color.valueOf("#dbdbdb"),
-              Color.valueOf("#a3a3a3"));
+              Color.valueOf("#a3a3a3"),
+              "bialy");
         }
       }
     }
@@ -337,14 +340,17 @@ public class WidokGry implements Widok {
    * @param listaPol Wszystkie pola planszy.
    * @param kolor Kolor, jaki ma miec pionek.
    * @param kolorObramowki Kolor obramowania pionka.
+   * @param kolorPionka Napis reprezentujacy kolor pionka - 'bialy' lub 'czarny'.
    */
   private void dodajPionekNaPlansze(int kolumna,
       int rzad,
       Parent[][] listaPol,
       Color kolor,
-      Color kolorObramowki) {
+      Color kolorObramowki,
+      String kolorPionka) {
     StackPane pole = (StackPane) listaPol[kolumna][rzad];
-    Pionek pionek = new Pionek(kolor, kolorObramowki, pole.widthProperty(), this.kontroler_);
+    Pionek pionek =
+        new Pionek(kolor, kolorObramowki, pole.widthProperty(), this.kontroler_, kolorPionka);
 
     pole.getChildren().add(pionek);
   }

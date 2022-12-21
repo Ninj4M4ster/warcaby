@@ -33,7 +33,7 @@ public class ModelGry implements Model {
 
   /**
    * Metoda ustawiajaca ilosc pol w rzedzie i kolumnie planszy.
-   * Aktualizuje ona rowniez liste zawierajaca znaki indeksow planszy oraz ilosc pionkow.
+   * Aktualizuje ona rowniez liste zawierajaca znaki indeksow planszy.
    *
    * @param ilosc Ilosc pol w rzedzie i kolumnie planszy.
    */
