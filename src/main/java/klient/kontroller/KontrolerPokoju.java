@@ -4,10 +4,21 @@ import javafx.scene.control.Label;
 import klient.model.Model;
 import klient.model.ModelPokoju;
 
-public class KontrolerPokoju implements KontrolerWidoku{
+/**
+ * Klasa kontrolera widoku pokoju.
+ */
+public class KontrolerPokoju implements KontrolerWidoku {
+  /** Model widoku pokoju */
   private ModelPokoju model_;
+
+  /** Glowny kontroler aplikacji */
   private KontrolerAplikacji kontrolerGlowny_;
 
+  /**
+   * Metoda odpowiedzialna za przechowanie modelu.
+   *
+   * @param model Model widoku pokoju.
+   */
   @Override
   public void przekazModel(Model model) {
     if(this.model_ != null)
@@ -15,6 +26,11 @@ public class KontrolerPokoju implements KontrolerWidoku{
     this.model_ = (ModelPokoju) model;
   }
 
+  /**
+   * Metoda odpowiedzialna za przechowanie glownego kontrolera aplikacji.
+   *
+   * @param kontrolerGlowny Glowny kontroler aplikacji.
+   */
   @Override
   public void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny) {
     if(this.kontrolerGlowny_ != null)
@@ -23,6 +39,10 @@ public class KontrolerPokoju implements KontrolerWidoku{
     this.kontrolerGlowny_ = kontrolerGlowny;
   }
 
+  /**
+   * Metoda odpowiedzialna za wyslanie wprowadzonej wiadomosci
+   * oraz usuniecie jej z pola tekstowego.
+   */
   public void wyslijWiadomosc() {
     String wiadomosc = this.model_.tekstWiadomosci().get();
     // TODO(Jakub Drzewiecki): Utworzyć klasę reprezentującą chmurki wiadomosci, ktore beda dodawane do historii chatu
@@ -33,6 +53,11 @@ public class KontrolerPokoju implements KontrolerWidoku{
     }
   }
 
+  /**
+   * Metoda odpowiedzialna za rozpoczecie gry z wybranym trybem.
+   *
+   * @param tryb Wybrane zasady gry.
+   */
   public void rozpocznijGre(String tryb) {
     this.kontrolerGlowny_.rozpocznijGre(tryb);
   }

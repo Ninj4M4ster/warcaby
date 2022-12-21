@@ -30,18 +30,37 @@ import klient.model.ModelGraczyOnline;
 import klient.model.Model;
 import klient.widoki.eventy.OknoKlikniete;
 
+/**
+ * Klasa reprezentujaca widok menu glownego, w ktorym mozliwe jest
+ * zaproszenie jednego z dostepnych graczy do pokoju.
+ */
 public class WidokGraczyOnline implements Widok {
 
+  /** Kontener wszystkich elementow widoku */
   private VBox okno_;
+
+  /** Element widoku z ktorym uzytkownik wchodzi w interakcje */
   private BorderPane oknoGlowne_;
+
+  /** Pole sluzace do wprowadzenia swojej nazwy, ktora potem beda widziec inni gracze */
   private TextField poleWprowadzaniaNazwy_;
+
+  /** Kontener przechowujacy widgety z nazwami dostepnych graczy */
   private VBox listaGraczy_;
 
-  /** Zmienna kontrolera, pozwala zapobiec przypisaniu dwoch kontrolerow do jednego widoku */
+  /** Kontroler widoku */
   private KontrolerWidokuGraczyOnline kontroler_;
+
+  /** Model widoku */
   private ModelGraczyOnline model_;
 
-
+  /**
+   * Metoda tworzaca caly widok oraz zwracajaca kontener przechowujacy wszystkie widgety.
+   *
+   * @param kontroler Kontroler widoku.
+   * @param model Model widoku.
+   * @return Kontener wszystkich elementow widoku.
+   */
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
     //TODO(Jakub Drzewiecki) przerobić w późniejszym etapie całość na
@@ -62,8 +81,11 @@ public class WidokGraczyOnline implements Widok {
     return okno_;
   }
 
+  /**
+   * Metoda odpowiedzialna za utworzenie menu,
+   * czyli napisu z nazwa aplikacji oraz konteneru z ktorym uzytkownik wchodzi w interakcje.
+   */
   private void utworzMenu() {
-
     // glowne okno, w nim znajduja sie wszystkie elementy
     okno_ = new VBox();
     okno_.setPadding(new Insets(20, 200, 20, 200));
@@ -89,7 +111,7 @@ public class WidokGraczyOnline implements Widok {
 
     poleGlownegoOpisu.getChildren().add(glownyOpis);
 
-    // kontener w centrum, z nim klient prowadzi interakcje
+    // kontener w centrum, z nim klient wchodzi w interakcje
     oknoGlowne_ = new BorderPane();
     oknoGlowne_.centerProperty().bind(this.model_.centrumMenu());
     oknoGlowne_.topProperty().bind(this.model_.goraMenu());
@@ -118,6 +140,10 @@ public class WidokGraczyOnline implements Widok {
     okno_.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
   }
 
+  /**
+   * Utworzenie elementow menu sluzacych do
+   * wprowadzenia nazwy uzytkownika i wyslania jej do serwera.
+   */
   private void utworzWidokWprowadzaniaNazwy() {
     // kontener na wszystkie elementy przy wprowadzaniu nazwy
     VBox kontenerWprowadzaniaNazwy = new VBox();
@@ -162,6 +188,10 @@ public class WidokGraczyOnline implements Widok {
       this.model_.ustawCentrumMenu(kontenerWprowadzaniaNazwy);
   }
 
+  /**
+   * Utworzenie elementow sluzacych do wyswietlenia dostepnych graczy i
+   * umozliwiajacych zaproszenie jednego z nich do pokoju.
+   */
   private void utworzWidokPoWprowadzeniuNazwy() {
     // kontener na opis listy graczy online, zostanie wyswietlony po wprowadzeniu swojej nazwy
     VBox kontenerOpisuListyGraczy = new VBox();
@@ -196,9 +226,6 @@ public class WidokGraczyOnline implements Widok {
     kontenerListyGraczy.setPadding(new Insets(10, 2, 15, 2));
     kontenerListyGraczy.setStyle("-fx-background: rgba(255,255,255,0);"
         + "-fx-background-color: rgba(255,255,255,0);");
-
-    // TODO(Jakub Drzewiecki) Stworzyć kustomowy obiekt prezentujacy gracza,
-    //  który można nacisnąć i zaprosić gracza do wybranego trybu
 
     // lista graczy online
     listaGraczy_ = new VBox();

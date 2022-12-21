@@ -15,13 +15,33 @@ import klient.kontroller.KontrolerWidoku;
 import klient.model.Model;
 import klient.model.ModelGry;
 
+/**
+ * Klasa reprezentujaca widok rozgrywki w warcaby.
+ */
 public class WidokGry implements Widok {
+  /** Model widoku */
   private ModelGry model_;
+
+  /** Kontroler widoku. */
   private KontrolerGry kontroler_;
+
+  /** Kontener zawierajacy wszystkie elementy widoku */
   private StackPane okno_;
+
+  /** Kontener przechowujacy plansze gry, czyli wszystkie jej pola */
   private GridPane planszaGry_;
+
+  /** Zmienna okreslajaca procentowa szerokosc lub/i
+   * wysokosc pol przechowujacych indeksy pol planszy */
   private static final double SZEROKOSC_INDEKSOW = 4;
 
+  /**
+   * Metoda tworzaca wszystkie elementy widoku oraz zwracajaca kontener przechowujacy je.
+   *
+   * @param kontroler Kontroler widoku.
+   * @param model Model widoku.
+   * @return Kontener wszystkich elementow widoku.
+   */
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
     if(this.model_ != null || this.kontroler_ != null)
@@ -39,6 +59,9 @@ public class WidokGry implements Widok {
     return this.okno_;
   }
 
+  /**
+   * Metoda odpowiedzialna za utworzenie planszy gry razem ze wszystkimi polami.
+   */
   public void utworzPlanszeGry() {
     // plansza gry
     planszaGry_ = this.model_.planszaGry();
@@ -75,6 +98,11 @@ public class WidokGry implements Widok {
     this.okno_.getChildren().add(planszaGry_);
   }
 
+  /**
+   * Metoda tworzaca i dodajaca do planszy ograniczenie kolumny z podana procentowa szerokoscia.
+   *
+   * @param procentSzerokosci Procentowa szerokosc kolumny.
+   */
   private void utworzDodajOgraniczenieKolumny(double procentSzerokosci) {
     ColumnConstraints kolumna = new ColumnConstraints();
     kolumna.setPercentWidth(procentSzerokosci);
@@ -82,6 +110,11 @@ public class WidokGry implements Widok {
     planszaGry_.getColumnConstraints().add(kolumna);
   }
 
+  /**
+   * Metoda tworzaca i dodajaca do planszy ograniczenie rzedu z podana procentowa wysokoscia.
+   *
+   * @param procentWysokosci Procentowa wysokosc rzedu.
+   */
   private void utworzDodajOgraniczenieRzedu(double procentWysokosci) {
     RowConstraints rzad = new RowConstraints();
     rzad.setPercentHeight(procentWysokosci);
@@ -91,6 +124,11 @@ public class WidokGry implements Widok {
 
   // TODO(Jakub Drzewiecki): Dosyć długa ta funkcja,
   //  trzeba się zastanowić czy nie da się jej jakoś sensownie uprościć
+
+  /**
+   * Metoda odpowiedzialna za utworzenie i dodanie do planszy pol
+   * reprezentujacych obramowanie planszy razem z indeksami pol.
+   */
   private void utworzDodajIndeksyPlanszy() {
     int iloscPol = this.model_.iloscPol();
     // utworzenie naroznikow
@@ -182,6 +220,12 @@ public class WidokGry implements Widok {
     }
   }
 
+  /**
+   * Metoda tworzaca i zwracajaca widget reprezentujacy naroznik obramowania planszy.
+   *
+   * @param kolor Kolor wypelnienia widgetu.
+   * @return Widget reprezentujacy naroznik obramowania planszy.
+   */
   private StackPane utworzNaroznikPlanszy(Color kolor) {
     StackPane rog = new StackPane();
     rog.setBorder(Border.stroke(Color.valueOf("#2e2e2e")));
@@ -189,6 +233,14 @@ public class WidokGry implements Widok {
     return rog;
   }
 
+  /**
+   * Metoda tworzaca i zwracajaca widget reprezentujacy obramowanie planszy
+   * razem z wyswietlonym indeksem pol.
+   *
+   * @param opis Indeks pol przy ktorych znajduje sie widget.
+   * @param kolor Kolor wypelnienia widgetu.
+   * @return Widget reprezentujacy obramowanie planszy z wyswietlonym indeksem pol.
+   */
   private StackPane utworzIndeksPlanszy(String opis, Color kolor) {
     StackPane indeks = new StackPane();
     indeks.setBorder(Border.stroke(Color.valueOf("#2e2e2e")));
@@ -202,6 +254,12 @@ public class WidokGry implements Widok {
     return indeks;
   }
 
+  /**
+   * Metoda odpowiedzialna za utworzenie listy wszystkich pol planszy,
+   * ktore potem trzeba wyswietlic.
+   *
+   * @return Lista wszystkich pol planszy.
+   */
   private Parent[][] stworzListePolPlanszy() {
     int iloscPol = this.model_.iloscPol();
     Parent[][] listaPol = new Parent[iloscPol][iloscPol];
@@ -218,6 +276,12 @@ public class WidokGry implements Widok {
     return listaPol;
   }
 
+  /**
+   * Metoda tworzaca widget reprezentujacy pole planszy.
+   *
+   * @param kolor Kolor pola planszy.
+   * @return Widget reprezentujacy pole planszy.
+   */
   private StackPane utworzPolePlanszy(Color kolor) {
     StackPane kafelek = new StackPane();
     kafelek.setBackground(Background.fill(kolor));
@@ -225,6 +289,11 @@ public class WidokGry implements Widok {
     return kafelek;
   }
 
+  /**
+   * Metoda ta wyswietla podane pola z perspektywy uzytkownika grajacego bialymi pionkami.
+   *
+   * @param listaPol Lista wszystkich pol na planszy.
+   */
   private void wyswietlWidokBialy(Parent[][] listaPol) {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
@@ -234,6 +303,11 @@ public class WidokGry implements Widok {
     }
   }
 
+  /**
+   * Metoda ta wyswietla podane pola z perspektywy uzytkownika grajacego czarnymi pionkami.
+   *
+   * @param listaPol Lista wszystkich pol na planszy.
+   */
   private void wyswietlWidokCzarny(Parent[][] listaPol) {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {

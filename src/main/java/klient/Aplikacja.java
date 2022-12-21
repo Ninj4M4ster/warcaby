@@ -4,10 +4,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import klient.kontroller.KontrolerAplikacji;
+
+/**
+ * Glowna klasa, odpowiedzialna za utworzenie GUI oraz zmiane widoku.
+ */
 public class Aplikacja extends javafx.application.Application {
+  /** Glowny kontroler aplikacji */
   KontrolerAplikacji kontroler_;
+  /** Scena widoczna aktualnie w GUI */
   static Scene scena_;
 
+  /**
+   * Metoda uruchamiajaca GUI.
+   *
+   * @param stage Glowny kontener GUI.
+   * @throws Exception Blad w czasie dzialania aplikacji.
+   */
   @Override
   public void start(Stage stage) throws Exception {
     kontroler_ = new KontrolerAplikacji();
@@ -24,10 +36,20 @@ public class Aplikacja extends javafx.application.Application {
     stage.show();
   }
 
+  /**
+   * Metoda uruchamiana bezpośrednio po uruchomieniu aplikacji.
+   *
+   * @param args Argumenty z linii komend.
+   */
   public static void main(String[] args) {
     launch();
   }
 
+  /**
+   * Metoda mająca na celu zmiane widoku przez zmianę korzenia widoku.
+   *
+   * @param nowyKorzen Nowy korzeń widoku.
+   */
   public static void ustawNowyKorzen(Parent nowyKorzen) {
     scena_.setRoot(nowyKorzen);
   }

@@ -11,20 +11,42 @@ import klient.model.ModelGraczyOnline;
 import klient.widoki.eventy.OknoKlikniete;
 import klient.widoki.widgety.KafelekGraczaOnline;
 
+/**
+ * Klasa kontrolera widoku menu glownego (graczy online).
+ */
 public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
+  /** Model widoku graczy online */
   private ModelGraczyOnline model_;
+
+  /** Glowny kontroler aplikacji */
   private KontrolerAplikacji kontrolerGlowny_;
 
+  /**
+   * Metoda odpowiedzialna za przechowanie modelu widoku.
+   *
+   * @param model Model widoku graczy online.
+   */
   @Override
   public void przekazModel(Model model) {
     this.model_ = (ModelGraczyOnline) model;
   }
 
+  /**
+   * Metoda odpowiedzialna za przechowanie glownego kontrolera aplikacji.
+   *
+   * @param kontrolerGlowny Glowny kontroler aplikacji.
+   */
   @Override
   public void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny) {
     this.kontrolerGlowny_ = kontrolerGlowny;
   }
 
+  /**
+   * Metoda odpowiedzialna za zapisane wprowadzonej nazwy uzytkownika i wyslanie jej do serwera.
+   *
+   * @param nazwa Wprowadzona nazwa uzytkownika.
+   * @param oknoGlowne Widget, z ktorym gracz wchodzi w interakcje.
+   */
   public void zapiszNazweGracza(String nazwa, BorderPane oknoGlowne) {
     if(nazwa.isBlank())
       return;
@@ -36,6 +58,12 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
     this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
   }
 
+  /**
+   * Metoda odpowiedzialna za uruchomienie podanego wydarzenia na kazdym elemencie widgetu,
+   * ktory byl celem tego wydarzenia.
+   *
+   * @param event Wydarzenie wywolane kliknieciem jakiegos elementu widoku.
+   */
   public void uruchomWydarzenieNaKazdymDziecku(Event event) {
     if(event.getTarget() instanceof Parent && event.getTarget() == event.getSource()) {
       for (Node node :
@@ -45,6 +73,12 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
     }
   }
 
+  /**
+   * Metoda odpowiedzialna za przypisanie funkcji przyciskowi zaproszenia gracza do gry,
+   * gdy do serwera dolaczy nowy gracz i powstanie nowy kafelek reprezentujacy go.
+   *
+   * @param change Nowy kafelek reprezentujacy dostepnego gracza.
+   */
   public void przypiszFunkcjeKafelkowi(Change<? extends Node> change) {
     while(change.next()) {
       if(change.wasAdded()) {

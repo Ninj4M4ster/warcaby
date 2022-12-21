@@ -22,11 +22,31 @@ import klient.kontroller.KontrolerWidoku;
 import klient.model.Model;
 import klient.model.ModelPokoju;
 
+/**
+ * Klasa reprezentujaca widok pokoju, w ktorym mozna
+ * komunikowac sie z drugim graczem oraz wybrac zasady gry.
+ */
 public class WidokPokoju implements Widok {
+  /** Kontroler widoku */
   private KontrolerPokoju kontroler_;
+
+  /** Model widoku */
   private ModelPokoju model_;
+
+  /** Kontener wszystkich elementow widoku */
   private StackPane okno_;
+
+  /** Kontener chatu, informacji o graczach w pokoju oraz opcji rozgrywki */
   private BorderPane kontenerWidoku_;
+
+  /**
+   * Metoda odpowiedzialna za utworzenie wszystkich elementow
+   * widoku i zwrocenie konteneru zawierajacego te elementy.
+   *
+   * @param kontroler Kontroler widoku.
+   * @param model Model widoku.
+   * @return Kontener zawierajacy wszystkie elementy widoku.
+   */
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
     if(this.model_ != null || this.kontroler_ != null)
@@ -44,7 +64,7 @@ public class WidokPokoju implements Widok {
       }
     });
 
-    // kontener elementy dotyczace bezposrednio pokoju
+    // kontener elementow dotyczacych bezposrednio pokoju
     kontenerWidoku_ = new BorderPane();
 
     // utworz widgety i dodaj je do widoku
@@ -56,6 +76,9 @@ public class WidokPokoju implements Widok {
     return this.okno_;
   }
 
+  /**
+   * Metoda odpowiedzialna za utworzenie chatu.
+   */
   private void utworzChat() {
     // kontener na chat
     BorderPane kontenerChatu = new BorderPane();
@@ -107,6 +130,10 @@ public class WidokPokoju implements Widok {
     kontenerWidoku_.setCenter(kontenerChatu);
   }
 
+  /**
+   * Metoda odpowiedzialna za utworzenie informacji o graczach
+   * znajdujacych sie w tym pokoju oraz opcji rozgrywki.
+   */
   private void utworzInformacjeOpcje() {
     // kontener opcji gry oraz informacji o graczach w lobby
     GridPane kontenerInformacji = new GridPane();

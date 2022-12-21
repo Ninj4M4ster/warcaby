@@ -18,12 +18,29 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import klient.widoki.eventy.OknoKlikniete;
 
+/**
+ * Klasa reprezentujaca widget majacy na celu przechowywac dane o graczu,
+ * ktory jest polaczony z serwerem oraz dajacy mozliwosc zaproszenia go do pokoju.
+ */
 public class KafelekGraczaOnline extends VBox {
+
+  /** Nazwa dostepnego gracza */
   private final String nazwaGracza_;
+
+  /** Kontener na przycisk do zaproszenia gracza */
   private final HBox pasekOpcje_;
+
+  /** Przycisk zapraszajacy gracza do pokoju */
   private final Button przyciskZapros_;
+
+  /**
+   * Konstruktor, tworzy wszystkie widoczne elementy.
+   *
+   * @param nazwaGracza Nazwa dostepnego gracza.
+   */
   public KafelekGraczaOnline(String nazwaGracza) {
     super();
+    // ustaw wyglad calego kontenera
     this.nazwaGracza_ = nazwaGracza;
     this.setPadding(new Insets(5,0,5,0));
     this.setAlignment(Pos.CENTER);
@@ -35,6 +52,7 @@ public class KafelekGraczaOnline extends VBox {
                 null)
         )
     );
+    // dodaj cien do kontenera
     DropShadow cien = new DropShadow();
     cien.setRadius(10.0);
     cien.setOffsetX(1.0);
@@ -42,6 +60,7 @@ public class KafelekGraczaOnline extends VBox {
     cien.setColor(Color.valueOf("#303030"));
     this.setEffect(cien);
 
+    // kontener na nazwe gracza
     HBox pasekNazwaGracza = new HBox();
     pasekNazwaGracza.setAlignment(Pos.CENTER);
 
@@ -50,6 +69,7 @@ public class KafelekGraczaOnline extends VBox {
 
     pasekNazwaGracza.getChildren().add(plakietkaNazwaGracza);
 
+    // kontener na przycisk sluzacy do zaproszenia gracza do pokoju
     pasekOpcje_ = new HBox();
     pasekOpcje_.setAlignment(Pos.CENTER);
     pasekOpcje_.setManaged(false);
@@ -65,25 +85,46 @@ public class KafelekGraczaOnline extends VBox {
     pasekOpcje_.getChildren().add(przyciskZapros_);
 
     this.getChildren().addAll(pasekNazwaGracza, pasekOpcje_);
+
+    // przypisz wydarzenia
     this.setOnMouseClicked((event) -> pokazOpcje());
     this.addEventHandler(OknoKlikniete.OKNO_KLIKNIETE, this::ukryjOpcje);
   }
 
+  /**
+   * Zwroc nazwe dostepnego gracza
+   *
+   * @return Nazwa dostepnego gracza.
+   */
   public String nazwaGracza() {
     return nazwaGracza_;
   }
 
+  /**
+   * Zwroc przycisk sluzacy do zaproszenia gracza od pokoju.
+   *
+   * @return Przycisk sluzacy do zaproszenia gracza do pokoju.
+   */
   public Button przyciskZapros() {
     return przyciskZapros_;
   }
 
+  /**
+   * Metoda ta ujawnia przycisk sluzacy do zaproszenia gracza do pokoju.
+   */
   private void pokazOpcje() {
    pasekOpcje_.setVisible(true);
    pasekOpcje_.setManaged(true);
   }
 
+  /**
+   * Metoda ta chowa przycisk sluzacy do zaproszenia gracza do pokoju.
+   *
+   * @param event Wydarzenie wywolane kliknieciem elementu widoku.
+   */
   private void ukryjOpcje(Event event) {
     OknoKlikniete oknoKlikniete = (OknoKlikniete) event;
+    // sprawdz, czy ten kafelek nie byl zrodlem wydarzenia
     if(oknoKlikniete.zrodlo() != null && oknoKlikniete.zrodlo().equals(this)) {
       return;
     } else {
@@ -101,6 +142,14 @@ public class KafelekGraczaOnline extends VBox {
     pasekOpcje_.setManaged(false);
   }
 
+  /**
+   * Metoda pomocnicza, rekursywnie sprawdza czy
+   * wszytkie elementy tego widgetu nie sa zrodlem wydarzenia.
+   *
+   * @param node Sprawdzany widget.
+   * @param zrodlo Zrodlo wydarzenia.
+   * @return Czy ktorys z elementow tego kontenera byl zrodlem wydarzenia?
+   */
   private boolean czyDziecko(Node node, Node zrodlo) {
     if(node.equals(zrodlo))
       return true;
