@@ -48,7 +48,6 @@ public class SerwerThread extends Thread {
                 Komenda kom = pw.getKomenda(gracz);
                 boolean czy_wykonane = kom.Wykonaj(pw.getReszta(), pokoj);
                 out.println(czy_wykonane);
-
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
