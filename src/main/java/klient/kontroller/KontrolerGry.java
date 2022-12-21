@@ -24,8 +24,6 @@ public class KontrolerGry implements KontrolerWidoku {
   /** Czy jakis pionek jest aktualnie przesuwany? */
   private boolean pionekPrzesuwany_;
 
-  private boolean przyciskMyszkiTrzymany_;
-
   /**
    * Metoda odpowiedzialna za przechowanie modelu widoku gry.
    * @param model Model widoku gry.

@@ -2,6 +2,7 @@ package klient;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import klient.kontroller.KontrolerAplikacji;
 
@@ -12,7 +13,7 @@ public class Aplikacja extends javafx.application.Application {
   /** Glowny kontroler aplikacji */
   KontrolerAplikacji kontroler_;
   /** Scena widoczna aktualnie w GUI */
-  static Scene scena_;
+  static Scene scena_ = new Scene(new StackPane());
 
   /**
    * Metoda uruchamiajaca GUI.
