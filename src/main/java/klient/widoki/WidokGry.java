@@ -3,6 +3,7 @@ package klient.widoki;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.ColumnConstraints;
@@ -14,9 +15,12 @@ import klient.kontroller.KontrolerGry;
 import klient.kontroller.KontrolerWidoku;
 import klient.model.Model;
 import klient.model.ModelGry;
+import klient.widoki.widgety.Pionek;
 
 /**
  * Klasa reprezentujaca widok rozgrywki w warcaby.
+ * TODO(Jakub Drzewiecki): Kolory poszczegolnych elementow widoku moglyby
+ *  znajdywac sie w jakiejs globalnej konfiguracji badz modelu.
  */
 public class WidokGry implements Widok {
   /** Model widoku */
@@ -69,6 +73,8 @@ public class WidokGry implements Widok {
     planszaGry_.maxHeightProperty().bind(this.okno_.heightProperty().multiply(0.98));
     planszaGry_.maxWidthProperty().bind(planszaGry_.maxHeightProperty());
     planszaGry_.setAlignment(Pos.CENTER);
+    planszaGry_.addEventFilter(MouseEvent.DRAG_DETECTED ,
+        mouseEvent -> planszaGry_.startFullDrag());
 
     int iloscPol = this.model_.iloscPol();
 
@@ -90,6 +96,7 @@ public class WidokGry implements Widok {
     // dodanie do planszy gry kafelkow w odpowiednich kolorach
     Parent[][] listaPol = this.stworzListePolPlanszy();
     this.model_.ustawPolaPlanszy(listaPol);
+    this.utworzStartowePionki(listaPol);
     if(this.model_.kolorPionkow().equals("bialy"))
       this.wyswietlWidokBialy(listaPol);
     else
@@ -263,13 +270,14 @@ public class WidokGry implements Widok {
   private Parent[][] stworzListePolPlanszy() {
     int iloscPol = this.model_.iloscPol();
     Parent[][] listaPol = new Parent[iloscPol][iloscPol];
+    // i - kolumny, j - rzedy
     for(int i=0; i < iloscPol; i+=2) {
       for(int j=0; j < iloscPol; j += 2) {
         listaPol[i][j] = this.utworzPolePlanszy(Color.BEIGE);
-        listaPol[i][j+1] = this.utworzPolePlanszy(Color.BLACK);
+        listaPol[i][j+1] = this.utworzPolePlanszy(Color.valueOf("#212121"));
       }
       for(int j=0; j < iloscPol; j += 2) {
-        listaPol[i+1][j] = this.utworzPolePlanszy(Color.BLACK);
+        listaPol[i+1][j] = this.utworzPolePlanszy(Color.valueOf("#212121"));
         listaPol[i+1][j+1] = this.utworzPolePlanszy(Color.BEIGE);
       }
     }
@@ -286,7 +294,59 @@ public class WidokGry implements Widok {
     StackPane kafelek = new StackPane();
     kafelek.setBackground(Background.fill(kolor));
     kafelek.setAlignment(Pos.CENTER);
+    kafelek.setOnMouseEntered(mouseDragEvent -> kontroler_.puszczonoMyszkeNadPolem(kafelek));
     return kafelek;
+  }
+
+  /**
+   * Metoda odpowiedzialna za utworzenie pionkow i ustawienie ich na odpowiednich polach planszy.
+   *
+   * @param listaPol Wszystkie pola na planszy.
+   */
+  private void utworzStartowePionki(Parent[][] listaPol) {
+    int iloscPol = this.model_.iloscPol();
+    for(int rzad=0; rzad < iloscPol/2 - 1; rzad++) {
+      for(int kolumna=0; kolumna < iloscPol; kolumna++) {
+        if(rzad%2 == 0 && kolumna%2 == 1 || rzad%2 == 1 && kolumna%2 == 0) {
+          this.dodajPionekNaPlansze(kolumna,
+              rzad,
+              listaPol,
+              Color.valueOf("#363636"),
+              Color.valueOf("#424242"));
+        }
+      }
+    }
+    for(int rzad=iloscPol - 1; rzad > iloscPol/2; rzad--) {
+      for(int kolumna=0; kolumna < iloscPol; kolumna++) {
+        if(rzad%2 == 0 && kolumna%2 == 1 || rzad%2 == 1 && kolumna%2 == 0) {
+          this.dodajPionekNaPlansze(kolumna,
+              rzad,
+              listaPol,
+              Color.valueOf("#dbdbdb"),
+              Color.valueOf("#a3a3a3"));
+        }
+      }
+    }
+  }
+
+  /**
+   * Metoda odpowiedzialna za utworzenie i dodanie pionka do planszy na podanych indeksach.
+   *
+   * @param kolumna Kolumna, w ktorej ma byc dodany pionek.
+   * @param rzad Rzad, w ktorym ma byc dodany pionek.
+   * @param listaPol Wszystkie pola planszy.
+   * @param kolor Kolor, jaki ma miec pionek.
+   * @param kolorObramowki Kolor obramowania pionka.
+   */
+  private void dodajPionekNaPlansze(int kolumna,
+      int rzad,
+      Parent[][] listaPol,
+      Color kolor,
+      Color kolorObramowki) {
+    StackPane pole = (StackPane) listaPol[kolumna][rzad];
+    Pionek pionek = new Pionek(kolor, kolorObramowki, pole.widthProperty(), this.kontroler_);
+
+    pole.getChildren().add(pionek);
   }
 
   /**

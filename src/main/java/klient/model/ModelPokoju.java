@@ -14,17 +14,17 @@ import javafx.scene.layout.VBox;
  */
 public class ModelPokoju implements Model {
   /** Kontener przechowujacy wszystkie wyslane wczesniej wiadomosci */
-  private VBox historiaChatu_ = new VBox();
+  private final VBox historiaChatu_ = new VBox();
 
   /** Zmienna reprezentujaca kontener przechowujacy liste dostepnych zasad gry */
-  private ObjectProperty<ObservableList<String>> dostepneTryby_ =
+  private final ObjectProperty<ObservableList<String>> dostepneTryby_ =
       new SimpleObjectProperty<>();
 
   /** Zmienna przechowujaca domyslne zasady gry */
   private String domyslnyTryb_;
 
   /** Element, w ktorym uzytkownik wpisuje wiadomosc, ktora potem moze wyslac */
-  private StringProperty tekstWiadomosci_ = new SimpleStringProperty();
+  private final StringProperty tekstWiadomosci_ = new SimpleStringProperty();
 
   /**
    * Konstruktor.
