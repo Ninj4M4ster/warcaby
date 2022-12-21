@@ -11,8 +11,7 @@ public class Pokoj {
 
     private int[][] plansza;
     private ZasadyGry zasady_gry;
-    private KontrolerStanuGry kontroler_stanu_gry;
-    KontrolerStanuGry.StanGry stan_gry;
+    public KontrolerStanuGry kontroler_stanu_gry;
 
     public Pokoj(Gracz mistrz, ZasadyGry zasady_gry) {
         this.mistrz = mistrz;
@@ -20,7 +19,6 @@ public class Pokoj {
         this.zasady_gry = zasady_gry;
         Serwer.addPokoj(this);
         kontroler_stanu_gry = new KontrolerStanuGry();
-        stan_gry = KontrolerStanuGry.StanGry.NIEROZPOCZETA;
     }
 
     public Pokoj(Gracz mistrz, Gracz gosc, ZasadyGry zasady_gry) {
@@ -33,7 +31,6 @@ public class Pokoj {
         id = licznik;
         licznik += 1;
         kontroler_stanu_gry = new KontrolerStanuGry();
-        stan_gry = KontrolerStanuGry.StanGry.NIEROZPOCZETA;
     }
 
     public Pokoj(Gracz mistrz) {
@@ -43,7 +40,6 @@ public class Pokoj {
         id = licznik;
         licznik += 1;
         kontroler_stanu_gry = new KontrolerStanuGry();
-        stan_gry = KontrolerStanuGry.StanGry.NIEROZPOCZETA;
     }
 
     public Gracz getMistrz() {

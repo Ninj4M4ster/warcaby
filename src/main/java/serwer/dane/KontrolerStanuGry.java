@@ -3,7 +3,7 @@ package serwer.dane;
 import java.util.EnumMap;
 
 public class KontrolerStanuGry {
-    StanGry stan;
+    private StanGry stan;
 
     public enum StanGry{
         RUCH_BIALYCH,
@@ -15,5 +15,26 @@ public class KontrolerStanuGry {
 
     public KontrolerStanuGry() {
         stan = StanGry.NIEROZPOCZETA;
+    }
+
+    public StanGry getStan() {
+        return stan;
+    }
+
+    public void START() {
+        stan = StanGry.RUCH_BIALYCH;
+    }
+
+    public void RUCH() {
+        if(stan == StanGry.RUCH_BIALYCH) {
+            stan = StanGry.RUCH_CZARNYCH;
+        }
+        else if(stan == StanGry.RUCH_CZARNYCH) {
+            stan = StanGry.RUCH_BIALYCH;
+        }
+    }
+
+    public void ZAKONCZ() {
+        stan = StanGry.SKONCZONA;
     }
 }

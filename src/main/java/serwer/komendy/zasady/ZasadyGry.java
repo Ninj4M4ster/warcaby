@@ -4,14 +4,7 @@ import serwer.dane.KontrolerStanuGry;
 
 public abstract class ZasadyGry {
     private int[][] plansza;
-
-    public void setPlansza(int[][] plansza) {
-        this.plansza = plansza;
-    }
-
-    public int[][] getPlansza() {
-        return plansza;
-    }
+    KontrolerStanuGry.StanGry stan_gry;
 
     public boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
@@ -19,6 +12,10 @@ public abstract class ZasadyGry {
             return false;
         }
         if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+            return false;
+        }
+        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || (kolor == 1 && stan_gry == stan_gry.RUCH_CZARNYCH) ||
+        (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
             return false;
         }
         if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
@@ -40,16 +37,19 @@ public abstract class ZasadyGry {
         if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
             return false;
         }
-        if(kolor == 0 ||
-                //(kolor == 1 && (pokoj.stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH || pokoj.stan_gry == KontrolerStanuGry.StanGry.SKONCZONA)) ||
-                //(kolor == 2 && (pokoj.stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH || pokoj.stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || pokoj.stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA)) ||
-                plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 ||
-                Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+        if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+            return false;
+        }
+        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || (kolor == 1 && stan_gry == stan_gry.RUCH_CZARNYCH) ||
+                (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
             return false;
         }
         int licznik = 0;
         for(int i = 0; i < przesuniecie_x; i += 1) {
             if(plansza[x + (i * przesuniecie_x/Math.abs(przesuniecie_x))][y + (i * przesuniecie_y/Math.abs(przesuniecie_y))] != 0) {
+                licznik += 1;
+            }
+            if(licznik > 1) {
                 return false;
             }
         }
@@ -59,4 +59,12 @@ public abstract class ZasadyGry {
     abstract public boolean bicie(int x, int y);
 
     abstract public boolean promocja();
+
+    public void setPlansza(int[][] plansza) {
+        this.plansza = plansza;
+    }
+
+    public void setStan_gry(KontrolerStanuGry.StanGry stan_gry) {
+        this.stan_gry = stan_gry;
+    }
 }

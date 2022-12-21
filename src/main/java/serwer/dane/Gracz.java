@@ -7,6 +7,7 @@ public class Gracz {
     private int id_gracza;
     private Pokoj pokoj;
     private SerwerThread st;
+    private int kolor;
 
     public Gracz(int id_gracza, SerwerThread st) {
         this.id_gracza = id_gracza;
@@ -37,5 +38,9 @@ public class Gracz {
 
     public SerwerThread getSt() {
         return st;
+    }
+
+    public int getKolor() {
+        return kolor;
     }
 }

@@ -57,6 +57,7 @@ public class WybierzTrybGry implements Komenda{
             }
             pokoj.setPlansza(plansza);
             pokoj.getGosc().getSt().Wyslij(pokoj.planszaToString());
+            pokoj.kontroler_stanu_gry.START();
             return "true " + pokoj.planszaToString();
         }
         return "false";

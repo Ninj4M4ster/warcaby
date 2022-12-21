@@ -13,7 +13,7 @@ public class TworcaKomendy {
                 //return new PodajDostepneRuchy();
                 return null;
             case "RP":
-                return new RuchPionka();
+                return new RuchPionka(gracz);
             case "Zapros":
                 return new ZaprosDoPokoju(gracz);
             case "Odpowiedz":
