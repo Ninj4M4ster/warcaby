@@ -14,18 +14,22 @@ public class SerwerThread extends Thread {
     private Socket socket;
     private Pokoj pokoj = null;
     private Gracz gracz;
+    BufferedReader in = null;
+    PrintWriter out = null;
 
 
     public SerwerThread(Socket socket, int gracze_id) {
         this.socket = socket;
-        gracz = new Gracz(gracze_id);
+        gracz = new Gracz(gracze_id, this);
         Serwer.addGracz(gracz);
+    }
+
+    public void Wyslij(String wiadomosc) {
+        out.println(wiadomosc);
     }
 
     @Override
     public void run() {
-        BufferedReader in = null;
-        PrintWriter out = null;
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
 
         String wiadomosc;

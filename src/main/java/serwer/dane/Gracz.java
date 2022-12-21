@@ -1,12 +1,21 @@
 package serwer.dane;
 
+import serwer.SerwerThread;
+
 public class Gracz {
     private String nick;
     private int id_gracza;
     private Pokoj pokoj;
+    private SerwerThread st;
+
+    public Gracz(int id_gracza, SerwerThread st) {
+        this.id_gracza = id_gracza;
+        this.st = st;
+    }
 
     public Gracz(int id_gracza) {
         this.id_gracza = id_gracza;
+        st = null;
     }
 
     public void setPokoj(Pokoj pokoj) {
@@ -24,5 +33,9 @@ public class Gracz {
 
     public void setNick(String nick) {
         this.nick = nick;
+    }
+
+    public SerwerThread getSt() {
+        return st;
     }
 }

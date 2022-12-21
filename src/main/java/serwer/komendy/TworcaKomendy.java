@@ -15,7 +15,7 @@ public class TworcaKomendy {
             case "RP":
                 return new RuchPionka();
             case "Dolacz":
-                return new ZaprosDoPokoju(gracz, komenda);
+                return new ZaprosDoPokoju(gracz);
             case "Imie":
                 return new NadajImie(gracz);
             default:
