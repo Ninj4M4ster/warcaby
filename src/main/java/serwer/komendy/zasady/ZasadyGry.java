@@ -8,14 +8,10 @@ public abstract class ZasadyGry {
 
     public boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
-        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
-            return false;
-        }
         if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
-        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || (kolor == 1 && stan_gry == stan_gry.RUCH_CZARNYCH) ||
-        (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
+        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || stan_gry == KontrolerStanuGry.StanGry.PRZERWANA || (kolor == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
             return false;
         }
         if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
@@ -34,14 +30,13 @@ public abstract class ZasadyGry {
 
     public boolean ruchKrolowa(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
-        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
-            return false;
-        }
         if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
-        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || (kolor == 1 && stan_gry == stan_gry.RUCH_CZARNYCH) ||
-                (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
+        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || stan_gry == KontrolerStanuGry.StanGry.PRZERWANA || (kolor == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
+            return false;
+        }
+        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
             return false;
         }
         int licznik = 0;

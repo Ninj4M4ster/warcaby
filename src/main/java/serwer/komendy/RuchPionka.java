@@ -1,6 +1,7 @@
 package serwer.komendy;
 
 import serwer.dane.Gracz;
+import serwer.dane.KontrolerStanuGry;
 import serwer.dane.Pokoj;
 
 public class RuchPionka implements Komenda{
@@ -32,6 +33,23 @@ public class RuchPionka implements Komenda{
             plansza[x + przesuniecie_x][y + przesuniecie_y] = pionek;
             pokoj.setPlansza(plansza);
 
+            if(pokoj.kontroler_stanu_gry.getStan() == KontrolerStanuGry.StanGry.RUCH_BIALYCH) {
+                if(pokoj.getMistrz().getKolor() == 1) {
+                    pokoj.getGosc().getSt().Wyslij("plansza " + pokoj.planszaToString());
+                }
+                else if(pokoj.getMistrz().getKolor() == 2) {
+                    pokoj.getMistrz().getSt().Wyslij("plansza " + pokoj.planszaToString());
+                }
+            }
+            else if(pokoj.kontroler_stanu_gry.getStan() == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) {
+                if(pokoj.getMistrz().getKolor() == 2) {
+                    pokoj.getGosc().getSt().Wyslij("plansza " + pokoj.planszaToString());
+                }
+                else if(pokoj.getMistrz().getKolor() == 1) {
+                    pokoj.getMistrz().getSt().Wyslij("plansza " + pokoj.planszaToString());
+                }
+            }
+            pokoj.kontroler_stanu_gry.RUCH();
             return "true " + pokoj.planszaToString();
         }
         return "false";
