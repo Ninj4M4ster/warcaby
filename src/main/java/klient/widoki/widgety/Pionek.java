@@ -44,7 +44,7 @@ public class Pionek extends StackPane {
         mouseEvent -> kontroler.zacznijPrzesuwacPionek(mouseEvent, this));
     kolo.setOnMouseDragged(
         mouseEvent -> kontroler.przesunPionek(mouseEvent, this));
-    kolo.setOnMouseReleased(mouseEvent -> kontroler.skonczPrzesuwacPionek(kolo));
+    kolo.setOnMouseReleased(mouseEvent -> kontroler.skonczPrzesuwacPionek());
     this.getChildren().add(kolo);
   }
 

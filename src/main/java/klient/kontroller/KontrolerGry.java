@@ -84,10 +84,8 @@ public class KontrolerGry implements KontrolerWidoku {
 
   /**
    * Metoda odpowiedzialna za zakonczenie przesuwania pionka po planszy.
-   *
-   * @param pionek Przesuwany pionek.
    */
-  public void skonczPrzesuwacPionek(Circle pionek) {
+  public void skonczPrzesuwacPionek() {
     if(this.pionekPrzesuwany_) {
       kontenerAktualniePrzesuwanegoPionka_.setTranslateX(0);
       kontenerAktualniePrzesuwanegoPionka_.setTranslateY(0);
@@ -98,6 +96,7 @@ public class KontrolerGry implements KontrolerWidoku {
    * Metoda odpowiedzialna za przesuniecie pionka po jego puszczeniu.
    *
    * @param pole Pole nad ktorym znajdowala sie myszka po puszczeniu pionka.
+   * @param wynikWydarzenia Wynik wydarzenia.
    */
   public void puszczonoMyszkeNadPolem(PolePlanszy pole, PickResult wynikWydarzenia) {
     if(this.pionekPrzesuwany_
