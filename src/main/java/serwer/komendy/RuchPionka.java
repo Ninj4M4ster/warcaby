@@ -7,7 +7,7 @@ public class RuchPionka implements Komenda{
     int[][] plansza;
 
     @Override
-    public boolean Wykonaj(String reszta, Pokoj pokoj) {
+    public String Wykonaj(String reszta, Pokoj pokoj) {
         plansza = pokoj.getPlansza();
 
         try {
@@ -16,7 +16,7 @@ public class RuchPionka implements Komenda{
             przesuniecie_x = Integer.parseInt(reszta.split(" ")[2]);
             przesuniecie_y = Integer.parseInt(reszta.split(" ")[3]);
         } catch(NumberFormatException nfe) {
-            return false;
+            return "false";
         }
         pokoj.getZasady_gry().setPlansza(plansza);
         if(pokoj.getZasady_gry().ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || pokoj.getZasady_gry().ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
@@ -24,9 +24,8 @@ public class RuchPionka implements Komenda{
             plansza[x][y] = 0;
             plansza[x + przesuniecie_x][y + przesuniecie_y] = pionek;
             pokoj.getZasady_gry().setPlansza(plansza);
-            return true;
+            return "true " + pokoj.planszaToString();
         }
-
-        return false;
+        return "false";
     }
 }

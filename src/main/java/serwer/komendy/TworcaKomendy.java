@@ -14,8 +14,10 @@ public class TworcaKomendy {
                 return null;
             case "RP":
                 return new RuchPionka();
-            case "Dolacz":
+            case "Zapros":
                 return new ZaprosDoPokoju(gracz);
+            case "Odpowiedz":
+                return new AkceptujZaproszenie(gracz);
             case "Imie":
                 return new NadajImie(gracz);
             default:

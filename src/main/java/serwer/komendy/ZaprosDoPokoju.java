@@ -9,14 +9,18 @@ public class ZaprosDoPokoju implements Komenda {
     String reszta;
 
     public ZaprosDoPokoju(Gracz gracz) {
+        this.gracz = gracz;
     }
     @Override
-    public boolean Wykonaj(String reszta, Pokoj pokoj) {
+    public String Wykonaj(String reszta, Pokoj pokoj) {
         for(Gracz gracz_temp : Serwer.getGracze()) {
             if(reszta.equals(gracz_temp.getNick())) {
-                gracz_temp.getSt().Wyslij("Zaproszenie " + gracz);
+                gracz_temp.getSt().Wyslij("Zaproszenie " + gracz.getNick());
+                Pokoj pokoj_temp = new Pokoj(gracz);
+                gracz.setPokoj(pokoj_temp);
+                return "true";
             }
         }
-        return false;
+        return "false";
     }
 }

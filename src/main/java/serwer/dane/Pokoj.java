@@ -58,7 +58,7 @@ public class Pokoj {
         gosc.setPokoj(this);
     }
 
-    public void setZasady_gry(ZasadyGry zasady_gry) {
+    public void setZasadyGry(ZasadyGry zasady_gry) {
         this.zasady_gry = zasady_gry;
     }
 
@@ -80,5 +80,17 @@ public class Pokoj {
 
     public void setMistrz(Gracz mistrz) {
         this.mistrz = mistrz;
+    }
+
+    public String planszaToString() {
+        String plansza_temp = "";
+
+        for(int y = 0; y <= plansza.length; y += 1) {
+            for(int x = 0; x <= plansza.length; x += 1) {
+                plansza_temp.concat(String.valueOf(plansza[x][y]));
+            }
+        }
+
+        return plansza_temp;
     }
 }

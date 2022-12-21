@@ -36,9 +36,9 @@ public class WybierzTrybGry implements Komenda{
     }
 
     @Override
-    public boolean Wykonaj(String reszta, Pokoj pokoj) {
+    public String Wykonaj(String reszta, Pokoj pokoj) {
         if(pokoj != null) {
-            pokoj.setZasady_gry(wybierz(reszta));
+            pokoj.setZasadyGry(wybierz(reszta));
 
             plansza = new int[plansza_rozmiar][plansza_rozmiar];
 
@@ -56,9 +56,10 @@ public class WybierzTrybGry implements Komenda{
                 }
             }
             pokoj.setPlansza(plansza);
-            return true;
+            pokoj.getGosc().getSt().Wyslij(pokoj.planszaToString());
+            return "true " + pokoj.planszaToString();
         }
-        return false;
+        return "false";
     }
 
     public int[][] getPlansza() {

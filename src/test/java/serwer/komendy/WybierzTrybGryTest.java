@@ -6,7 +6,7 @@ import serwer.dane.Pokoj;
 public class WybierzTrybGryTest {
     public static void main(String args[]) {
         WybierzTrybGry wbg = new WybierzTrybGry();
-        boolean prawda = wbg.Wykonaj("0", new Pokoj(new Gracz(1)));
+        String prawda = wbg.Wykonaj("0", new Pokoj(new Gracz(1)));
 
         int[][] plansza;
         plansza = wbg.getPlansza();
