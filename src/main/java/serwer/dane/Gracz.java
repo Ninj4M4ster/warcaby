@@ -1,6 +1,7 @@
 package serwer.dane;
 
 public class Gracz {
+    private String nick;
     private int id_gracza;
     private Pokoj pokoj;
 
@@ -14,5 +15,14 @@ public class Gracz {
 
     public Pokoj getPokoj() {
         return pokoj;
+    }
+
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 }

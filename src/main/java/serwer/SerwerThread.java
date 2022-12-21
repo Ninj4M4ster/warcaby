@@ -19,12 +19,11 @@ public class SerwerThread extends Thread {
     public SerwerThread(Socket socket, int gracze_id) {
         this.socket = socket;
         gracz = new Gracz(gracze_id);
+        Serwer.addGracz(gracz);
     }
 
     @Override
     public void run() {
-
-
         BufferedReader in = null;
         PrintWriter out = null;
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
@@ -44,6 +43,7 @@ public class SerwerThread extends Thread {
                 pw.setWiadomosc(wiadomosc);
                 Komenda kom = pw.getKomenda(gracz);
                 boolean czy_wykonane = kom.Wykonaj(pw.getReszta(), pokoj);
+                out.println(czy_wykonane);
 
             } catch (IOException e) {
                 e.printStackTrace();

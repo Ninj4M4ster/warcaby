@@ -4,8 +4,14 @@ import serwer.Serwer;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 
-public class WejdzDoPokoju implements Komenda {
+public class ZaprosDoPokoju implements Komenda {
     Gracz gracz;
+    String reszta;
+
+    public ZaprosDoPokoju(Gracz gracz, String rezta) {
+        this.gracz = gracz;
+        this.reszta = reszta;
+    }
     @Override
     public boolean Wykonaj(String reszta, Pokoj pokoj) {
         if(pokoj == null && reszta.equals("nowy")) {
@@ -35,9 +41,5 @@ public class WejdzDoPokoju implements Komenda {
             }
         }
         return false;
-    }
-
-    public void setGracz(Gracz gracz) {
-        this.gracz = gracz;
     }
 }

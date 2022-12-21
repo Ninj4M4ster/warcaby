@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Serwer {
-  private List<Gracz> gracze = new ArrayList<Gracz>();
+  private static List<Gracz> gracze = new ArrayList<Gracz>();
   private static List<Pokoj> pokoje = new ArrayList<Pokoj>();
   private Socket socket;
 
@@ -30,6 +30,7 @@ public class Serwer {
         Socket socket = ss.accept();
 
         SerwerThread st = new SerwerThread(socket, gracze_id);
+        gracze_id += 1;
         st.start();
       } catch(Exception e) {
         e.printStackTrace();
@@ -44,5 +45,13 @@ public class Serwer {
 
   public static void addPokoj(Pokoj pokoj) {
     pokoje.add(pokoj);
+  }
+
+  public static List<Gracz> getGracze() {
+    return gracze;
+  }
+
+  public static void addGracz(Gracz gracz) {
+    gracze.add(gracz);
   }
 }

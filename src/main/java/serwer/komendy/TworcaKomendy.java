@@ -15,9 +15,9 @@ public class TworcaKomendy {
             case "RP":
                 return new RuchPionka();
             case "Dolacz":
-                WejdzDoPokoju wdp = new WejdzDoPokoju();
-                wdp.setGracz(gracz);
-                return wdp;
+                return new ZaprosDoPokoju(gracz, komenda);
+            case "Imie":
+                return new NadajImie(gracz);
             default:
                 return null;
         }
