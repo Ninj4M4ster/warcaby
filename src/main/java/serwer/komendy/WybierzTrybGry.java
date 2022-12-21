@@ -56,9 +56,14 @@ public class WybierzTrybGry implements Komenda{
                 }
             }
             pokoj.setPlansza(plansza);
-            pokoj.getGosc().getSt().Wyslij(pokoj.planszaToString());
+
+            pokoj.getMistrz().setKolor((int) (Math.random() * (2 - 1) + 1));
+            pokoj.getGosc().setKolor(3 - pokoj.getMistrz().getKolor());
+
+            pokoj.getGosc().getSt().Wyslij("plansza " + pokoj.getGosc().getKolor() + pokoj.planszaToString());
             pokoj.kontroler_stanu_gry.START();
-            return "true " + pokoj.planszaToString();
+
+            return "true " + pokoj.getMistrz().getKolor() + pokoj.planszaToString();
         }
         return "false";
     }

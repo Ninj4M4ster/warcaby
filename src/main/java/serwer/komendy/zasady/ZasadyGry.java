@@ -1,13 +1,18 @@
 package serwer.komendy.zasady;
 
+import serwer.dane.Gracz;
 import serwer.dane.KontrolerStanuGry;
 
 public abstract class ZasadyGry {
     private int[][] plansza;
     KontrolerStanuGry.StanGry stan_gry;
+    Gracz gracz;
 
     public boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
+        if(gracz.getKolor() != kolor) {
+            return false;
+        }
         if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
@@ -30,6 +35,9 @@ public abstract class ZasadyGry {
 
     public boolean ruchKrolowa(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
+        if(gracz.getKolor() != kolor) {
+            return false;
+        }
         if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
@@ -61,5 +69,9 @@ public abstract class ZasadyGry {
 
     public void setStan_gry(KontrolerStanuGry.StanGry stan_gry) {
         this.stan_gry = stan_gry;
+    }
+
+    public void setGracz(Gracz gracz) {
+        this.gracz = gracz;
     }
 }

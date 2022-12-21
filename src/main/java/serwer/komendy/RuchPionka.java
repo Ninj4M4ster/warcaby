@@ -25,8 +25,10 @@ public class RuchPionka implements Komenda{
         } catch(NumberFormatException nfe) {
             return "false";
         }
+
         pokoj.getZasady_gry().setPlansza(plansza);
         pokoj.getZasady_gry().setStan_gry(pokoj.kontroler_stanu_gry.getStan());
+
         if(pokoj.getZasady_gry().ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || pokoj.getZasady_gry().ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
             int pionek = plansza[x][y];
             plansza[x][y] = 0;
