@@ -16,8 +16,7 @@ public class ZaprosDoPokoju implements Komenda {
         for(Gracz gracz_temp : Serwer.getGracze()) {
             if(reszta.equals(gracz_temp.getNick())) {
                 gracz_temp.getSt().Wyslij("Zaproszenie " + gracz.getNick());
-                Pokoj pokoj_temp = new Pokoj(gracz);
-                gracz.setPokoj(pokoj_temp);
+                new Pokoj(gracz);
                 return "true";
             }
         }

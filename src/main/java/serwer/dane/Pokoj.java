@@ -18,6 +18,7 @@ public class Pokoj {
         gosc = null;
         this.zasady_gry = zasady_gry;
         Serwer.addPokoj(this);
+        mistrz.setPokoj(this);
         kontroler_stanu_gry = new KontrolerStanuGry();
     }
 
