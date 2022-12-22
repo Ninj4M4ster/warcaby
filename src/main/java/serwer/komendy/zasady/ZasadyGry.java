@@ -67,7 +67,7 @@ public abstract class ZasadyGry {
         this.plansza = plansza;
     }
 
-    public void setStan_gry(KontrolerStanuGry.StanGry stan_gry) {
+    public void setStanGry(KontrolerStanuGry.StanGry stan_gry) {
         this.stan_gry = stan_gry;
     }
 

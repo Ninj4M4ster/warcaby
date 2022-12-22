@@ -70,7 +70,7 @@ public class Pokoj {
         this.zasady_gry = zasady_gry;
     }
 
-    public ZasadyGry getZasady_gry() {
+    public ZasadyGry getZasadyGry() {
         return zasady_gry;
     }
 
@@ -91,14 +91,13 @@ public class Pokoj {
     }
 
     public String planszaToString() {
-        String plansza_temp = "";
+        StringBuilder plansza_temp = new StringBuilder();
 
         for(int y = 0; y < plansza.length; y += 1) {
             for(int x = 0; x < plansza.length; x += 1) {
-                plansza_temp.concat(String.valueOf(plansza[x][y]));
+                plansza_temp.append(String.valueOf(plansza[x][y]));
             }
         }
-
-        return plansza_temp;
+        return plansza_temp.toString();
     }
 }

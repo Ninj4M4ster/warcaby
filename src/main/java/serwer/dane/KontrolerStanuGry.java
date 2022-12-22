@@ -22,7 +22,9 @@ public class KontrolerStanuGry {
     }
 
     public void START() {
-        stan = StanGry.RUCH_BIALYCH;
+        if(stan == StanGry.NIEROZPOCZETA) {
+            stan = StanGry.RUCH_BIALYCH;
+        }
     }
 
     public void RUCH() {
@@ -36,5 +38,9 @@ public class KontrolerStanuGry {
 
     public void ZAKONCZ() {
         stan = StanGry.SKONCZONA;
+    }
+
+    public void PRZERWIJ() {
+        stan = StanGry.PRZERWANA;
     }
 }

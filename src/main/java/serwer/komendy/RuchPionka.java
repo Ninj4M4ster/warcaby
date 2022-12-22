@@ -26,10 +26,11 @@ public class RuchPionka implements Komenda{
             return "false";
         }
 
-        pokoj.getZasady_gry().setPlansza(plansza);
-        pokoj.getZasady_gry().setStan_gry(pokoj.kontroler_stanu_gry.getStan());
+        pokoj.getZasadyGry().setPlansza(plansza);
+        pokoj.getZasadyGry().setStanGry(pokoj.kontroler_stanu_gry.getStan());
+        pokoj.getZasadyGry().setGracz(gracz);
 
-        if(pokoj.getZasady_gry().ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || pokoj.getZasady_gry().ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
+        if(pokoj.getZasadyGry().ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || pokoj.getZasadyGry().ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
             int pionek = plansza[x][y];
             plansza[x][y] = 0;
             plansza[x + przesuniecie_x][y + przesuniecie_y] = pionek;

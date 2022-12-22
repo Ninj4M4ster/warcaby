@@ -19,7 +19,7 @@ public class WybierzTrybGry implements Komenda{
      */
     private int[][] plansza;
 
-    private ZasadyGry wybierz(String rodzaj) {
+    public ZasadyGry wybierz(String rodzaj) {
         switch (rodzaj) {
             case "0":
                 plansza_rozmiar = 8;
@@ -40,21 +40,8 @@ public class WybierzTrybGry implements Komenda{
         if(pokoj != null) {
             pokoj.setZasadyGry(wybierz(reszta));
 
-            plansza = new int[plansza_rozmiar][plansza_rozmiar];
+            plansza = tworzPlansze();
 
-            for (int x = 0; x < plansza_rozmiar; x += 1) {
-                for (int y = 0; y < plansza_rozmiar; y += 1) {
-                    if (y != ((plansza_rozmiar / 2) - 1) && y != (plansza_rozmiar / 2) && (x + y) % 2 == 0) {
-                        if (y < (plansza_rozmiar / 2)) {
-                            plansza[x][y] = 1;
-                        } else {
-                            plansza[x][y] = 2;
-                        }
-                    } else {
-                        plansza[x][y] = 0;
-                    }
-                }
-            }
             pokoj.setPlansza(plansza);
 
             pokoj.getMistrz().setKolor((int) (Math.random() * (2 - 1) + 1));
@@ -66,6 +53,25 @@ public class WybierzTrybGry implements Komenda{
             return "true " + String.valueOf(pokoj.getMistrz().getKolor()) + pokoj.planszaToString();
         }
         return "false";
+    }
+
+    public int[][] tworzPlansze() {
+        int[][] plansza_temp = new int[plansza_rozmiar][plansza_rozmiar];
+
+        for (int x = 0; x < plansza_rozmiar; x += 1) {
+            for (int y = 0; y < plansza_rozmiar; y += 1) {
+                if (y != ((plansza_rozmiar / 2) - 1) && y != (plansza_rozmiar / 2) && (x + y) % 2 == 0) {
+                    if (y < (plansza_rozmiar / 2)) {
+                        plansza_temp[x][y] = 1;
+                    } else {
+                        plansza_temp[x][y] = 2;
+                    }
+                } else {
+                    plansza_temp[x][y] = 0;
+                }
+            }
+        }
+        return plansza_temp;
     }
 
     public int[][] getPlansza() {
