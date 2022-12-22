@@ -26,6 +26,11 @@
       <artifactId>javafx-controls</artifactId>
       <version>18</version>
     </dependency>
+    <dependency>
+      <groupId>de.saxsys</groupId>
+      <artifactId>jfx-testrunner</artifactId>
+      <version>1.2</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -36,6 +41,14 @@
         <version>0.0.8</version>
         <configuration>
           <mainClass>klient.Aplikacja</mainClass>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
     </plugins>
