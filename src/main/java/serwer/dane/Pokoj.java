@@ -34,6 +34,17 @@ public class Pokoj {
         kontroler_stanu_gry = new KontrolerStanuGry();
     }
 
+    public Pokoj(Gracz mistrz, Gracz gosc) {
+        this.mistrz = mistrz;
+        mistrz.setPokoj(this);
+        this.gosc = gosc;
+        gosc.setPokoj(this);
+        Serwer.addPokoj(this);
+        id = licznik;
+        licznik += 1;
+        kontroler_stanu_gry = new KontrolerStanuGry();
+    }
+
     public Pokoj(Gracz mistrz) {
         this.mistrz = mistrz;
         mistrz.setPokoj(this);
@@ -82,8 +93,8 @@ public class Pokoj {
     public String planszaToString() {
         String plansza_temp = "";
 
-        for(int y = 0; y <= plansza.length; y += 1) {
-            for(int x = 0; x <= plansza.length; x += 1) {
+        for(int y = 0; y < plansza.length; y += 1) {
+            for(int x = 0; x < plansza.length; x += 1) {
                 plansza_temp.concat(String.valueOf(plansza[x][y]));
             }
         }
