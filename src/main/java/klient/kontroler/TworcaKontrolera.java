@@ -1,4 +1,4 @@
-package klient.kontroller;
+package klient.kontroler;
 
 /**
  * Klasa odpowiedzialna za tworzenie kontrolera.

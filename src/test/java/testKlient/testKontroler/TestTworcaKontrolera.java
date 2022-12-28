@@ -1,11 +1,11 @@
 package testKlient.testKontroler;
 
-import klient.kontroller.KontrolerGry;
-import klient.kontroller.KontrolerPokoju;
-import klient.kontroller.KontrolerWidoku;
-import klient.kontroller.KontrolerWidokuGraczyOnline;
-import klient.kontroller.TworcaKontrolera;
-import klient.kontroller.TypyKontrolerow;
+import klient.kontroler.KontrolerGry;
+import klient.kontroler.KontrolerPokoju;
+import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.KontrolerWidokuGraczyOnline;
+import klient.kontroler.TworcaKontrolera;
+import klient.kontroler.TypyKontrolerow;
 import org.junit.Test;
 
 public class TestTworcaKontrolera {

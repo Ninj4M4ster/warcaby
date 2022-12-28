@@ -1,6 +1,7 @@
-package klient.kontroller;
+package klient.kontroler;
 
 import javafx.scene.control.Label;
+import klient.komunikacja.Mediator;
 import klient.model.Model;
 import klient.model.ModelPokoju;
 
@@ -13,6 +14,8 @@ public class KontrolerPokoju implements KontrolerWidoku {
 
   /** Glowny kontroler aplikacji */
   private KontrolerAplikacji kontrolerGlowny_;
+  /** Mediator pomiedzy aplikacja oraz polaczeniem z serwerem */
+  private Mediator mediator_;
 
   /**
    * Metoda odpowiedzialna za przechowanie modelu.
@@ -37,6 +40,16 @@ public class KontrolerPokoju implements KontrolerWidoku {
       throw new IllegalStateException("Nie mozna dwa razy przekaza kontrolera aplikacji "
           + "do kontrolera widoku.");
     this.kontrolerGlowny_ = kontrolerGlowny;
+  }
+
+  /**
+   * Metoda odpowiedzialna za przekazanie instancji mediatora do aplikacji.
+   *
+   * @param mediator Mediator miedzy aplikacja oraz polaczeniem z serwerem.
+   */
+  @Override
+  public void przekazMediator(Mediator mediator) {
+    this.mediator_ = mediator;
   }
 
   /**

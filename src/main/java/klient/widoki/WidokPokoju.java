@@ -17,8 +17,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import klient.kontroller.KontrolerPokoju;
-import klient.kontroller.KontrolerWidoku;
+import klient.kontroler.KontrolerPokoju;
+import klient.kontroler.KontrolerWidoku;
 import klient.model.Model;
 import klient.model.ModelPokoju;
 

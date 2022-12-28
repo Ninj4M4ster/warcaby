@@ -1,4 +1,4 @@
-package klient.kontroller;
+package klient.kontroler;
 
 import java.util.List;
 import javafx.collections.ListChangeListener.Change;
@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import klient.komunikacja.Mediator;
 import klient.model.Model;
 import klient.model.ModelGraczyOnline;
 import klient.widoki.eventy.OknoKlikniete;
@@ -20,6 +21,8 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
 
   /** Glowny kontroler aplikacji */
   private KontrolerAplikacji kontrolerGlowny_;
+  /** Mediator pomiedzy aplikacja oraz polaczeniem z serwerem */
+  private Mediator mediator_;
 
   /**
    * Metoda odpowiedzialna za przechowanie modelu widoku.
@@ -39,6 +42,17 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   @Override
   public void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny) {
     this.kontrolerGlowny_ = kontrolerGlowny;
+  }
+
+
+  /**
+   * Metoda odpowiedzialna za przekazanie instancji mediatora do aplikacji.
+   *
+   * @param mediator Mediator miedzy aplikacja oraz polaczeniem z serwerem.
+   */
+  @Override
+  public void przekazMediator(Mediator mediator) {
+    this.mediator_ = mediator;
   }
 
   /**

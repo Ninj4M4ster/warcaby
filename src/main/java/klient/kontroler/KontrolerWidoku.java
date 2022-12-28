@@ -1,5 +1,6 @@
-package klient.kontroller;
+package klient.kontroler;
 
+import klient.komunikacja.Mediator;
 import klient.model.Model;
 
 /**
@@ -21,4 +22,11 @@ public interface KontrolerWidoku {
    * TODO(Jakub Drzewiecki): Zmienic interfejs na klase abstrakcyjna i zaimplementowac ta metode.
    */
   void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny);
+
+  /**
+   * Metoda odpowiedzialna za przekazanie instancji mediatora do kontrolera.
+   *
+   * @param mediator Mediator miedzy aplikacja oraz polaczeniem z serwerem.
+   */
+  void przekazMediator(Mediator mediator);
 }

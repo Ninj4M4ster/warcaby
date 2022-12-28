@@ -4,7 +4,7 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import klient.kontroller.KontrolerGry;
+import klient.kontroler.KontrolerGry;
 
 /**
  * Klasa reprezentujaca kontener z pionkiem na planszy.

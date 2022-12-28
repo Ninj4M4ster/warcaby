@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
  */
 public class GlownyModel {
   // TODO(Jakub Drzewiecki): Trzeba zmienić ta zmienna na BooleanProperty i bindować ją w widoku do odpowiedniego widgetu
+  // TODO(Jakub Drzewiecki): zmienna czyPolaczono miec swoj wlasny widget dostepny z poziomu wszystkich widokow
   /** Zmienna przechowujaca informacje czy uzytkownik jest polaczony z serwerem */
   private boolean czyPolaczono_;
 

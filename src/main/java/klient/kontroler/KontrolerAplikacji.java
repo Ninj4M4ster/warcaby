@@ -1,4 +1,4 @@
-package klient.kontroller;
+package klient.kontroler;
 
 import javafx.scene.Parent;
 import klient.Aplikacja;
@@ -15,7 +15,7 @@ import klient.widoki.Widok;
  * oraz tworzenie nowych widokow.
  */
 public class KontrolerAplikacji {
-  /** Zmienna przechowujaca obiekt odpowiedzialny za polaczenie z serwerem */
+  /** Zmienna przechowujaca mediator pomiedzy aplikacja oraz polaczeniem z serwerem. */
   private Mediator mediator_;
 
   /** Glowny model aplikacji */
@@ -32,6 +32,13 @@ public class KontrolerAplikacji {
   }
 
   /**
+   * Metoda ta przesyla sygnal do mediatora w celu przerwania watku polaczenia z serwerem.
+   */
+  public void zakonczPolaczenie() {
+    this.mediator_.zakonczPolaczenie();
+  }
+
+  /**
    * Metoda ta tworzy widok glownego menu (graczy online)
    * oraz zwraca kontener przechowujacy wszystkie jego elementy.
    *
@@ -43,11 +50,11 @@ public class KontrolerAplikacji {
     assert kontroler != null;
     kontroler.przekazModel(model_.modelGraczyOnline());
     kontroler.przekazGlownyKontroler(this);
+    kontroler.przekazMediator(this.mediator_);
+    this.mediator_.ustawAktualnyKontroler(kontroler);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_GRACZY_ONLINE);
     assert widok != null;
-    // TODO(Jakub Drzewiecki): zmienna czyPolaczono musi byc elementem modelu i
-    //  miec swoj wlasny widok dostepny z poziomu wszystkich widokow
     return widok.utworzWidok(kontroler, model_.modelGraczyOnline());
   }
 

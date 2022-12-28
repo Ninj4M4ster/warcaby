@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import klient.komunikacja.wiadomosci.Wiadomosc;
 
 /**
  * Klasa odpowiedzialna za polaczenie z serwerem oraz
@@ -42,7 +43,7 @@ public class Polaczenie extends Thread {
     while(true) {
       try {
         String wiadomosc = this.in_.readLine();
-        System.out.println(wiadomosc);
+        this.mediator_.przekazWiadomoscDoAplikacji(wiadomosc);
       } catch (IOException e) {
         this.mediator_.ustawCzyPolaczono(false);
         throw new RuntimeException(e);
@@ -55,7 +56,7 @@ public class Polaczenie extends Thread {
    *
    * @param wiadomosc Wiadomosc przekazywana do serwera.
    */
-  public void przekazWiadomosc(String wiadomosc) {
+  public void wyslijWiadomosc(Wiadomosc wiadomosc) {
     this.out_.println(wiadomosc);
   }
 }

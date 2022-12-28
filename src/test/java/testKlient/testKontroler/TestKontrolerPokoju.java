@@ -1,7 +1,7 @@
 package testKlient.testKontroler;
 
-import klient.kontroller.KontrolerAplikacji;
-import klient.kontroller.KontrolerPokoju;
+import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.KontrolerPokoju;
 import klient.model.ModelPokoju;
 import org.junit.Test;
 

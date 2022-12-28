@@ -1,8 +1,9 @@
-package klient.kontroller;
+package klient.kontroler;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.scene.shape.Circle;
+import klient.komunikacja.Mediator;
 import klient.model.Model;
 import klient.model.ModelGry;
 import klient.widoki.widgety.Pionek;
@@ -16,7 +17,9 @@ public class KontrolerGry implements KontrolerWidoku {
   private ModelGry model_;
 
   /** Glowny kontroler aplikacji */
-  private KontrolerAplikacji glownyKontroler_;
+  private KontrolerAplikacji kontrolerGlowny_;
+  /** Mediator pomiedzy aplikacja oraz polaczeniem z serwerem */
+  private Mediator mediator_;
 
   /** Kontener aktualnie przesuwanego pionka */
   private Pionek kontenerAktualniePrzesuwanegoPionka_;
@@ -42,10 +45,20 @@ public class KontrolerGry implements KontrolerWidoku {
    */
   @Override
   public void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny) {
-    if(this.glownyKontroler_ != null)
+    if(this.kontrolerGlowny_ != null)
       throw new IllegalStateException("Nie mozna dwa razy przekazac kontrolera "
           + "aplikacji do kontrolera widoku");
-    this.glownyKontroler_ = kontrolerGlowny;
+    this.kontrolerGlowny_ = kontrolerGlowny;
+  }
+
+  /**
+   * Metoda odpowiedzialna za przekazanie instancji mediatora do aplikacji.
+   *
+   * @param mediator Mediator miedzy aplikacja oraz polaczeniem z serwerem.
+   */
+  @Override
+  public void przekazMediator(Mediator mediator) {
+    this.mediator_ = mediator;
   }
 
   /**

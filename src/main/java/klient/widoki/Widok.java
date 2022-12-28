@@ -1,7 +1,7 @@
 package klient.widoki;
 
 import javafx.scene.Parent;
-import klient.kontroller.KontrolerWidoku;
+import klient.kontroler.KontrolerWidoku;
 import klient.model.Model;
 
 /**

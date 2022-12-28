@@ -4,7 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import klient.kontroller.KontrolerAplikacji;
+import klient.kontroler.KontrolerAplikacji;
 
 /**
  * Glowna klasa, odpowiedzialna za utworzenie GUI oraz zmiane widoku.
@@ -35,6 +35,15 @@ public class Aplikacja extends javafx.application.Application {
     stage.setWidth(1000);
     stage.setHeight(800);
     stage.show();
+  }
+
+  /**
+   * Nadpisana metoda uruchamiana przy zamykaniu aplikacji.
+   * Jej celem jest przerwanie dzialania watku polaczenia z serwerem.
+   */
+  @Override
+  public void stop() {
+    this.kontroler_.zakonczPolaczenie();
   }
 
   /**

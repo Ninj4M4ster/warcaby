@@ -3,7 +3,7 @@ package testKlient.testKontroler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import javafx.application.Platform;
-import klient.kontroller.KontrolerAplikacji;
+import klient.kontroler.KontrolerAplikacji;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
