@@ -1,9 +1,8 @@
 package klient.kontroller;
 
-import java.io.IOException;
 import javafx.scene.Parent;
 import klient.Aplikacja;
-import klient.Klient;
+import klient.komunikacja.Mediator;
 import klient.model.GlownyModel;
 import klient.widoki.TworcaWidoku;
 import klient.widoki.TypyWidokow;
@@ -17,7 +16,7 @@ import klient.widoki.Widok;
  */
 public class KontrolerAplikacji {
   /** Zmienna przechowujaca obiekt odpowiedzialny za polaczenie z serwerem */
-  private Klient klient_;
+  private Mediator mediator_;
 
   /** Glowny model aplikacji */
   private final GlownyModel model_;
@@ -27,12 +26,8 @@ public class KontrolerAplikacji {
    */
   public KontrolerAplikacji() {
     boolean czyPolaczono;
-    try {
-      klient_ = new Klient();
-      czyPolaczono = true;
-    } catch (IOException e) {
-      czyPolaczono = false;
-    }
+    mediator_ = new Mediator(this);
+    czyPolaczono = mediator_.czyPolaczono();
     model_ = new GlownyModel(czyPolaczono);
   }
 
