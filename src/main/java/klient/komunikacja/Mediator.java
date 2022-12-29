@@ -118,6 +118,7 @@ public class Mediator {
    * Metoda konczaca prace watku polaczenia z serwerem.
    */
   public void zakonczPolaczenie() {
-    this.polaczenie_.interrupt();
+    if(this.czyPolaczono_)
+      this.polaczenie_.interrupt();
   }
 }
