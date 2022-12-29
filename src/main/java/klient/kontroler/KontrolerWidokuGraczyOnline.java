@@ -5,8 +5,9 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.BorderPane;
 import klient.komunikacja.Mediator;
+import klient.komunikacja.wiadomosci.TypyWiadomosci;
+import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.model.Model;
 import klient.model.ModelGraczyOnline;
 import klient.widoki.eventy.OknoKlikniete;
@@ -59,15 +60,23 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    * Metoda odpowiedzialna za zapisane wprowadzonej nazwy uzytkownika i wyslanie jej do serwera.
    *
    * @param nazwa Wprowadzona nazwa uzytkownika.
-   * @param oknoGlowne Widget, z ktorym gracz wchodzi w interakcje.
    */
-  public void zapiszNazweGracza(String nazwa, BorderPane oknoGlowne) {
+  public void zapiszNazweGracza(String nazwa) {
     if(nazwa.isBlank())
       return;
-    // TODO(Jakub Drzewiecki): dodać animację przejścia do widoku listy graczy online
-    oknoGlowne.setPrefHeight(600);
+    Wiadomosc wiadomosc = new Wiadomosc(nazwa, TypyWiadomosci.IMIE);
+    mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+
     this.model_.ustawNazweGracza(nazwa);
-    this.kontrolerGlowny_.przekazNazweDoSerwera(nazwa);
+  }
+
+  /**
+   * Metoda odpowiedzialna za ukazanie listy graczy online po otrzymaniu odpowiedzi od serwera,
+   * ze nazwa zostala przyjeta.
+   * TODO(Jakub Drzewiecki): Potrzebna jest metoda wywolywana gdy nazwa zostanie odrzucona, w ktorej wyswietlane bedzie odpowiednie powiadomienie.
+   */
+  public void przejdzDoListyGraczy() {
+    // TODO(Jakub Drzewiecki): dodać animację przejścia do widoku listy graczy online
     this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyGraczy());
     this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
   }

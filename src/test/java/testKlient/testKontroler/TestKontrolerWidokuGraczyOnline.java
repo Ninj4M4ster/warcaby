@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import klient.kontroler.KontrolerAplikacji;
 import klient.kontroler.KontrolerWidokuGraczyOnline;
 import klient.model.ModelGraczyOnline;
@@ -34,8 +33,8 @@ public class TestKontrolerWidokuGraczyOnline {
   public void testZapiszNazweGracza() {
     KontrolerWidokuGraczyOnline kontroler = this.utworzGotowyKontroler();
 
-    kontroler.zapiszNazweGracza("", new BorderPane());
-    kontroler.zapiszNazweGracza("abc", new BorderPane());
+    kontroler.zapiszNazweGracza("");
+    kontroler.zapiszNazweGracza("abc");
   }
 
   @Test

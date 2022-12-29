@@ -78,17 +78,6 @@ public class KontrolerAplikacji {
   }
 
   /**
-   * Metoda odpowiedzialna za przekazanie wprowadzonej nazwy uzytkownika do serwera.
-   *
-   * @param nazwaGracza Wprowadzona nazwa uzytkownika.
-   */
-  public void przekazNazweDoSerwera(String nazwaGracza) {
-    System.out.println(nazwaGracza);
-    // TODO(Jakub Drzewiecki): należy utworzyć klasę służącą do przekazywania danych do klienta
-    //  i wysłać jej nazwę
-  }
-
-  /**
    * Metoda odpowiedzialna za zaktualizowanie listy dostepnych graczy.
    *
    * @param nazwaGracza Nazwa gracza.

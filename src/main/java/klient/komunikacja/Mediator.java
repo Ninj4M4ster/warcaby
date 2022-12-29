@@ -1,9 +1,11 @@
 package klient.komunikacja;
 
 import java.io.IOException;
+import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.kontroler.KontrolerAplikacji;
 import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.KontrolerWidokuGraczyOnline;
 
 /**
  * Klasa mediatora. Posredniczy w komunikacji pomiedzy serwerem oraz aplikacja.
@@ -18,8 +20,9 @@ public class Mediator {
   private Polaczenie polaczenie_;
   /** Status polaczenia z serwerem */
   private boolean czyPolaczono_;
-  /** Zmienna przedstawiajaca wyslana wiadomosc, na ktorej odpowiedz aplikacja aktualnie oczekuje */
-  private Wiadomosc aktualnaWiadomosc_;
+  /** Zmienna przedstawiajaca typ ostatniej wyslanej wiadomosci,
+   * na ktorej odpowiedz aplikacja aktualnie oczekuje */
+  private TypyWiadomosci typOstatniejWiadomosci_;
   /** Czy aplikacja oczekuje aktualnie na odpowiedz z serwera? */
   private boolean oczekiwanieNaOdpowiedz_ = false;
 
@@ -72,8 +75,9 @@ public class Mediator {
    * @param wiadomosc Wiadomosc wyslana przez aplikacje.
    */
   public void wyslijWiadomoscDoSerwera(Wiadomosc wiadomosc) {
-    if(!oczekiwanieNaOdpowiedz_) {
+    if(!oczekiwanieNaOdpowiedz_ && this.czyPolaczono_) {
       this.polaczenie_.wyslijWiadomosc(wiadomosc);
+      this.typOstatniejWiadomosci_ = wiadomosc.typWiadomosci();
       this.oczekiwanieNaOdpowiedz_ = true;
     }
     // TODO(Jakub Drzewiecki): Tutaj mozna byloby dodac kolejkowanie wiadomosci jesli aplikacja czeka na odpowiedz oraz aplikacja jest polaczona z serwerem
@@ -81,12 +85,33 @@ public class Mediator {
 
   /**
    * Metoda przekazujaca informacje od serwera do aplikacji.
-   * Na podstawie poprzednio wyslanej wiadomosci dostosowuje ona swoje zachowanie
-   * @param napis
+   * Na podstawie poprzednio wyslanej wiadomosci dostosowuje ona swoje zachowanie.
+   *
+   * @param wiadomosc Wiadomosc zwrotna otrzymana od serwera.
    */
-  public void przekazWiadomoscDoAplikacji(String napis) {
+  public void przekazWiadomoscDoAplikacji(String wiadomosc) {
     // TODO(Jakub Drzewiecki): Utworzyc rozne rodzaje wiadomosci oraz dostosowac zachowanie na podstawie klasy poprzednio wyslanej wiadomosci
+    if(czyOdpowiedz(wiadomosc)) {
+      // TODO(Jakub Drzewiecki): Potrzebna jest klasa do interpretowania wiadomosci od serwera
+      return;
+    }
+    if(typOstatniejWiadomosci_ == TypyWiadomosci.IMIE) {
+      // TODO(Jakub Drzewiecki): Potrzebna jest metoda wywolywana gdy nazwa zostanie odrzucona, w ktorej wyswietlane bedzie odpowiednie powiadomienie.
+      ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_).przejdzDoListyGraczy();
+    }
     this.oczekiwanieNaOdpowiedz_ = false;
+  }
+
+  /**
+   * Metoda sprawdzajaca czy podana wiadomosc jest odpowiedzia na poprzednio
+   * wyslana informacje do serwera, czy niezalezna, nowa wiadomoscia.
+   * @param wiadomosc Wiadomosc otrzymana od serwera.
+   *
+   * @return Czy podana wiadomosc jest odpowiedzia na poprzednio wyslane informacje?
+   * TODO(Jakub Drzewiecki): Sprawdzic jakie komendy, ktore nie sa odpowiedziami, wysyla serwer.
+   */
+  private boolean czyOdpowiedz(String wiadomosc) {
+    return false;
   }
 
   /**

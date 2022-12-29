@@ -136,6 +136,12 @@ public class WidokGraczyOnline implements Widok {
             )
         )
     );
+    // zmien rozmiar okna jesli nastapi zmiana na kontener listy graczy
+    oknoGlowne_.centerProperty().addListener((observableValue, node, t1) -> {
+      if(t1.equals(model_.kontenerListyGraczy())) {
+        oknoGlowne_.setPrefHeight(600);
+      }
+    });
 
     okno_.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
   }
@@ -174,8 +180,7 @@ public class WidokGraczyOnline implements Widok {
 
     // zatwierdzenie nazwy gracza i przejscie do widoku graczy online
     przyciskZatwierdzeniaNazwy.setOnMouseClicked((event) ->
-        kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText(),
-            oknoGlowne_));
+        kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText()));
     // TODO(Jakub Drzewiecki): Trzeba dodac mozliwosc wprowadzenia nazwy enterem
 
     kontenerWprowadzaniaNazwy.getChildren().addAll(
