@@ -3,6 +3,8 @@ package klient.kontroler;
 import javafx.scene.Parent;
 import klient.Aplikacja;
 import klient.komunikacja.Mediator;
+import klient.komunikacja.wiadomosci.TypyWiadomosci;
+import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.model.GlownyModel;
 import klient.widoki.TworcaWidoku;
 import klient.widoki.TypyWidokow;
@@ -65,7 +67,9 @@ public class KontrolerAplikacji {
    * @param zaproszonyGracz Nazwa zaproszonego gracza.
    */
   public void utworzPokoj(String zaproszonyGracz) {
-    // TODO(Jakub Drzewiecki): wysłać do serwera nazwe zaproszonego gracza
+    Wiadomosc wiadomosc = new Wiadomosc(zaproszonyGracz, TypyWiadomosci.ZAPROSZENIE);
+    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
     assert kontroler != null;
@@ -98,6 +102,11 @@ public class KontrolerAplikacji {
   public void rozpocznijGre(String tryb) {
     // TODO(Jakub Drzewiecki): Należy wysłać wybrany tryb gry do serwera i
     //  na podstawie odpowiedzi najpierw ustawić rozmiar planszy w modelu a nastepnie utworzyć widok.
+    // TODO(Jakub Drzewiecki): Dodać enumerator dla zasad gry, ktory bedzie mial
+    //  metody dla nazwy do aplikacji oraz numeru do wyslania do serwera
+    Wiadomosc wiadomosc = new Wiadomosc("0", TypyWiadomosci.ROZPOCZECIE_GRY);
+    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+
     KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY);
     assert kontroler != null;
     kontroler.przekazModel(model_.modelGry());

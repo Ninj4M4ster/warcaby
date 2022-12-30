@@ -16,4 +16,28 @@ public enum TypyWiadomosci {
       return "Imie";
     }
   },
+  /** Typ wiadomosci wyslanej przy zaproszeniu innego gracza do pokoju */
+  ZAPROSZENIE {
+    /**
+     * Metoda zwraca napis reprezentujacy polecenie rozumiane przez serwer.
+     *
+     * @return Polecenie rozumiane przez serwer.
+     */
+    @Override
+    public String toString() {
+      return "Zapros";
+    }
+  },
+  /** Typ wiadomosci wyslanej po rozpoczeciu rozgrywki z wybranymi zasadami */
+  ROZPOCZECIE_GRY {
+    /**
+     * Metoda zwraca napis reprezentujacy polecenie rozumiane przez serwer.
+     *
+     * @return Polecenie rozumiane przez serwer.
+     */
+    @Override
+    public String toString() {
+      return "WTG";
+    }
+  }
 }
