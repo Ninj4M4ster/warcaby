@@ -31,12 +31,6 @@ public class TestKontrolerAplikacji {
     kontroler.utworzPokoj("");
   }
 
-  @Test
-  public void testPrzekazNazweDoSerwera() {
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontrolerAplikacji.przekazNazweDoSerwera("");
-  }
-
   @Test(expected = NullPointerException.class)
   public void testZaktualizujListeGraczyException() {
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();

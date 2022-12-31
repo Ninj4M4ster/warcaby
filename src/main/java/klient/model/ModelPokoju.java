@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
+import klient.ZasadyGry;
 
 /**
  * Klasa reprezentujaca model widoku pokoju.
@@ -31,9 +32,9 @@ public class ModelPokoju implements Model {
    */
   public ModelPokoju() {
     ObservableList<String> listaTrybow =
-        FXCollections.observableArrayList("Warcaby klasyczne (brazylijskie)",
-        "Warcaby polskie",
-        "Warcaby kanadyjskie");
+        FXCollections.observableArrayList(ZasadyGry.KLASYCZNE.toString(),
+            ZasadyGry.POLSKIE.toString(),
+            ZasadyGry.KANADYJSKIE.toString());
     this.dostepneTryby_.set(listaTrybow);
     this.domyslnyTryb_ = listaTrybow.get(0);
   }

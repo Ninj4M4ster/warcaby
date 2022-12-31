@@ -1,7 +1,13 @@
 package klient.kontroler;
 
+import static klient.ZasadyGry.KANADYJSKIE;
+import static klient.ZasadyGry.KLASYCZNE;
+import static klient.ZasadyGry.POLSKIE;
+
 import javafx.scene.control.Label;
 import klient.komunikacja.Mediator;
+import klient.komunikacja.wiadomosci.TypyWiadomosci;
+import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.model.Model;
 import klient.model.ModelPokoju;
 
@@ -68,10 +74,28 @@ public class KontrolerPokoju implements KontrolerWidoku {
 
   /**
    * Metoda odpowiedzialna za rozpoczecie gry z wybranym trybem.
+   * Wysyla ona wybrany tryb gry do serwera.
    *
    * @param tryb Wybrane zasady gry.
    */
-  public void rozpocznijGre(String tryb) {
-    this.kontrolerGlowny_.rozpocznijGre(tryb);
+  public void wyslijRozpocznijGre(String tryb) {
+    String numer_trybu = this.wybierzNumerTrybu(tryb);
+    Wiadomosc wiadomosc = new Wiadomosc(numer_trybu, TypyWiadomosci.ROZPOCZECIE_GRY);
+    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+  }
+
+  /**
+   * Metoda dobierajaca numer zasad na podstawie nazwy wybranej w aplikacji nazwy.
+   *
+   * @param tryb Wybrana w aplikacji nazwa trybu.
+   * @return Numer trybu.
+   */
+  private String wybierzNumerTrybu(String tryb) {
+    if(tryb.compareTo(KLASYCZNE.toString()) == 0)
+      return KLASYCZNE.numer();
+    else if(tryb.compareTo(POLSKIE.toString()) == 0)
+      return POLSKIE.numer();
+    else
+      return KANADYJSKIE.numer();
   }
 }

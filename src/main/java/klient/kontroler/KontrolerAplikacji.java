@@ -95,17 +95,13 @@ public class KontrolerAplikacji {
   }
 
   /**
-   * Metoda odpowiedzialna za utworzenie widoku gry oraz wyslanie do serwera wybranego trybu gry.
+   * Metoda odpowiedzialna za utworzenie widoku gry z podanym przez serwer rozmiarem planszy.
    *
-   * @param tryb Wybrane zasady gry.
+   * @param rozmiarPlanszy Rozmiar planszy odpowiadajacy wybranym zasadom.
    */
-  public void rozpocznijGre(String tryb) {
-    // TODO(Jakub Drzewiecki): Należy wysłać wybrany tryb gry do serwera i
-    //  na podstawie odpowiedzi najpierw ustawić rozmiar planszy w modelu a nastepnie utworzyć widok.
-    // TODO(Jakub Drzewiecki): Dodać enumerator dla zasad gry, ktory bedzie mial
-    //  metody dla nazwy do aplikacji oraz numeru do wyslania do serwera
-    Wiadomosc wiadomosc = new Wiadomosc("0", TypyWiadomosci.ROZPOCZECIE_GRY);
-    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+  public void rozpocznijGre(String rozmiarPlanszy) {
+    // TODO(Jakub Drzewiecki): Brakuje wyboru koloru pionkow przez serwer
+    this.model_.modelGry().ustawIloscPol(Integer.parseInt(rozmiarPlanszy));
 
     KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY);
     assert kontroler != null;

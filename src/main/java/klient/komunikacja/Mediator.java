@@ -98,6 +98,8 @@ public class Mediator {
     if(typOstatniejWiadomosci_ == TypyWiadomosci.IMIE) {
       // TODO(Jakub Drzewiecki): Potrzebna jest metoda wywolywana gdy nazwa zostanie odrzucona, w ktorej wyswietlane bedzie odpowiednie powiadomienie.
       ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_).przejdzDoListyGraczy();
+    } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
+      this.kontrolerAplikacji_.rozpocznijGre(wiadomosc);
     }
     this.oczekiwanieNaOdpowiedz_ = false;
   }

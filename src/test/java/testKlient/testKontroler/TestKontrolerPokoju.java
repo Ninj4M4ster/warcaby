@@ -1,5 +1,6 @@
 package testKlient.testKontroler;
 
+import klient.komunikacja.Mediator;
 import klient.kontroler.KontrolerAplikacji;
 import klient.kontroler.KontrolerPokoju;
 import klient.model.ModelPokoju;
@@ -44,16 +45,18 @@ public class TestKontrolerPokoju {
   @Test
   public void testRozpocznijGre() {
     KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontroler();
-    kontrolerPokoju.rozpocznijGre("");
+    kontrolerPokoju.wyslijRozpocznijGre("");
   }
 
   private KontrolerPokoju utworzGotowyKontroler() {
     KontrolerPokoju kontroler = new KontrolerPokoju();
     ModelPokoju model = new ModelPokoju();
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
+    Mediator mediator = new Mediator(kontrolerAplikacji);
 
     kontroler.przekazModel(model);
     kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    kontroler.przekazMediator(mediator);
     return kontroler;
   }
 
@@ -62,9 +65,11 @@ public class TestKontrolerPokoju {
     ModelPokoju model = new ModelPokoju();
     model.ustawTekstWiadomosci("abc");
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
+    Mediator mediator = new Mediator(kontrolerAplikacji);
 
     kontroler.przekazModel(model);
     kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    kontroler.przekazMediator(mediator);
     return kontroler;
   }
 }
