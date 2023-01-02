@@ -39,5 +39,17 @@ public enum TypyWiadomosci {
     public String toString() {
       return "WTG";
     }
+  },
+  /** Typ wiadomosci wyslanej po ruszeniu sie pionkiem */
+  RUCH_PIONKA {
+    /**
+     * Metoda zwraca napis reprezentujacy polecenie rozumiane przez serwer.
+     *
+     * @return Polecenie rozumiane przez serwer.
+     */
+    @Override
+    public String toString() {
+      return "RP";
+    }
   }
 }

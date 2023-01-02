@@ -30,6 +30,29 @@ public class Wiadomosc {
   }
 
   /**
+   * Konstruktor dla wiadomosci ruchu pionka.
+   *
+   * @param kolumnaStartowa Startowa kolumna pionka.
+   * @param rzadStartowy Startowy rzad pionka.
+   * @param kolumnaDocelowa Docelowa kolumna pionka.
+   * @param rzadDocelowy Docelowy rzad pionka.
+   * @param typ Typ wiadomosci.
+   */
+  public Wiadomosc(int kolumnaStartowa,
+      int rzadStartowy,
+      int kolumnaDocelowa,
+      int rzadDocelowy,
+      TypyWiadomosci typ) {
+    this.argumenty_ = new String[] {
+        String.valueOf(kolumnaStartowa),
+        String.valueOf(rzadStartowy),
+        String.valueOf(kolumnaDocelowa),
+        String.valueOf(rzadDocelowy)
+    };
+    this.typWiadomosci_ = typ;
+  }
+
+  /**
    * Metoda zwracajaca typ utworzonej wiadomosci.
    *
    * @return Typ wiadomosci.

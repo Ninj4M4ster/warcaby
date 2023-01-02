@@ -78,6 +78,15 @@ public class ModelGry implements Model {
   }
 
   /**
+   * Metoda zwracajaca dwuwymiarowa liste przedstawiajaca wszystkie pola na planszy.
+   *
+   * @return Pola planszy.
+   */
+  public Parent[][] polaPlanszy() {
+    return this.polaPlanszy_;
+  }
+
+  /**
    * Metoda ustawiajaca wartosc zmiennej przechowujacej liste wszystkich pol na planszy.
    *
    * @param listaPol Lista wszystkich pol na planszy.

@@ -1,9 +1,12 @@
 package klient.kontroler;
 
+import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.scene.shape.Circle;
 import klient.komunikacja.Mediator;
+import klient.komunikacja.wiadomosci.TypyWiadomosci;
+import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.model.Model;
 import klient.model.ModelGry;
 import klient.widoki.widgety.Pionek;
@@ -95,6 +98,7 @@ public class KontrolerGry implements KontrolerWidoku {
 
   /**
    * Metoda odpowiedzialna za zakonczenie przesuwania pionka po planszy.
+   * Ustawia przesuniecie pionka wzgledem aktualnego pola na zero.
    */
   public void skonczPrzesuwacPionek() {
     if(this.pionekPrzesuwany_) {
@@ -104,12 +108,14 @@ public class KontrolerGry implements KontrolerWidoku {
   }
 
   /**
-   * Metoda odpowiedzialna za przesuniecie pionka po jego puszczeniu.
+   * Metoda odpowiedzialna za wyslanie wiadomosci o przesuniecie pionka po
+   * puszczeniu go na wybrane pole.
    *
    * @param pole Pole nad ktorym znajdowala sie myszka po puszczeniu pionka.
    * @param wynikWydarzenia Wynik wydarzenia.
    */
   public void puszczonoMyszkeNadPolem(PolePlanszy pole, PickResult wynikWydarzenia) {
+    // sprawdz czy pionek przesuwany jest na inne pole niz to na ktorym stoi
     if(this.pionekPrzesuwany_
         && wynikWydarzenia.getIntersectedNode() instanceof Circle) {
       PolePlanszy startowePole =
@@ -120,9 +126,48 @@ public class KontrolerGry implements KontrolerWidoku {
       int docelowaKolumna = pole.kolumna();
       int docelowyRzad = pole.rzad();
 
+      Wiadomosc wiadomosc =
+          new Wiadomosc(kolumnaStartowa,
+              rzadStartowy,
+              docelowaKolumna,
+              docelowyRzad,
+              TypyWiadomosci.RUCH_PIONKA);
+      this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+
       startowePole.getChildren().remove(this.kontenerAktualniePrzesuwanegoPionka_);
       pole.getChildren().add(this.kontenerAktualniePrzesuwanegoPionka_);
     }
     this.pionekPrzesuwany_ = false;
+  }
+
+  /**
+   * Metoda odpowiedzialna za przesuniecie pionka.
+   *
+   * @param kolumnaStartowa Startowa kolumna pionka.
+   * @param rzadStartowy Startowy rzad pionka.
+   * @param kolumnaDocelowa Docelowa kolumna pionka.
+   * @param rzadDocelowy Docelowy rzad pionka.
+   */
+  public void przesunPionekNaPodanePole(
+      int kolumnaStartowa, int rzadStartowy, int kolumnaDocelowa, int rzadDocelowy) {
+    Parent[][] polaPlanszy = this.model_.polaPlanszy();
+    Pionek pionekDoPrzesuniecia =
+        (Pionek) polaPlanszy[kolumnaStartowa][rzadStartowy].getChildrenUnmodifiable().get(0);
+
+    // przesuniecie pionka
+    polaPlanszy[kolumnaStartowa][rzadStartowy]
+        .getChildrenUnmodifiable().remove(pionekDoPrzesuniecia);
+    polaPlanszy[kolumnaDocelowa][rzadDocelowy].getChildrenUnmodifiable().add(pionekDoPrzesuniecia);
+  }
+
+  /**
+   * Metoda odpowiedzialna za usuniecie pionka z podanego pola.
+   *
+   * @param kolumna Kolumna pionka.
+   * @param rzad Rzad pionka.
+   */
+  public void zbijPionek(int kolumna, int rzad) {
+    Parent[][] polaPlanszy = this.model_.polaPlanszy();
+    polaPlanszy[kolumna][rzad].getChildrenUnmodifiable().remove(0);
   }
 }

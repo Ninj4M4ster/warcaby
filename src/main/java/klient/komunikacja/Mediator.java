@@ -4,6 +4,7 @@ import java.io.IOException;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.KontrolerGry;
 import klient.kontroler.KontrolerWidoku;
 import klient.kontroler.KontrolerWidokuGraczyOnline;
 
@@ -13,7 +14,7 @@ import klient.kontroler.KontrolerWidokuGraczyOnline;
  */
 public class Mediator {
   /** Kontroler aplikacji */
-  private KontrolerAplikacji kontrolerAplikacji_;
+  private final KontrolerAplikacji kontrolerAplikacji_;
   /** Kontroler aktualnego widoku aplikacji */
   private KontrolerWidoku aktualnyKontroler_;
   /** Watek polaczenia z serwerem */
@@ -100,6 +101,8 @@ public class Mediator {
       ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_).przejdzDoListyGraczy();
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
       this.kontrolerAplikacji_.rozpocznijGre(wiadomosc);
+    } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
+      this.wyslijAktualizacjePlanszy(wiadomosc);
     }
     this.oczekiwanieNaOdpowiedz_ = false;
   }
@@ -114,6 +117,26 @@ public class Mediator {
    */
   private boolean czyOdpowiedz(String wiadomosc) {
     return false;
+  }
+
+  /**
+   * Metoda odpowiedzialna za przesuniecie pionka oraz ewentualne
+   * usuniecie pionka na podstawie informacji otrzymanych od serwera.
+   *
+   * @param wiadomosc Wiadomosc otrzymana od serwera.
+   */
+  private void wyslijAktualizacjePlanszy(String wiadomosc) {
+    String[] argumenty = wiadomosc.split(" ");
+    ((KontrolerGry)this.aktualnyKontroler_).przesunPionekNaPodanePole(
+        Integer.parseInt(argumenty[0]),
+        Integer.parseInt(argumenty[1]),
+        Integer.parseInt(argumenty[2]),
+        Integer.parseInt(argumenty[3])
+    );
+    if(argumenty.length == 6) {
+      ((KontrolerGry)this.aktualnyKontroler_).zbijPionek(
+          Integer.parseInt(argumenty[4]), Integer.parseInt(argumenty[5]));
+    }
   }
 
   /**
