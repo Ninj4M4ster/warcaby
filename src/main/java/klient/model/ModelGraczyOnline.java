@@ -1,6 +1,8 @@
 package klient.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,6 +17,7 @@ import klient.widoki.widgety.KafelekGraczaOnline;
  * Przechowuje informacje takie jak aktualnie aktywni gracze, czy nazwa uzytkownika.
  */
 public class ModelGraczyOnline implements Model {
+  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Wprowadzona nazwa gracza */
   private final StringProperty nazwaGracza_ = new SimpleStringProperty();
 
@@ -37,10 +40,22 @@ public class ModelGraczyOnline implements Model {
    * Konstruktor.
    *
    * @param nazwaGracza Nazwa podana przez uzytkownika.
+   * @param czyPolaczono Stan aktualnego polaczenia.
    */
-  public ModelGraczyOnline(StringProperty nazwaGracza) {
+  public ModelGraczyOnline(StringProperty nazwaGracza, BooleanProperty czyPolaczono) {
     nazwaGracza.bind(nazwaGracza_);
     nazwaGracza_.set(nazwaGracza.get());
+    this.ustawCzyPolaczono(czyPolaczono);
+  }
+
+  /**
+   * Metoda przypisujaca stan aktualnego polaczenia.
+   *
+   * @param czyPolaczono Stan aktualnego polaczenia.
+   */
+  @Override
+  public void ustawCzyPolaczono(BooleanProperty czyPolaczono) {
+    this.czyPolaczono_.bind(czyPolaczono);
   }
 
   /**

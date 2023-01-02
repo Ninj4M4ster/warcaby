@@ -3,22 +3,26 @@ package testKlient.testKontroler;
 import klient.komunikacja.Mediator;
 import klient.kontroler.KontrolerAplikacji;
 import klient.kontroler.KontrolerPokoju;
+import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.TypyKontrolerow;
+import klient.model.Model;
 import klient.model.ModelPokoju;
 import org.junit.Test;
 
-public class TestKontrolerPokoju {
+public class TestKontrolerPokoju extends TestKontroler {
 
   @Test
   public void testPrzekazModel() {
     KontrolerPokoju kontroler = new KontrolerPokoju();
-    ModelPokoju model = new ModelPokoju();
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, false);
     kontroler.przekazModel(model);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testPrzekazModelError() {
-    KontrolerPokoju kontroler = this.utworzGotowyKontroler();
-    ModelPokoju model = new ModelPokoju();
+    KontrolerWidoku kontroler =
+        this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, false);
     kontroler.przekazModel(model);
   }
 
@@ -31,38 +35,31 @@ public class TestKontrolerPokoju {
 
   @Test(expected = IllegalStateException.class)
   public void testPrzekazGlownyKontrolerError() {
-    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontroler();
+    KontrolerWidoku kontrolerPokoju =
+        this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
     kontrolerPokoju.przekazGlownyKontroler(kontrolerAplikacji);
   }
 
   @Test
   public void testPrzekazWiadomosc() {
-    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontrolerZWiadomoscia();
+    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontrolerZWiadomoscia(false);
     kontrolerPokoju.wyslijWiadomosc();
   }
 
   @Test
   public void testRozpocznijGre() {
-    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontroler();
+    KontrolerPokoju kontrolerPokoju =
+        (KontrolerPokoju)this.utworzGotowyKontroler(
+            TypyKontrolerow.KONTROLER_POKOJU,
+            false);
     kontrolerPokoju.wyslijRozpocznijGre("");
   }
 
-  private KontrolerPokoju utworzGotowyKontroler() {
+  private KontrolerPokoju utworzGotowyKontrolerZWiadomoscia(boolean statusPolaczenia) {
     KontrolerPokoju kontroler = new KontrolerPokoju();
-    ModelPokoju model = new ModelPokoju();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    Mediator mediator = new Mediator(kontrolerAplikacji);
-
-    kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-    kontroler.przekazMediator(mediator);
-    return kontroler;
-  }
-
-  private KontrolerPokoju utworzGotowyKontrolerZWiadomoscia() {
-    KontrolerPokoju kontroler = new KontrolerPokoju();
-    ModelPokoju model = new ModelPokoju();
+    ModelPokoju model =
+        (ModelPokoju)this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, statusPolaczenia);
     model.ustawTekstWiadomosci("abc");
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
     Mediator mediator = new Mediator(kontrolerAplikacji);

@@ -1,5 +1,7 @@
 package klient.model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 
@@ -7,6 +9,8 @@ import javafx.scene.layout.GridPane;
  * Klasa reprezentujaca model gry.
  */
 public class ModelGry implements Model {
+  /** Status aktualnego polaczenia */
+  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Zmienna przechowujaca ilosc pol w rzedzie i kolumnie planszy. */
   private int iloscPol_ = 8;
 
@@ -21,6 +25,20 @@ public class ModelGry implements Model {
 
   /** Zmienna przechowujaca znaki wyswietlane na obramowaniu planszy */
   private String[] znakiIndeksow_ = {"A", "B", "C", "D", "E", "F", "G", "H"};
+
+  public ModelGry(BooleanProperty czyPolaczono) {
+    this.ustawCzyPolaczono(czyPolaczono);
+  }
+
+  /**
+   * Metoda przypisujaca stan aktualnego polaczenia.
+   *
+   * @param czyPolaczono Stan aktualnego polaczenia.
+   */
+  @Override
+  public void ustawCzyPolaczono(BooleanProperty czyPolaczono) {
+    this.czyPolaczono_.bind(czyPolaczono);
+  }
 
   /**
    * Metoda zwracajaca ilosc pol w rzedzie i kolumnie planszy.

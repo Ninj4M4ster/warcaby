@@ -1,6 +1,8 @@
 package klient.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -14,6 +16,8 @@ import klient.ZasadyGry;
  * Klasa reprezentujaca model widoku pokoju.
  */
 public class ModelPokoju implements Model {
+  /** Status polaczenia z serwerem */
+  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Kontener przechowujacy wszystkie wyslane wczesniej wiadomosci */
   private final VBox historiaChatu_ = new VBox();
 
@@ -30,13 +34,24 @@ public class ModelPokoju implements Model {
   /**
    * Konstruktor.
    */
-  public ModelPokoju() {
+  public ModelPokoju(BooleanProperty czyPolaczono) {
     ObservableList<String> listaTrybow =
         FXCollections.observableArrayList(ZasadyGry.KLASYCZNE.toString(),
             ZasadyGry.POLSKIE.toString(),
             ZasadyGry.KANADYJSKIE.toString());
     this.dostepneTryby_.set(listaTrybow);
     this.domyslnyTryb_ = listaTrybow.get(0);
+    this.ustawCzyPolaczono(czyPolaczono);
+  }
+
+  /**
+   * Metoda przypisujaca stan aktualnego polaczenia.
+   *
+   * @param czyPolaczono Stan aktualnego polaczenia.
+   */
+  @Override
+  public void ustawCzyPolaczono(BooleanProperty czyPolaczono) {
+    this.czyPolaczono_.bind(czyPolaczono);
   }
 
   /**

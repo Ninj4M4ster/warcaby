@@ -1,5 +1,7 @@
 package klient.model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -12,7 +14,7 @@ public class GlownyModel {
   // TODO(Jakub Drzewiecki): Trzeba zmienić ta zmienna na BooleanProperty i bindować ją w widoku do odpowiedniego widgetu
   // TODO(Jakub Drzewiecki): zmienna czyPolaczono miec swoj wlasny widget dostepny z poziomu wszystkich widokow
   /** Zmienna przechowujaca informacje czy uzytkownik jest polaczony z serwerem */
-  private boolean czyPolaczono_;
+  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
 
   /** Zmienna przechowujaca nazwe gracza */
   private final StringProperty nazwaGracza_ = new SimpleStringProperty();
@@ -32,10 +34,10 @@ public class GlownyModel {
    * @param czyPolaczono Czy uzytkownik jest aktualnie polaczony z serwerem?
    */
   public GlownyModel(boolean czyPolaczono) {
-    this.czyPolaczono_ = czyPolaczono;
-    this.modelGraczyOnline_ = new ModelGraczyOnline(nazwaGracza_);
-    this.modelPokoju_ = new ModelPokoju();
-    this.modelGry_ = new ModelGry();
+    this.czyPolaczono_.set(czyPolaczono);
+    this.modelGraczyOnline_ = new ModelGraczyOnline(nazwaGracza_, czyPolaczono_);
+    this.modelPokoju_ = new ModelPokoju(czyPolaczono_);
+    this.modelGry_ = new ModelGry(czyPolaczono_);
   }
 
   /**
@@ -71,7 +73,7 @@ public class GlownyModel {
    * @return Czy uzytkownik jest polaczony z serwerem?
    */
   public boolean czyPolaczono() {
-    return this.czyPolaczono_;
+    return this.czyPolaczono_.get();
   }
 
   /**
@@ -80,6 +82,6 @@ public class GlownyModel {
    * @param czyPolaczono Czy uzytkownik jest polaczony z serwerem?
    */
   public void ustawCzyPolaczono(boolean czyPolaczono) {
-    this.czyPolaczono_ = czyPolaczono;
+    this.czyPolaczono_.set(czyPolaczono);
   }
 }

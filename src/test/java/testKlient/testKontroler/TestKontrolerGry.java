@@ -9,23 +9,26 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import klient.kontroler.KontrolerAplikacji;
 import klient.kontroler.KontrolerGry;
-import klient.model.ModelGry;
+import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.TypyKontrolerow;
+import klient.model.Model;
 import klient.widoki.widgety.Pionek;
 import klient.widoki.widgety.PolePlanszy;
 import org.junit.Test;
 
-public class TestKontrolerGry {
+public class TestKontrolerGry extends TestKontroler {
   @Test
   public void testPrzekazModel() {
     KontrolerGry kontroler = new KontrolerGry();
-    ModelGry model = new ModelGry();
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_GRY, false);
     kontroler.przekazModel(model);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testPrzekazModelError() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
-    ModelGry model = new ModelGry();
+    KontrolerWidoku kontroler =
+        this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_GRY, false);
     kontroler.przekazModel(model);
   }
 
@@ -38,14 +41,16 @@ public class TestKontrolerGry {
 
   @Test(expected = IllegalStateException.class)
   public void testPrzekazGlownyKontrolerError() {
-    KontrolerGry kontroler = utworzPelnyKontroler();
+    KontrolerWidoku kontroler =
+        utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
     kontroler.przekazGlownyKontroler(kontrolerAplikacji);
   }
 
   @Test
   public void testZacznijPrzesuwacPionek() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -62,7 +67,8 @@ public class TestKontrolerGry {
 
   @Test
   public void testPrzesunPionek() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -77,7 +83,8 @@ public class TestKontrolerGry {
 
   @Test
   public void testSkonczPrzesuwacPionek() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -92,7 +99,8 @@ public class TestKontrolerGry {
 
   @Test
   public void testPuszczonoMyszkeNadPolem() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -105,16 +113,6 @@ public class TestKontrolerGry {
     kontroler.zacznijPrzesuwacPionek(this.utworzSztucznyMouseEvent(), pionek);
 
     kontroler.puszczonoMyszkeNadPolem(pole, wynik);
-  }
-
-  private KontrolerGry utworzPelnyKontroler() {
-    KontrolerGry kontroler = new KontrolerGry();
-    ModelGry model = new ModelGry();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-
-    kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-    return kontroler;
   }
 
   private MouseEvent utworzSztucznyMouseEvent() {
