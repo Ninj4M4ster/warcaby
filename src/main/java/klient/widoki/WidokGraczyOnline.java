@@ -34,10 +34,10 @@ import klient.widoki.eventy.OknoKlikniete;
  * Klasa reprezentujaca widok menu glownego, w ktorym mozliwe jest
  * zaproszenie jednego z dostepnych graczy do pokoju.
  */
-public class WidokGraczyOnline implements Widok {
+public class WidokGraczyOnline extends Widok {
 
   /** Kontener wszystkich elementow widoku */
-  private VBox okno_;
+  private BorderPane okno_;
 
   /** Element widoku z ktorym uzytkownik wchodzi w interakcje */
   private BorderPane oknoGlowne_;
@@ -70,6 +70,9 @@ public class WidokGraczyOnline implements Widok {
     this.kontroler_ = (KontrolerWidokuGraczyOnline) kontroler;
     this.model_ = (ModelGraczyOnline) model;
 
+    this.okno_ = new BorderPane();
+    this.okno_.setBottom(this.utworzPasekStatusu(this.model_));
+
     this.utworzMenu();
     this.utworzWidokWprowadzaniaNazwy();
     this.utworzWidokPoWprowadzeniuNazwy();
@@ -87,10 +90,10 @@ public class WidokGraczyOnline implements Widok {
    */
   private void utworzMenu() {
     // glowne okno, w nim znajduja sie wszystkie elementy
-    okno_ = new VBox();
-    okno_.setPadding(new Insets(20, 200, 20, 200));
-    okno_.setAlignment(Pos.CENTER);
-    okno_.setBackground(Background.fill(Color.valueOf("#242424")));
+    VBox kontenerElementowOkna = new VBox();
+    kontenerElementowOkna.setPadding(new Insets(20, 200, 20, 200));
+    kontenerElementowOkna.setAlignment(Pos.CENTER);
+    kontenerElementowOkna.setBackground(Background.fill(Color.valueOf("#242424")));
 
     // kontener napisu z nazwa aplikacji
     HBox poleGlownegoOpisu = new HBox();
@@ -143,7 +146,8 @@ public class WidokGraczyOnline implements Widok {
       }
     });
 
-    okno_.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
+    kontenerElementowOkna.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
+    okno_.setCenter(kontenerElementowOkna);
   }
 
   /**

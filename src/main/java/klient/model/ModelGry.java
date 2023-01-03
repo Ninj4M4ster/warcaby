@@ -41,6 +41,16 @@ public class ModelGry implements Model {
   }
 
   /**
+   * Metoda zwracajaca stan aktualnego polaczenia.
+   *
+   * @return Stan aktualnego polaczenia.
+   */
+  @Override
+  public BooleanProperty czyPolaczono() {
+    return this.czyPolaczono_;
+  }
+
+  /**
    * Metoda zwracajaca ilosc pol w rzedzie i kolumnie planszy.
    *
    * @return Ilosc pol w rzedzie i kolumnie graczy.

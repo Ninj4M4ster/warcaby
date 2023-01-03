@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -22,7 +23,7 @@ import klient.widoki.widgety.PolePlanszy;
  * TODO(Jakub Drzewiecki): Kolory poszczegolnych elementow widoku moglyby
  *  znajdywac sie w jakiejs globalnej konfiguracji badz modelu.
  */
-public class WidokGry implements Widok {
+public class WidokGry extends Widok {
   /** Model widoku */
   private ModelGry model_;
 
@@ -30,7 +31,7 @@ public class WidokGry implements Widok {
   private KontrolerGry kontroler_;
 
   /** Kontener zawierajacy wszystkie elementy widoku */
-  private StackPane okno_;
+  private BorderPane okno_;
 
   /** Kontener przechowujacy plansze gry, czyli wszystkie jej pola */
   private GridPane planszaGry_;
@@ -54,10 +55,10 @@ public class WidokGry implements Widok {
     this.model_ = (ModelGry) model;
     this.kontroler_ = (KontrolerGry) kontroler;
 
-    this.okno_ = new StackPane();
-    this.okno_.setAlignment(Pos.CENTER);
+    this.okno_ = new BorderPane();
     this.okno_.setBackground(Background.fill(Color.valueOf("#242424")));
 
+    this.okno_.setBottom(this.utworzPasekStatusu(this.model_));
     this.utworzPlanszeGry();
 
     return this.okno_;
@@ -100,7 +101,7 @@ public class WidokGry implements Widok {
     else
       this.wyswietlWidokCzarny(listaPol);
 
-    this.okno_.getChildren().add(planszaGry_);
+    this.okno_.setCenter(planszaGry_);
   }
 
   /**

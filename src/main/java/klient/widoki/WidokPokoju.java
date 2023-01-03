@@ -14,7 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import klient.kontroler.KontrolerPokoju;
@@ -26,7 +25,7 @@ import klient.model.ModelPokoju;
  * Klasa reprezentujaca widok pokoju, w ktorym mozna
  * komunikowac sie z drugim graczem oraz wybrac zasady gry.
  */
-public class WidokPokoju implements Widok {
+public class WidokPokoju extends Widok {
   /** Kontroler widoku */
   private KontrolerPokoju kontroler_;
 
@@ -34,7 +33,7 @@ public class WidokPokoju implements Widok {
   private ModelPokoju model_;
 
   /** Kontener wszystkich elementow widoku */
-  private StackPane okno_;
+  private BorderPane okno_;
 
   /** Kontener chatu, informacji o graczach w pokoju oraz opcji rozgrywki */
   private BorderPane kontenerWidoku_;
@@ -54,10 +53,7 @@ public class WidokPokoju implements Widok {
     this.kontroler_ = (KontrolerPokoju) kontroler;
     this.model_ = (ModelPokoju) model;
 
-    // TODO(Jakub Drzewiecki): Mozliwe dodać więcej elementów graficznych do okna? Jesli nie, trzeba usunac i ustawic kontenerWidoku jako korzen
-    // stackpane jako korzen widoku
-    this.okno_ = new StackPane();
-    this.okno_.setAlignment(Pos.CENTER);
+    this.okno_ = new BorderPane();
     this.okno_.setOnKeyPressed(keyEvent -> {
       if(keyEvent.getCode() == KeyCode.ENTER) {
         this.kontroler_.wyslijWiadomosc();
@@ -68,10 +64,11 @@ public class WidokPokoju implements Widok {
     kontenerWidoku_ = new BorderPane();
 
     // utworz widgety i dodaj je do widoku
+    this.okno_.setBottom(this.utworzPasekStatusu(this.model_));
     this.utworzChat();
     this.utworzInformacjeOpcje();
 
-    this.okno_.getChildren().add(kontenerWidoku_);
+    this.okno_.setCenter(kontenerWidoku_);
 
     return this.okno_;
   }

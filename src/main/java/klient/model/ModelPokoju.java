@@ -55,6 +55,16 @@ public class ModelPokoju implements Model {
   }
 
   /**
+   * Metoda zwracajaca stan aktualnego polaczenia.
+   *
+   * @return Stan aktualnego polaczenia.
+   */
+  @Override
+  public BooleanProperty czyPolaczono() {
+    return this.czyPolaczono_;
+  }
+
+  /**
    * Metoda zwracajaca kontener przechowujacy dotychczas wyslane wiadomosci.
    *
    * @return Kontener przechowujacy dotychczas wyslane wiadomosci.

@@ -59,6 +59,15 @@ public class ModelGraczyOnline implements Model {
   }
 
   /**
+   * Metoda zwracajaca stan aktualnego polaczenia.
+   *
+   * @return Stan aktualnego polaczenia.
+   */
+  public BooleanProperty czyPolaczono() {
+    return this.czyPolaczono_;
+  }
+
+  /**
    * Metoda przechowujaca nazwe wprowadzona przez uzytkownika.
    *
    * @param nazwa Nazwa wprowadzona przez uzytkownika.

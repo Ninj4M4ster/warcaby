@@ -75,6 +75,7 @@ public class KontrolerAplikacji {
     assert kontroler != null;
     kontroler.przekazModel(model_.modelPokoju());
     kontroler.przekazGlownyKontroler(this);
+    kontroler.przekazMediator(this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
     assert widok != null;
@@ -107,6 +108,7 @@ public class KontrolerAplikacji {
     assert kontroler != null;
     kontroler.przekazModel(model_.modelGry());
     kontroler.przekazGlownyKontroler(this);
+    kontroler.przekazMediator(this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_GRY);
     assert widok != null;
