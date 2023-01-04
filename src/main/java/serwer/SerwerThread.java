@@ -12,7 +12,7 @@ import java.net.Socket;
 
 public class SerwerThread extends Thread {
     private Socket socket;
-    private Pokoj pokoj = null;
+    private Pokoj pokoj;
     private Gracz gracz;
     BufferedReader in = null;
     PrintWriter out = null;
@@ -55,7 +55,16 @@ public class SerwerThread extends Thread {
                         gracz.getSt().Wyslij("Rozlaczono " + this.gracz.getNick());
                     }
                 }
+
                 Serwer.removeGracz(this.gracz);
+
+                if(this.gracz.getPokoj() != null) {
+                    Pokoj pokoj1 = this.gracz.getPokoj();
+                    pokoj1.kontroler_stanu_gry.PRZERWIJ();
+                    pokoj1.setGosc(null);
+                    pokoj1.setMistrz(null);
+                    Serwer.removePokoj(pokoj1);
+                }
             }
         }
     }

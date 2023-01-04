@@ -58,4 +58,8 @@ public class Serwer {
   public static void removeGracz(Gracz gracz) {
     gracze.remove(gracz);
   }
+
+  public static void removePokoj(Pokoj pokoj) {
+    pokoje.remove(pokoj);
+  }
 }
