@@ -65,6 +65,9 @@ public class SerwerThread extends Thread {
                     pokoj1.setMistrz(null);
                     Serwer.removePokoj(pokoj1);
                 }
+
+                System.out.println("Rozłaczono " + this.gracz.getNick());
+                return;
             }
         }
     }
