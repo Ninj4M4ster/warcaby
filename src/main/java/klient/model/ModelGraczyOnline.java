@@ -17,7 +17,8 @@ import klient.widoki.widgety.KafelekGraczaOnline;
  * Przechowuje informacje takie jak aktualnie aktywni gracze, czy nazwa uzytkownika.
  */
 public class ModelGraczyOnline implements Model {
-  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
+  /** Status polaczenia z serwerem */
+  private final BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Wprowadzona nazwa gracza */
   private final StringProperty nazwaGracza_ = new SimpleStringProperty();
 
@@ -35,6 +36,8 @@ public class ModelGraczyOnline implements Model {
 
   /** Kontener przechowujacy kafelki z dostepnymi graczami */
   private VBox listaGraczy_;
+  /** Kontener na powiadomienia dla klienta */
+  private final VBox kontenerPowiadomien_ = new VBox();
 
   /**
    * Konstruktor.
@@ -182,6 +185,15 @@ public class ModelGraczyOnline implements Model {
     ObservableList<Node> lista = listaGraczy_.getChildren();
     lista.removeIf(node -> node instanceof KafelekGraczaOnline &&
         ((KafelekGraczaOnline) node).nazwaGracza().equals(nazwaGracza));
+  }
+
+  /**
+   * Metoda zwracajaca kontener powiadomien.
+   *
+   * @return Kontener powiadomien.
+   */
+  public VBox kontenerPowiadomien() {
+    return this.kontenerPowiadomien_;
   }
 
 }

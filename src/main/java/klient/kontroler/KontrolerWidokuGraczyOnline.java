@@ -5,6 +5,7 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.layout.VBox;
 import klient.komunikacja.Mediator;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
@@ -12,6 +13,7 @@ import klient.model.Model;
 import klient.model.ModelGraczyOnline;
 import klient.widoki.eventy.OknoKlikniete;
 import klient.widoki.widgety.KafelekGraczaOnline;
+import klient.widoki.widgety.Powiadomienie;
 
 /**
  * Klasa kontrolera widoku menu glownego (graczy online).
@@ -68,6 +70,7 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
     mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
 
     this.model_.ustawNazweGracza(nazwa);
+    this.przejdzDoListyGraczy();
   }
 
   /**
@@ -113,5 +116,40 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
         }
       }
     }
+  }
+
+  /**
+   * Metoda wyswietlajaca powiadomienie o zaproszeniu klienta do pokoju.
+   *
+   * @param gracz Gracz zapraszajacy klienta do pokoju.
+   */
+  public void wyswietlZaproszenieOdGracza(String gracz) {
+    this.model_.kontenerPowiadomien().getChildren().add(
+        new Powiadomienie(gracz, this, true));
+  }
+
+  /**
+   * Metoda ta usuwa powiadomienie o zaproszeniu i przechodzi do widoku pokoju.
+   *
+   * @param wlascicielPokoju Wlasiciel pokoju, do ktorego dolacza klient.
+   */
+  public void dolaczDoPokoju(String wlascicielPokoju) {
+    this.kontrolerGlowny_.dolaczDoPokoju(wlascicielPokoju);
+    this.model_.kontenerPowiadomien().getChildren().removeIf(node -> {
+      Powiadomienie powiadomienie = (Powiadomienie) node;
+      return powiadomienie.gracz().compareTo(wlascicielPokoju) == 0;
+    });
+  }
+
+  /**
+   * Metoda ta usuwa powiadomienie o zaproszeniu i odrzuca zaproszenie od innego gracza.
+   *
+   * @param wlascicielPokoju Gracz, ktory zaprosil klienta do pokoju.
+   */
+  public void odrzucZaproszenie(String wlascicielPokoju) {
+    this.kontrolerGlowny_.odrzucZaproszenie(wlascicielPokoju);
+    VBox kontenerPowiadomien = this.model_.kontenerPowiadomien();
+    kontenerPowiadomien.getChildren().removeIf(node -> node instanceof Powiadomienie
+        && ((Powiadomienie) node).gracz().compareTo(wlascicielPokoju) == 0);
   }
 }

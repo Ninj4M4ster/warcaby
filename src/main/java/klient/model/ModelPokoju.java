@@ -17,7 +17,7 @@ import klient.ZasadyGry;
  */
 public class ModelPokoju implements Model {
   /** Status polaczenia z serwerem */
-  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
+  private final BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Kontener przechowujacy wszystkie wyslane wczesniej wiadomosci */
   private final VBox historiaChatu_ = new VBox();
 
@@ -30,6 +30,11 @@ public class ModelPokoju implements Model {
 
   /** Element, w ktorym uzytkownik wpisuje wiadomosc, ktora potem moze wyslac */
   private final StringProperty tekstWiadomosci_ = new SimpleStringProperty();
+
+  /** Status czy klient jest wlascicielem pokoju */
+  private boolean czyWlasciciel_ = false;
+  /** Nazwa drugiego gracza w pokoju */
+  private String nazwaDrugiegoGracza_ = "";
 
   /**
    * Konstruktor.
@@ -147,5 +152,41 @@ public class ModelPokoju implements Model {
    */
   public void ustawTekstWiadomosci(String wiadomosc) {
     this.tekstWiadomosci_.set(wiadomosc);
+  }
+
+  /**
+   * Metoda zwracajaca status czy klient jest wlascicielem pokoju.
+   *
+   * @return Czy klient jest wlascicielem pokoju?
+   */
+  public boolean czyWlasciciel() {
+    return this.czyWlasciciel_;
+  }
+
+  /**
+   * Metoda ustawiajaca status, czy klient jest wlascicielem pokoju.
+   *
+   * @param status Status czy klient jest wlascicielem pokoju.
+   */
+  public void ustawCzyWlasciciel(boolean status) {
+    this.czyWlasciciel_ = status;
+  }
+
+  /**
+   * Metoda zwracajaca nazwe drugiego gracza w pokoju.
+   *
+   * @return Nazwa drugiego gracza w pokoju.
+   */
+  public String nazwaDrugiegoGracza() {
+    return this.nazwaDrugiegoGracza_;
+  }
+
+  /**
+   * Metoda ustawiajaca nazwe drugiego gracza w pokoju.
+   *
+   * @param nazwa Nazwa drugiego gracza w pokoju.
+   */
+  public void ustawNazweDrugiegoGracza(String nazwa) {
+    this.nazwaDrugiegoGracza_ = nazwa;
   }
 }

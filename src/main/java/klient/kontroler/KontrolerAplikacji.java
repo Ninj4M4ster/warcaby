@@ -67,8 +67,11 @@ public class KontrolerAplikacji {
    * @param zaproszonyGracz Nazwa zaproszonego gracza.
    */
   public void utworzPokoj(String zaproszonyGracz) {
+    // TODO(Jakub Drzewiecki): Trzeba tylko wysylac zaproszenie do pokoju i dolaczyc gdy zostanie potwierdzone
     Wiadomosc wiadomosc = new Wiadomosc(zaproszonyGracz, TypyWiadomosci.ZAPROSZENIE);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+
+    this.model_.modelPokoju().ustawCzyWlasciciel(true);
 
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
@@ -80,6 +83,51 @@ public class KontrolerAplikacji {
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
     assert widok != null;
     Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelPokoju()));
+  }
+
+  /**
+   * Metoda wywolywana gdy drugi gracz dolaczy do pokoju.
+   *
+   * @param nazwaGracza Nazwa drugiego gracza.
+   */
+  public void przylaczGraczaDoPokoju(String nazwaGracza) {
+    this.model_.modelPokoju().ustawNazweDrugiegoGracza(nazwaGracza);
+  }
+
+  /**
+   * Metoda uruchamiana gdy klient zaakceptuje zaproszenie drugiego gracza do pokoju.
+   *
+   * @param wlascicielPokoju Wlasciciel innego pokoju.
+   */
+  public void dolaczDoPokoju(String wlascicielPokoju) {
+    Wiadomosc wiadomosc =
+        new Wiadomosc("akceptuje " + wlascicielPokoju, TypyWiadomosci.ODPOWIEDZ);
+    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+
+    this.model_.modelPokoju().ustawCzyWlasciciel(false);
+    this.model_.modelPokoju().ustawNazweDrugiegoGracza(wlascicielPokoju);
+
+    KontrolerWidoku kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
+    assert kontroler != null;
+    kontroler.przekazModel(this.model_.modelPokoju());
+    kontroler.przekazGlownyKontroler(this);
+    kontroler.przekazMediator(this.mediator_);
+
+    Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
+    assert widok != null;
+    Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelPokoju()));
+  }
+
+  /**
+   * Metoda uruchamiana gdy klient odrzuci zaproszenie innego gracza do pokoju.
+   *
+   * @param wlascicielPokoju Nazwa zapraszajacego gracza.
+   */
+  public void odrzucZaproszenie(String wlascicielPokoju) {
+    Wiadomosc wiadomosc =
+        new Wiadomosc("odrzuca " + wlascicielPokoju, TypyWiadomosci.ODPOWIEDZ);
+    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
   }
 
   /**

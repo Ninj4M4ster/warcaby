@@ -76,6 +76,7 @@ public class Mediator {
    * @param wiadomosc Wiadomosc wyslana przez aplikacje.
    */
   public void wyslijWiadomoscDoSerwera(Wiadomosc wiadomosc) {
+    System.out.println(wiadomosc);
     if(!oczekiwanieNaOdpowiedz_ && this.czyPolaczono_) {
       this.polaczenie_.wyslijWiadomosc(wiadomosc);
       this.typOstatniejWiadomosci_ = wiadomosc.typWiadomosci();
@@ -93,12 +94,14 @@ public class Mediator {
   public void przekazWiadomoscDoAplikacji(String wiadomosc) {
     // TODO(Jakub Drzewiecki): Utworzyc rozne rodzaje wiadomosci oraz dostosowac zachowanie na podstawie klasy poprzednio wyslanej wiadomosci
     if(czyOdpowiedz(wiadomosc)) {
-      // TODO(Jakub Drzewiecki): Potrzebna jest klasa do interpretowania wiadomosci od serwera
       return;
     }
     if(typOstatniejWiadomosci_ == TypyWiadomosci.IMIE) {
-      // TODO(Jakub Drzewiecki): Potrzebna jest metoda wywolywana gdy nazwa zostanie odrzucona, w ktorej wyswietlane bedzie odpowiednie powiadomienie.
-      ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_).przejdzDoListyGraczy();
+      if(wiadomosc.startsWith("true"))
+        ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_).przejdzDoListyGraczy();
+      else {
+        // TODO(Jakub Drzewiecki): Wyswietlic powiadomienie o blednej nazwie
+      }
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
       this.kontrolerAplikacji_.rozpocznijGre(wiadomosc);
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
@@ -116,6 +119,18 @@ public class Mediator {
    * TODO(Jakub Drzewiecki): Sprawdzic jakie komendy, ktore nie sa odpowiedziami, wysyla serwer.
    */
   private boolean czyOdpowiedz(String wiadomosc) {
+    if(wiadomosc.startsWith("Zaproszenie")) {
+      String[] argumenty = this.wydobadzArgumenty(wiadomosc);
+      if(this.aktualnyKontroler_ instanceof KontrolerWidokuGraczyOnline) {
+        ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_)
+            .wyswietlZaproszenieOdGracza(argumenty[0]);
+      }
+      return true;
+    } else if(wiadomosc.startsWith("nowy_gracz")) {
+      // TODO(Jakub Drzewiecki): Dodawac nowego gracza do listy
+    } else if(wiadomosc.startsWith("Zaakceptowano")) {
+      // TODO(Jakub Drzewiecki): Dolaczyc do pokoju gracza ktory zaakceptowal zaproszenie
+    }
     return false;
   }
 
@@ -137,6 +152,22 @@ public class Mediator {
       ((KontrolerGry)this.aktualnyKontroler_).zbijPionek(
           Integer.parseInt(argumenty[4]), Integer.parseInt(argumenty[5]));
     }
+  }
+
+  /**
+   * Metoda rozdzielajaca wiadomosc na osobne wyrazy i zwracajaca liste z argumentami bez komendy.
+   *
+   * @param wiadomosc Wiadomosc otrzymana od serwera.
+   * @return Argumenty polecenia.
+   */
+  private String[] wydobadzArgumenty(String wiadomosc) {
+    String[] rozdzieloneWyrazy = wiadomosc.split( " ");
+    String[] argumenty = new String[rozdzieloneWyrazy.length-1];
+    System.arraycopy(rozdzieloneWyrazy,
+        1, argumenty,
+        0,
+        rozdzieloneWyrazy.length - 1);
+    return argumenty;
   }
 
   /**

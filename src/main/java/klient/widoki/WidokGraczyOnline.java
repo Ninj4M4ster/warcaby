@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -29,6 +30,7 @@ import klient.kontroler.KontrolerWidokuGraczyOnline;
 import klient.model.ModelGraczyOnline;
 import klient.model.Model;
 import klient.widoki.eventy.OknoKlikniete;
+import klient.widoki.widgety.Powiadomienie;
 
 /**
  * Klasa reprezentujaca widok menu glownego, w ktorym mozliwe jest
@@ -37,7 +39,7 @@ import klient.widoki.eventy.OknoKlikniete;
 public class WidokGraczyOnline extends Widok {
 
   /** Kontener wszystkich elementow widoku */
-  private BorderPane okno_;
+  private StackPane okno_;
 
   /** Element widoku z ktorym uzytkownik wchodzi w interakcje */
   private BorderPane oknoGlowne_;
@@ -70,12 +72,19 @@ public class WidokGraczyOnline extends Widok {
     this.kontroler_ = (KontrolerWidokuGraczyOnline) kontroler;
     this.model_ = (ModelGraczyOnline) model;
 
-    this.okno_ = new BorderPane();
-    this.okno_.setBottom(this.utworzPasekStatusu(this.model_));
+    this.okno_ = new StackPane();
+    this.okno_.setAlignment(Pos.CENTER);
 
-    this.utworzMenu();
+    // layout, gdzie centrum to glowne elementy aplikacji, a dolny element to pasek statusu
+    BorderPane layoutMenu = new BorderPane();
+    layoutMenu.setBottom(this.utworzPasekStatusu(this.model_));
+
+    this.okno_.getChildren().add(layoutMenu);
+
+    this.utworzMenu(layoutMenu);
     this.utworzWidokWprowadzaniaNazwy();
     this.utworzWidokPoWprowadzeniuNazwy();
+    this.utworzPasekPowiadomien();
 
     okno_.setOnMouseClicked(mouseEvent ->
         listaGraczy_.fireEvent(new OknoKlikniete((Node)mouseEvent.getTarget(),
@@ -88,7 +97,7 @@ public class WidokGraczyOnline extends Widok {
    * Metoda odpowiedzialna za utworzenie menu,
    * czyli napisu z nazwa aplikacji oraz konteneru z ktorym uzytkownik wchodzi w interakcje.
    */
-  private void utworzMenu() {
+  private void utworzMenu(BorderPane layoutMenu) {
     // glowne okno, w nim znajduja sie wszystkie elementy
     VBox kontenerElementowOkna = new VBox();
     kontenerElementowOkna.setPadding(new Insets(20, 200, 20, 200));
@@ -147,7 +156,7 @@ public class WidokGraczyOnline extends Widok {
     });
 
     kontenerElementowOkna.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
-    okno_.setCenter(kontenerElementowOkna);
+    layoutMenu.setCenter(kontenerElementowOkna);
   }
 
   /**
@@ -249,5 +258,22 @@ public class WidokGraczyOnline extends Widok {
 
     kontenerListyGraczy.setContent(listaGraczy_);
     this.model_.ustawKontenerListyGraczy(kontenerListyGraczy);
+  }
+
+  /**
+   * Metoda tworzaca pasek powiadomien, w ktorym beda pojawiac sie
+   * powiadomienia o zaproszeniach do pokojow.
+   */
+  private void utworzPasekPowiadomien() {
+    VBox kontenerPowiadomien = this.model_.kontenerPowiadomien();
+    kontenerPowiadomien.setAlignment(Pos.TOP_CENTER);
+    kontenerPowiadomien.setPadding(new Insets(5, 5, 5, 5));
+    kontenerPowiadomien.setSpacing(5);
+    kontenerPowiadomien.maxWidthProperty().bind(this.okno_.widthProperty().multiply(0.2));
+
+    this.okno_.setAlignment(Pos.CENTER_RIGHT);
+    this.okno_.getChildren().add(kontenerPowiadomien);
+
+    kontenerPowiadomien.getChildren().add(new Powiadomienie("Drzewo", this.kontroler_, true));
   }
 }
