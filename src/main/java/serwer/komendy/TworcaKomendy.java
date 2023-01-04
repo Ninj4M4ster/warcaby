@@ -20,6 +20,8 @@ public class TworcaKomendy {
                 return new AkceptujZaproszenie(gracz);
             case "Imie":
                 return new NadajImie(gracz);
+            case "Czat":
+                return new Czat(gracz);
             default:
                 return null;
         }

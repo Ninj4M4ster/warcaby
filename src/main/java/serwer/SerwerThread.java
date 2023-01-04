@@ -33,6 +33,7 @@ public class SerwerThread extends Thread {
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
 
         String wiadomosc;
+        System.out.println("Polaczono");
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -41,7 +42,7 @@ public class SerwerThread extends Thread {
             System.out.println("Problem IO z wątkiem serwera");
         }
 
-        while (true) {
+        while(true) {
             try {
                 wiadomosc = in.readLine();
                 pw.setWiadomosc(wiadomosc);
@@ -49,8 +50,12 @@ public class SerwerThread extends Thread {
                 String zwrotne = kom.Wykonaj(pw.getReszta(), pokoj);
                 out.println(zwrotne);
             } catch (IOException e) {
-                e.printStackTrace();
-                return;
+                for(Gracz gracz : Serwer.getGracze()) {
+                    if(!gracz.equals(this.gracz)) {
+                        gracz.getSt().Wyslij("Rozlaczono " + this.gracz.getNick());
+                    }
+                }
+                Serwer.removeGracz(this.gracz);
             }
         }
     }

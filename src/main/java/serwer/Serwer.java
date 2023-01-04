@@ -54,4 +54,8 @@ public class Serwer {
   public static void addGracz(Gracz gracz) {
     gracze.add(gracz);
   }
+
+  public static void removeGracz(Gracz gracz) {
+    gracze.remove(gracz);
+  }
 }

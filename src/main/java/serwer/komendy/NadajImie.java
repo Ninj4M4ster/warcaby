@@ -13,18 +13,19 @@ public class NadajImie implements Komenda{
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         for(Gracz gracz_temp : Serwer.getGracze()) {
-            if(reszta.equals(gracz_temp.getNick())) {
+            if(reszta.compareTo(gracz_temp.getNick()) == 0) {
                 return "false";
             }
         }
         gracz.setNick(reszta);
 
         for(Gracz gracz_temp : Serwer.getGracze()) {
-            if(!reszta.equals(gracz_temp.getNick())) {
+            if(reszta.compareTo(gracz_temp.getNick()) != 0) {
                 gracz_temp.getSt().Wyslij("nowy_gracz " + reszta);
                 gracz.getSt().Wyslij("nowy_gracz " + gracz_temp.getNick());
             }
         }
+        System.out.println("Nadano imie ");
         return "true";
     }
 }

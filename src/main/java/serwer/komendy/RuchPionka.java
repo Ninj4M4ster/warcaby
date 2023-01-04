@@ -36,22 +36,9 @@ public class RuchPionka implements Komenda{
             plansza[x + przesuniecie_x][y + przesuniecie_y] = pionek;
             pokoj.setPlansza(plansza);
 
-            if(pokoj.kontroler_stanu_gry.getStan() == KontrolerStanuGry.StanGry.RUCH_BIALYCH) {
-                if(pokoj.getMistrz().getKolor() == 1) {
-                    pokoj.getGosc().getSt().Wyslij("plansza " + pokoj.planszaToString());
-                }
-                else if(pokoj.getMistrz().getKolor() == 2) {
-                    pokoj.getMistrz().getSt().Wyslij("plansza " + pokoj.planszaToString());
-                }
-            }
-            else if(pokoj.kontroler_stanu_gry.getStan() == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) {
-                if(pokoj.getMistrz().getKolor() == 2) {
-                    pokoj.getGosc().getSt().Wyslij("plansza " + pokoj.planszaToString());
-                }
-                else if(pokoj.getMistrz().getKolor() == 1) {
-                    pokoj.getMistrz().getSt().Wyslij("plansza " + pokoj.planszaToString());
-                }
-            }
+            Gracz gracz2 = (gracz.getPokoj().getMistrz().equals(gracz) ? gracz.getPokoj().getGosc() : gracz.getPokoj().getMistrz());
+            gracz2.getSt().Wyslij("Plansza " + pokoj.planszaToString());
+
             pokoj.kontroler_stanu_gry.RUCH();
             return "true " + pokoj.planszaToString();
         }
