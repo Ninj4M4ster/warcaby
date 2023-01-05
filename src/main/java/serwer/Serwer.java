@@ -12,6 +12,7 @@ import java.util.List;
 public class Serwer {
   private static List<Gracz> gracze = new ArrayList<Gracz>();
   private static List<Pokoj> pokoje = new ArrayList<Pokoj>();
+
   private Socket socket;
 
   public static void main(String[] args) {
