@@ -1,7 +1,8 @@
 public class KontrolerDanych {
-    public KontrolerDanych() {
-
+    public synchronized static KontrolerDanych getInstance() {
+        if(this == null) {
+            return new KontrolerDanych();
+        }
+        return this;
     }
-
-
 }

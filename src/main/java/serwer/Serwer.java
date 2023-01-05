@@ -43,23 +43,23 @@ public class Serwer {
     return pokoje;
   }
 
-  public static void addPokoj(Pokoj pokoj) {
-    pokoje.add(pokoj);
-  }
-
   public static List<Gracz> getGracze() {
     return gracze;
   }
 
-  public static void addGracz(Gracz gracz) {
+  public synchronized static void addPokoj(Pokoj pokoj) {
+    pokoje.add(pokoj);
+  }
+
+  public synchronized static void addGracz(Gracz gracz) {
     gracze.add(gracz);
   }
 
-  public static void removeGracz(Gracz gracz) {
+  public synchronized static void removeGracz(Gracz gracz) {
     gracze.remove(gracz);
   }
 
-  public static void removePokoj(Pokoj pokoj) {
+  public synchronized static void removePokoj(Pokoj pokoj) {
     pokoje.remove(pokoj);
   }
 }
