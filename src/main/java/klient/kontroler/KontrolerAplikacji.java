@@ -29,8 +29,7 @@ public class KontrolerAplikacji {
   public KontrolerAplikacji() {
     boolean czyPolaczono;
     mediator_ = new Mediator(this);
-    czyPolaczono = mediator_.czyPolaczono();
-    model_ = new GlownyModel(czyPolaczono);
+    model_ = new GlownyModel(mediator_.czyPolaczono());
   }
 
   /**

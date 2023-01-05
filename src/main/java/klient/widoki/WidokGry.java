@@ -58,7 +58,7 @@ public class WidokGry extends Widok {
     this.okno_ = new BorderPane();
     this.okno_.setBackground(Background.fill(Color.valueOf("#242424")));
 
-    this.okno_.setBottom(this.utworzPasekStatusu(this.model_));
+    this.okno_.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
     this.utworzPlanszeGry();
 
     return this.okno_;

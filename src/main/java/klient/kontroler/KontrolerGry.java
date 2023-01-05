@@ -69,6 +69,14 @@ public class KontrolerGry implements KontrolerWidoku {
   }
 
   /**
+   * Metoda odpowiedzialna za podjecie proby odnowienia polaczenia.
+   */
+  @Override
+  public void odnowPolaczenie() {
+    this.mediator_.odnowPolaczenie();
+  }
+
+  /**
    * Metoda odpowiedzialna za rozpoczecie przesuwania pionka po planszy.
    *
    * @param mouseEvent Wydarzenie nacisniecia na pionek.

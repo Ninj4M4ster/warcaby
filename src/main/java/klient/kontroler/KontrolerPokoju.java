@@ -59,6 +59,14 @@ public class KontrolerPokoju implements KontrolerWidoku {
   }
 
   /**
+   * Metoda odpowiedzialna za podjecie proby odnowienia polaczenia.
+   */
+  @Override
+  public void odnowPolaczenie() {
+    this.mediator_.odnowPolaczenie();
+  }
+
+  /**
    * Metoda odpowiedzialna za wyslanie wprowadzonej wiadomosci
    * oraz usuniecie jej z pola tekstowego.
    */

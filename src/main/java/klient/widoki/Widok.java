@@ -1,7 +1,9 @@
 package klient.widoki;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
@@ -32,13 +34,18 @@ public abstract class Widok {
    *
    * @return Pasek statusu aktualnego polaczenia.
    */
-  protected HBox utworzPasekStatusu(Model model) {
+  protected HBox utworzPasekStatusu(Model model, KontrolerWidoku kontroler) {
     HBox pasek = new HBox();
     pasek.setBackground(Background.fill(Color.RED));
     pasek.setAlignment(Pos.CENTER);
+    pasek.setSpacing(50);
+    pasek.setPadding(new Insets(5, 5, 5, 5));
 
     Label status = new Label("Brak polaczenia");
-    pasek.getChildren().add(status);
+    Button przyciskPonowPolaczenie = new Button("Odnow polaczenie");
+    przyciskPonowPolaczenie.setOnMouseClicked(mouseEvent -> kontroler.odnowPolaczenie());
+
+    pasek.getChildren().addAll(status, przyciskPonowPolaczenie);
     pasek.visibleProperty().bind(model.czyPolaczono().not());
 
     return pasek;

@@ -1,6 +1,8 @@
 package klient.komunikacja;
 
 import java.io.IOException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.kontroler.KontrolerAplikacji;
@@ -21,7 +23,7 @@ public class Mediator {
   /** Watek polaczenia z serwerem */
   private Polaczenie polaczenie_;
   /** Status polaczenia z serwerem */
-  private boolean czyPolaczono_;
+  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Zmienna przedstawiajaca typ ostatniej wyslanej wiadomosci,
    * na ktorej odpowiedz aplikacja aktualnie oczekuje */
   private TypyWiadomosci typOstatniejWiadomosci_;
@@ -37,10 +39,10 @@ public class Mediator {
     this.kontrolerAplikacji_ = kontrolerAplikacji;
     try {
       this.polaczenie_ = new Polaczenie(this);
-      this.czyPolaczono_ = true;
+      this.czyPolaczono_.set(true);
       this.polaczenie_.start();
     } catch (IOException e) {
-      this.czyPolaczono_ = false;
+      this.czyPolaczono_.set(false);
     }
   }
 
@@ -58,7 +60,7 @@ public class Mediator {
    *
    * @return Czy aplikacja polaczona jest z serwerem?
    */
-  public boolean czyPolaczono() {
+  public BooleanProperty czyPolaczono() {
     return this.czyPolaczono_;
   }
 
@@ -68,7 +70,7 @@ public class Mediator {
    * @param status Status polaczenia z serwerem.
    */
   public void ustawCzyPolaczono(boolean status) {
-    this.czyPolaczono_ = status;
+    this.czyPolaczono_.set(status);
   }
 
   /**
@@ -78,7 +80,7 @@ public class Mediator {
    */
   public void wyslijWiadomoscDoSerwera(Wiadomosc wiadomosc) {
     System.out.println(wiadomosc);
-    if(!oczekiwanieNaOdpowiedz_ && this.czyPolaczono_) {
+    if(!oczekiwanieNaOdpowiedz_ && this.czyPolaczono_.get()) {
       this.polaczenie_.wyslijWiadomosc(wiadomosc);
       this.typOstatniejWiadomosci_ = wiadomosc.typWiadomosci();
       this.oczekiwanieNaOdpowiedz_ = true;
@@ -185,11 +187,21 @@ public class Mediator {
     return argumenty;
   }
 
+  public void odnowPolaczenie() {
+    try {
+      this.polaczenie_ = new Polaczenie(this);
+      this.czyPolaczono_.set(true);
+      this.polaczenie_.start();
+    } catch (IOException e) {
+      this.czyPolaczono_.set(false);
+    }
+  }
+
   /**
    * Metoda konczaca prace watku polaczenia z serwerem.
    */
   public void zakonczPolaczenie() {
-    if(this.czyPolaczono_)
+    if(this.czyPolaczono_.get())
       this.polaczenie_.interrupt();
   }
 }

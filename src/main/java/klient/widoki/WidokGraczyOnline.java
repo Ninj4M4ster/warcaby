@@ -77,7 +77,7 @@ public class WidokGraczyOnline extends Widok {
 
     // layout, gdzie centrum to glowne elementy aplikacji, a dolny element to pasek statusu
     BorderPane layoutMenu = new BorderPane();
-    layoutMenu.setBottom(this.utworzPasekStatusu(this.model_));
+    layoutMenu.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
 
     this.okno_.getChildren().add(layoutMenu);
 

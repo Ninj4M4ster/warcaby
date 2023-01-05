@@ -29,4 +29,9 @@ public interface KontrolerWidoku {
    * @param mediator Mediator miedzy aplikacja oraz polaczeniem z serwerem.
    */
   void przekazMediator(Mediator mediator);
+
+  /**
+   * Metoda odpowiedzialna za podjcie proby ponownego polaczenia z serwerem.
+   */
+  void odnowPolaczenie();
 }

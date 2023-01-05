@@ -64,7 +64,7 @@ public class WidokPokoju extends Widok {
     kontenerWidoku_ = new BorderPane();
 
     // utworz widgety i dodaj je do widoku
-    this.okno_.setBottom(this.utworzPasekStatusu(this.model_));
+    this.okno_.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
     this.utworzChat();
     this.utworzInformacjeOpcje();
 

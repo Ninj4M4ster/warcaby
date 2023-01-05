@@ -59,6 +59,14 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   }
 
   /**
+   * Metoda odpowiedzialna za podjecie proby odnowienia polaczenia.
+   */
+  @Override
+  public void odnowPolaczenie() {
+    this.mediator_.odnowPolaczenie();
+  }
+
+  /**
    * Metoda odpowiedzialna za zapisane wprowadzonej nazwy uzytkownika i wyslanie jej do serwera.
    *
    * @param nazwa Wprowadzona nazwa uzytkownika.
