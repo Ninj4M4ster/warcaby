@@ -1,5 +1,7 @@
 package klient.widoki.widgety;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,6 +22,7 @@ import klient.kontroler.KontrolerWidokuGraczyOnline;
 public class Powiadomienie extends VBox {
   /** Nazwa gracza ktory wyslal zaproszenie lub '' jesli powiadomienie nie jest zaproszeniem */
   private String gracz_ = "";
+  private final Powiadomienie instancja_ = this;
 
   /**
    * Konstruktor. Tworzy powiadomienie oraz przycisk akceptacji i odrzucenia w zaleznosci,
@@ -57,6 +60,7 @@ public class Powiadomienie extends VBox {
       this.gracz_ = powiadomienie;
     } else {
       // TODO(Jakub Drzewiecki): Dodac usuniecie powiadomienia po 5 sekundach
+      this.usunPowiadomienie(5);
     }
   }
 
@@ -118,4 +122,18 @@ public class Powiadomienie extends VBox {
     return this.gracz_;
   }
 
+  /**
+   * Metoda usuwajaca powiadomienie po podanym w sekundach czasie.
+   *
+   * @param czasDoUsuniecia Czas do usuniecia powiadomienia w sekundach.
+   */
+  private void usunPowiadomienie(int czasDoUsuniecia) {
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        getParent().getChildrenUnmodifiable().remove(instancja_);
+      }
+    }, czasDoUsuniecia * 1000L);
+  }
 }

@@ -1,8 +1,12 @@
 package klient.kontroler;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import klient.komunikacja.Mediator;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
@@ -141,33 +145,49 @@ public class KontrolerGry implements KontrolerWidoku {
   }
 
   /**
-   * Metoda odpowiedzialna za przesuniecie pionka.
+   * Metoda aktualizujaca wszystkie pola planszy na podstawie wiadomosci otrzymanej od serwera.
    *
-   * @param kolumnaStartowa Startowa kolumna pionka.
-   * @param rzadStartowy Startowy rzad pionka.
-   * @param kolumnaDocelowa Docelowa kolumna pionka.
-   * @param rzadDocelowy Docelowy rzad pionka.
+   * @param wiadmoscPlansza Wiadomosc z plansza otrzymana od serwera.
    */
-  public void przesunPionekNaPodanePole(
-      int kolumnaStartowa, int rzadStartowy, int kolumnaDocelowa, int rzadDocelowy) {
+  public void zaktualizujPlansze(String wiadmoscPlansza) {
+    String[] rzedy = wiadmoscPlansza.split("\n");
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
-    Pionek pionekDoPrzesuniecia =
-        (Pionek) polaPlanszy[kolumnaStartowa][rzadStartowy].getChildrenUnmodifiable().get(0);
-
-    // przesuniecie pionka
-    polaPlanszy[kolumnaStartowa][rzadStartowy]
-        .getChildrenUnmodifiable().remove(pionekDoPrzesuniecia);
-    polaPlanszy[kolumnaDocelowa][rzadDocelowy].getChildrenUnmodifiable().add(pionekDoPrzesuniecia);
+    for(int i = 0; i < polaPlanszy.length; i++) {
+      String[] otrzymaneRzedy = rzedy[i].split(" ");
+      for(int j=0; j < polaPlanszy[i].length; j++) {
+        probujUsunPionek(i, j); // sprobowac usunac pionek z aktualnego pola
+        if(otrzymaneRzedy[j].compareTo("1") == 0) {  // dodac bialy pionek
+          polaPlanszy[i][j].getChildrenUnmodifiable().add(
+              new Pionek(Color.valueOf("#dbdbdb"),
+                  Color.valueOf("#a3a3a3"),
+                  ((StackPane)polaPlanszy[i][j]).widthProperty(),
+                  this,
+                  "bialy"));
+        } else {  // dodac czarny pionek
+          polaPlanszy[i][j].getChildrenUnmodifiable().add(
+              new Pionek(Color.valueOf("#363636"),
+                  Color.valueOf("#424242"),
+                  ((StackPane)polaPlanszy[i][j]).widthProperty(),
+                  this,
+                  "czarny"));
+        }
+      }
+    }
   }
 
   /**
-   * Metoda odpowiedzialna za usuniecie pionka z podanego pola.
+   * Metoda usuwajaca pionek z pola o podanych wspolrzednych,
+   * jesli pionek znajduje sie na tym polu.
    *
-   * @param kolumna Kolumna pionka.
-   * @param rzad Rzad pionka.
+   * @param rzad Rzad pola.
+   * @param kolumna Kolumna pola.
    */
-  public void zbijPionek(int kolumna, int rzad) {
+  private void probujUsunPionek(int rzad, int kolumna) {
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
-    polaPlanszy[kolumna][rzad].getChildrenUnmodifiable().remove(0);
+    ObservableList<Node> elementyPola = polaPlanszy[rzad][kolumna].getChildrenUnmodifiable();
+    if(elementyPola.size() != 0) {
+      Node pionek = elementyPola.get(0);
+      elementyPola.remove(pionek);
+    }
   }
 }

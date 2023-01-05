@@ -152,4 +152,15 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
     kontenerPowiadomien.getChildren().removeIf(node -> node instanceof Powiadomienie
         && ((Powiadomienie) node).gracz().compareTo(wlascicielPokoju) == 0);
   }
+
+  /**
+   * Metoda wyswietlajaca powiadomienie z podana wiadomoscia.
+   *
+   * @param wiadomosc Powiadomienie do wyswietlenia.
+   */
+  public void wyswietlPowiadomienie(String wiadomosc) {
+    this.model_.kontenerPowiadomien().getChildren().add(
+        new Powiadomienie(wiadomosc, null, false)
+    );
+  }
 }

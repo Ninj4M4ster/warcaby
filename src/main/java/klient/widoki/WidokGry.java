@@ -269,7 +269,7 @@ public class WidokGry extends Widok {
   private Parent[][] stworzListePolPlanszy() {
     int iloscPol = this.model_.iloscPol();
     Parent[][] listaPol = new Parent[iloscPol][iloscPol];
-    // i - kolumny, j - rzedy
+    // i - rzedy, j - kolumny
     for(int i=0; i < iloscPol; i+=2) {
       for(int j=0; j < iloscPol; j += 2) {
         listaPol[i][j] = this.utworzPolePlanszy(Color.BEIGE, i, j);
@@ -313,9 +313,9 @@ public class WidokGry extends Widok {
           this.dodajPionekNaPlansze(kolumna,
               rzad,
               listaPol,
-              Color.valueOf("#363636"),
-              Color.valueOf("#424242"),
-              "czarny");
+              Color.valueOf("#dbdbdb"),
+              Color.valueOf("#a3a3a3"),
+              "bialy");
         }
       }
     }
@@ -325,9 +325,9 @@ public class WidokGry extends Widok {
           this.dodajPionekNaPlansze(kolumna,
               rzad,
               listaPol,
-              Color.valueOf("#dbdbdb"),
-              Color.valueOf("#a3a3a3"),
-              "bialy");
+              Color.valueOf("#363636"),
+              Color.valueOf("#424242"),
+              "czarny");
         }
       }
     }
@@ -349,7 +349,7 @@ public class WidokGry extends Widok {
       Color kolor,
       Color kolorObramowki,
       String kolorPionka) {
-    StackPane pole = (StackPane) listaPol[kolumna][rzad];
+    StackPane pole = (StackPane) listaPol[rzad][kolumna];
     Pionek pionek =
         new Pionek(kolor, kolorObramowki, pole.widthProperty(), this.kontroler_, kolorPionka);
 
@@ -365,7 +365,7 @@ public class WidokGry extends Widok {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
       for(int j=0; j < iloscPol; j++) {
-        this.planszaGry_.add(listaPol[i][j], i + 1, j + 1);
+        this.planszaGry_.add(listaPol[iloscPol - i - 1][iloscPol - j - 1], j + 1, i + 1);
       }
     }
   }
@@ -379,7 +379,7 @@ public class WidokGry extends Widok {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
       for(int j=0; j < iloscPol; j++) {
-        this.planszaGry_.add(listaPol[iloscPol - i - 1][iloscPol - j - 1], i + 1, j + 1);
+        this.planszaGry_.add(listaPol[i][j], j + 1, i + 1);
       }
     }
   }

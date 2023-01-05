@@ -70,7 +70,7 @@ public class ModelGry implements Model {
     // aktualizuj znaki indeksow planszy
     String[] indeksy = new String[this.iloscPol_];
     for(int i=0; i < this.iloscPol_; i++) {
-      indeksy[i] = String.valueOf('A' + i);
+      indeksy[i] = Character.toString('A' + i);
     }
     this.znakiIndeksow_ = indeksy;
   }

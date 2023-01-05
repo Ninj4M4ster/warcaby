@@ -93,14 +93,17 @@ public class Mediator {
    */
   public void przekazWiadomoscDoAplikacji(String wiadomosc) {
     // TODO(Jakub Drzewiecki): Utworzyc rozne rodzaje wiadomosci oraz dostosowac zachowanie na podstawie klasy poprzednio wyslanej wiadomosci
+    // sprawdzic, czy otrzymana wiadomosc jest odpowiedzia
     if(czyOdpowiedz(wiadomosc)) {
       return;
     }
+    // zareagowac na odpowiedz od serwera
     if(typOstatniejWiadomosci_ == TypyWiadomosci.IMIE) {
       if(wiadomosc.startsWith("true"))
         ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_).przejdzDoListyGraczy();
       else {
-        // TODO(Jakub Drzewiecki): Wyswietlic powiadomienie o blednej nazwie
+        ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_)
+            .wyswietlPowiadomienie("Wprowadzona nazwa jest juz zajeta");
       }
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
       this.kontrolerAplikacji_.rozpocznijGre(wiadomosc);
@@ -127,7 +130,14 @@ public class Mediator {
       }
       return true;
     } else if(wiadomosc.startsWith("nowy_gracz")) {
-      // TODO(Jakub Drzewiecki): Dodawac nowego gracza do listy
+      String[] argumenty = this.wydobadzArgumenty(wiadomosc);
+      StringBuilder gracz = new StringBuilder();
+      for(int i=0; i < argumenty.length; i++) {
+        gracz.append(argumenty[i]);
+        if(i != argumenty.length - 1)
+          gracz.append(" ");
+      }
+      this.kontrolerAplikacji_.zaktualizujListeGraczy(gracz.toString(), true);
     } else if(wiadomosc.startsWith("Zaakceptowano")) {
       // TODO(Jakub Drzewiecki): Dolaczyc do pokoju gracza ktory zaakceptowal zaproszenie
     }
@@ -142,16 +152,13 @@ public class Mediator {
    */
   private void wyslijAktualizacjePlanszy(String wiadomosc) {
     String[] argumenty = wiadomosc.split(" ");
-    ((KontrolerGry)this.aktualnyKontroler_).przesunPionekNaPodanePole(
-        Integer.parseInt(argumenty[0]),
-        Integer.parseInt(argumenty[1]),
-        Integer.parseInt(argumenty[2]),
-        Integer.parseInt(argumenty[3])
-    );
-    if(argumenty.length == 6) {
-      ((KontrolerGry)this.aktualnyKontroler_).zbijPionek(
-          Integer.parseInt(argumenty[4]), Integer.parseInt(argumenty[5]));
+    StringBuilder plansza = new StringBuilder();
+    for(int i=1; i < argumenty.length; i++) {
+      plansza.append(argumenty[i]);
+      if(i != argumenty.length - 1)
+        plansza.append(" ");
     }
+    ((KontrolerGry)this.aktualnyKontroler_).zaktualizujPlansze(plansza.toString());
   }
 
   /**
