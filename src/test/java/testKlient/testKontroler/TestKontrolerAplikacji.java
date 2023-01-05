@@ -48,7 +48,7 @@ public class TestKontrolerAplikacji {
   @Test
   public void testRozpocznijGre() {
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontrolerAplikacji.rozpocznijGre("8");
+    kontrolerAplikacji.rozpocznijGre(new String[]{"bialy", "8"});
   }
 
 

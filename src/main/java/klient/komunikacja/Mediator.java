@@ -5,6 +5,7 @@ import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.kontroler.KontrolerAplikacji;
 import klient.kontroler.KontrolerGry;
+import klient.kontroler.KontrolerPokoju;
 import klient.kontroler.KontrolerWidoku;
 import klient.kontroler.KontrolerWidokuGraczyOnline;
 
@@ -94,7 +95,7 @@ public class Mediator {
   public void przekazWiadomoscDoAplikacji(String wiadomosc) {
     // TODO(Jakub Drzewiecki): Utworzyc rozne rodzaje wiadomosci oraz dostosowac zachowanie na podstawie klasy poprzednio wyslanej wiadomosci
     // sprawdzic, czy otrzymana wiadomosc jest odpowiedzia
-    if(czyOdpowiedz(wiadomosc)) {
+    if(!czyOdpowiedz(wiadomosc)) {
       return;
     }
     // zareagowac na odpowiedz od serwera
@@ -106,9 +107,9 @@ public class Mediator {
             .wyswietlPowiadomienie("Wprowadzona nazwa jest juz zajeta");
       }
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
-      this.kontrolerAplikacji_.rozpocznijGre(wiadomosc);
+      this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
-      this.wyslijAktualizacjePlanszy(wiadomosc);
+      this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     }
     this.oczekiwanieNaOdpowiedz_ = false;
   }
@@ -128,7 +129,6 @@ public class Mediator {
         ((KontrolerWidokuGraczyOnline)this.aktualnyKontroler_)
             .wyswietlZaproszenieOdGracza(argumenty[0]);
       }
-      return true;
     } else if(wiadomosc.startsWith("nowy_gracz")) {
       String[] argumenty = this.wydobadzArgumenty(wiadomosc);
       StringBuilder gracz = new StringBuilder();
@@ -140,20 +140,28 @@ public class Mediator {
       this.kontrolerAplikacji_.zaktualizujListeGraczy(gracz.toString(), true);
     } else if(wiadomosc.startsWith("Zaakceptowano")) {
       // TODO(Jakub Drzewiecki): Dolaczyc do pokoju gracza ktory zaakceptowal zaproszenie
+    } else if(wiadomosc.startsWith("Plansza")) {
+      this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
+    } else if(wiadomosc.startsWith("Czat")) {
+      if(aktualnyKontroler_ instanceof KontrolerPokoju)
+        ((KontrolerPokoju) aktualnyKontroler_).odbierzWiadomosc(this.wydobadzArgumenty(wiadomosc));
+    } else if(wiadomosc.startsWith("plansza")) { // tutaj wiadomosc o rozpoczeciu gry powinna sie inaczej nazywac
+      this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
+    } else {
+      return false;
     }
-    return false;
+    return true;
   }
 
   /**
    * Metoda odpowiedzialna za przesuniecie pionka oraz ewentualne
    * usuniecie pionka na podstawie informacji otrzymanych od serwera.
    *
-   * @param wiadomosc Wiadomosc otrzymana od serwera.
+   * @param argumenty Wiadomosc otrzymana od serwera.
    */
-  private void wyslijAktualizacjePlanszy(String wiadomosc) {
-    String[] argumenty = wiadomosc.split(" ");
+  private void wyslijAktualizacjePlanszy(String[] argumenty) {
     StringBuilder plansza = new StringBuilder();
-    for(int i=1; i < argumenty.length; i++) {
+    for(int i=0; i < argumenty.length; i++) {
       plansza.append(argumenty[i]);
       if(i != argumenty.length - 1)
         plansza.append(" ");

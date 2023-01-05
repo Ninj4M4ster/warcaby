@@ -146,11 +146,14 @@ public class KontrolerAplikacji {
   /**
    * Metoda odpowiedzialna za utworzenie widoku gry z podanym przez serwer rozmiarem planszy.
    *
-   * @param rozmiarPlanszy Rozmiar planszy odpowiadajacy wybranym zasadom.
+   * @param argumenty Argumenty - kolor pionkow oraz rozmiar planszy.
    */
-  public void rozpocznijGre(String rozmiarPlanszy) {
-    // TODO(Jakub Drzewiecki): Brakuje wyboru koloru pionkow przez serwer
-    this.model_.modelGry().ustawIloscPol(Integer.parseInt(rozmiarPlanszy));
+  public void rozpocznijGre(String[] argumenty) {
+    if(argumenty[0].compareTo("1") == 0)
+      this.model_.modelGry().ustawKolorPionkow("bialy");
+    else
+      this.model_.modelGry().ustawKolorPionkow("czarny");
+    this.model_.modelGry().ustawIloscPol(Integer.parseInt(argumenty[1]));
 
     KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY);
     assert kontroler != null;

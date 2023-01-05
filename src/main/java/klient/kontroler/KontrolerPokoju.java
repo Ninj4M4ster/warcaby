@@ -63,13 +63,33 @@ public class KontrolerPokoju implements KontrolerWidoku {
    * oraz usuniecie jej z pola tekstowego.
    */
   public void wyslijWiadomosc() {
-    String wiadomosc = this.model_.tekstWiadomosci().get();
+    String tekst = this.model_.tekstWiadomosci().get();
     // TODO(Jakub Drzewiecki): Utworzyć klasę reprezentującą chmurki wiadomosci, ktore beda dodawane do historii chatu
-    if(!wiadomosc.isBlank()) {
-      Label nodeWiadomosc = new Label(wiadomosc);
+    if(!tekst.isBlank()) {
+      Label nodeWiadomosc = new Label(tekst);
       model_.dodajWiadomoscDoHistorii(nodeWiadomosc);
       this.model_.ustawTekstWiadomosci("");
+
+      Wiadomosc wiadomosc = new Wiadomosc(tekst, TypyWiadomosci.WIADOMOSC);
+      this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
     }
+  }
+
+  /**
+   * Odbierz wyrazy przekazane od serwera i wyswietl je jako jedna wiadomosc na czacie.
+   *
+   * @param wyrazy Wyrazy skladajace sie na jedna wiadomosc.
+   */
+  public void odbierzWiadomosc(String[] wyrazy) {
+    StringBuilder tekst = new StringBuilder();
+    for(int i=0; i < wyrazy.length; i++) {
+      tekst.append(wyrazy[i]);
+      if(i != wyrazy.length - 1)
+        tekst.append(" ");
+    }
+    Label nodeWiadomosc = new Label(tekst.toString());
+    model_.dodajWiadomoscDoHistorii(nodeWiadomosc);
+    this.model_.ustawTekstWiadomosci("");
   }
 
   /**
@@ -82,7 +102,7 @@ public class KontrolerPokoju implements KontrolerWidoku {
     String numer_trybu = this.wybierzNumerTrybu(tryb);
     Wiadomosc wiadomosc = new Wiadomosc(numer_trybu, TypyWiadomosci.ROZPOCZECIE_GRY);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
-    this.kontrolerGlowny_.rozpocznijGre("8");
+    this.kontrolerGlowny_.rozpocznijGre(new String[]{"bialy", "8"});
   }
 
   /**
