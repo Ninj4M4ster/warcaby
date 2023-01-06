@@ -1,5 +1,7 @@
 package klient.widoki;
 
+import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -10,12 +12,20 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import klient.kontroler.KontrolerPokoju;
 import klient.kontroler.KontrolerWidoku;
 import klient.model.Model;
@@ -141,12 +151,36 @@ public class WidokPokoju extends Widok {
     kontenerInformacji.getRowConstraints().addAll(rzad1, rzad2);
     kontenerInformacji.setPrefWidth(300);
 
+    // uklad konteneru informacji o graczach w lobby
+    BorderPane ukladKonteneruGraczy = new BorderPane();
+    Label opisUkladu = new Label("Gracze");
+    opisUkladu.setFont(new Font("Book Antiqua", 18));
+    opisUkladu.setTextAlignment(TextAlignment.CENTER);
+    opisUkladu.setAlignment(Pos.CENTER);
+    opisUkladu.minWidthProperty().bind(ukladKonteneruGraczy.widthProperty());
+
+    ukladKonteneruGraczy.setTop(opisUkladu);
+
     // kontener informacji o graczach w lobby
     VBox kontenerGraczy = new VBox();
     kontenerGraczy.setAlignment(Pos.CENTER);
-    kontenerGraczy.getChildren().add(new Label("Gracz 1"));
+    kontenerGraczy.setSpacing(60);
+    kontenerGraczy.setBackground(Background.fill(Color.valueOf("#6e6e6e")));
 
-    kontenerInformacji.add(kontenerGraczy, 0, 0);
+    ukladKonteneruGraczy.setCenter(kontenerGraczy);
+
+    // nazwy graczy do wyswietlenia
+    Label nazwaKlienta = this.utworzEtykieteGracza(this.model_.nazwaGracza());
+    if(this.model_.czyWlasciciel())
+      nazwaKlienta.setTextFill(Color.YELLOW);
+
+    Label nazwaDrugiegoGracza = this.utworzEtykieteGracza(this.model_.nazwaDrugiegoGracza());
+    if(!this.model_.czyWlasciciel())
+      nazwaDrugiegoGracza.setTextFill(Color.YELLOW);
+
+    kontenerGraczy.getChildren().addAll(nazwaKlienta, nazwaDrugiegoGracza);
+
+    kontenerInformacji.add(ukladKonteneruGraczy, 0, 0);
 
     // kontener opcji gry
     VBox kontenerOpcjiGry = new VBox();
@@ -169,5 +203,30 @@ public class WidokPokoju extends Widok {
 
     // ustawienie widgetow w kontenerze
     kontenerWidoku_.setRight(kontenerInformacji);
+  }
+
+  /**
+   * Metoda ta tworzy etykiete nazwy gracza.
+   *
+   * @param nazwa Nazwa gracza do wyswietlenia.
+   * @return Etykieta nazwy gracza.
+   */
+  private Label utworzEtykieteGracza(StringProperty nazwa) {
+    Label etykieta = new Label();
+    etykieta.textProperty().bind(nazwa);
+    etykieta.setFont(new Font("Book Antiqua", 25));
+    etykieta.setPadding(new Insets(5, 5, 5, 5));
+    etykieta.setBorder(
+        new Border(
+            new BorderStroke(Color.valueOf("#1c1c1c"), BorderStrokeStyle.SOLID,
+                new CornerRadii(3), new BorderWidths(1))
+        )
+    );
+    etykieta.setBackground(
+        new Background(
+            new BackgroundFill(Color.valueOf("#949494"), new CornerRadii(3), null)
+        )
+    );
+    return etykieta;
   }
 }

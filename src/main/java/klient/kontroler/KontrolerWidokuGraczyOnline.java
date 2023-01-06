@@ -84,10 +84,8 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   /**
    * Metoda odpowiedzialna za ukazanie listy graczy online po otrzymaniu odpowiedzi od serwera,
    * ze nazwa zostala przyjeta.
-   * TODO(Jakub Drzewiecki): Potrzebna jest metoda wywolywana gdy nazwa zostanie odrzucona, w ktorej wyswietlane bedzie odpowiednie powiadomienie.
    */
   public void przejdzDoListyGraczy() {
-    // TODO(Jakub Drzewiecki): dodać animację przejścia do widoku listy graczy online
     this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyGraczy());
     this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
   }

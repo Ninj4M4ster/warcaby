@@ -27,7 +27,6 @@ public class KontrolerAplikacji {
    * Konstruktor, tworzy polaczenie i glowny model.
    */
   public KontrolerAplikacji() {
-    boolean czyPolaczono;
     mediator_ = new Mediator(this);
     model_ = new GlownyModel(mediator_.czyPolaczono());
   }
@@ -71,6 +70,8 @@ public class KontrolerAplikacji {
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
 
     this.model_.modelPokoju().ustawCzyWlasciciel(true);
+    // do usuniecia
+    this.model_.modelPokoju().ustawNazweDrugiegoGracza(zaproszonyGracz);
 
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
@@ -99,6 +100,7 @@ public class KontrolerAplikacji {
    * @param wlascicielPokoju Wlasciciel innego pokoju.
    */
   public void dolaczDoPokoju(String wlascicielPokoju) {
+    System.out.println(wlascicielPokoju);
     Wiadomosc wiadomosc =
         new Wiadomosc("akceptuje " + wlascicielPokoju, TypyWiadomosci.ODPOWIEDZ);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);

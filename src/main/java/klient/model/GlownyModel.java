@@ -34,9 +34,9 @@ public class GlownyModel {
    * @param czyPolaczono Czy uzytkownik jest aktualnie polaczony z serwerem?
    */
   public GlownyModel(BooleanProperty czyPolaczono) {
-    this.czyPolaczono_.bind(czyPolaczono);
+    this.ustawCzyPolaczono(czyPolaczono);
     this.modelGraczyOnline_ = new ModelGraczyOnline(nazwaGracza_, czyPolaczono_);
-    this.modelPokoju_ = new ModelPokoju(czyPolaczono_);
+    this.modelPokoju_ = new ModelPokoju(nazwaGracza_, czyPolaczono_);
     this.modelGry_ = new ModelGry(czyPolaczono_);
   }
 
@@ -81,7 +81,7 @@ public class GlownyModel {
    *
    * @param czyPolaczono Czy uzytkownik jest polaczony z serwerem?
    */
-  public void ustawCzyPolaczono(boolean czyPolaczono) {
-    this.czyPolaczono_.set(czyPolaczono);
+  public void ustawCzyPolaczono(BooleanProperty czyPolaczono) {
+    this.czyPolaczono_.bind(czyPolaczono);
   }
 }

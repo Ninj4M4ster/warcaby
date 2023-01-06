@@ -41,7 +41,7 @@ public abstract class TestKontroler {
     if(typ == TypyKontrolerow.KONTROLER_GRACZY_ONLINE)
       return new ModelGraczyOnline(nazwaGracza, czyPolaczono);
     else if(typ == TypyKontrolerow.KONTROLER_POKOJU)
-      return new ModelPokoju(czyPolaczono);
+      return new ModelPokoju(nazwaGracza, czyPolaczono);
     else
       return new ModelGry(czyPolaczono);
   }

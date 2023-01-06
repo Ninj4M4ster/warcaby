@@ -18,6 +18,8 @@ import klient.ZasadyGry;
 public class ModelPokoju implements Model {
   /** Status polaczenia z serwerem */
   private final BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
+  /** Nazwa wprowadzona przez klienta */
+  private final StringProperty nazwaGracza_ = new SimpleStringProperty();
   /** Kontener przechowujacy wszystkie wyslane wczesniej wiadomosci */
   private final VBox historiaChatu_ = new VBox();
 
@@ -34,12 +36,12 @@ public class ModelPokoju implements Model {
   /** Status czy klient jest wlascicielem pokoju */
   private boolean czyWlasciciel_ = false;
   /** Nazwa drugiego gracza w pokoju */
-  private String nazwaDrugiegoGracza_ = "";
+  private StringProperty nazwaDrugiegoGracza_ = new SimpleStringProperty();
 
   /**
    * Konstruktor.
    */
-  public ModelPokoju(BooleanProperty czyPolaczono) {
+  public ModelPokoju(StringProperty nazwaGracza, BooleanProperty czyPolaczono) {
     ObservableList<String> listaTrybow =
         FXCollections.observableArrayList(ZasadyGry.KLASYCZNE.toString(),
             ZasadyGry.POLSKIE.toString(),
@@ -47,6 +49,7 @@ public class ModelPokoju implements Model {
     this.dostepneTryby_.set(listaTrybow);
     this.domyslnyTryb_ = listaTrybow.get(0);
     this.ustawCzyPolaczono(czyPolaczono);
+    this.ustawNazwaGracza(nazwaGracza);
   }
 
   /**
@@ -67,6 +70,24 @@ public class ModelPokoju implements Model {
   @Override
   public BooleanProperty czyPolaczono() {
     return this.czyPolaczono_;
+  }
+
+  /**
+   * Metoda zwracajaca nazwe uzytkownika.
+   *
+   * @return Nazwa uzytkownika.
+   */
+  public StringProperty nazwaGracza() {
+    return this.nazwaGracza_;
+  }
+
+  /**
+   * Metoda przypisujaca nazwe uzytkownika do zmiennej.
+   *
+   * @param nazwa Nazwa uzytkownika.
+   */
+  public void ustawNazwaGracza(StringProperty nazwa) {
+    this.nazwaGracza_.bind(nazwa);
   }
 
   /**
@@ -177,7 +198,7 @@ public class ModelPokoju implements Model {
    *
    * @return Nazwa drugiego gracza w pokoju.
    */
-  public String nazwaDrugiegoGracza() {
+  public StringProperty nazwaDrugiegoGracza() {
     return this.nazwaDrugiegoGracza_;
   }
 
@@ -187,6 +208,6 @@ public class ModelPokoju implements Model {
    * @param nazwa Nazwa drugiego gracza w pokoju.
    */
   public void ustawNazweDrugiegoGracza(String nazwa) {
-    this.nazwaDrugiegoGracza_ = nazwa;
+    this.nazwaDrugiegoGracza_.set(nazwa);
   }
 }
