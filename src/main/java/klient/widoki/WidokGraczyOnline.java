@@ -11,6 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -65,8 +66,6 @@ public class WidokGraczyOnline extends Widok {
    */
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
-    //TODO(Jakub Drzewiecki) przerobić w późniejszym etapie całość na
-    // StackPane i dodać w tle więcej elementów (np pionki)
     if(this.model_ != null || this.kontroler_ != null)
       throw new IllegalStateException("Nie mozna utworzyc juz utworzonego widoku");
     this.kontroler_ = (KontrolerWidokuGraczyOnline) kontroler;
@@ -74,6 +73,12 @@ public class WidokGraczyOnline extends Widok {
 
     this.okno_ = new StackPane();
     this.okno_.setAlignment(Pos.CENTER);
+    this.okno_.setOnKeyPressed(keyEvent -> {
+      if(keyEvent.getCode() == KeyCode.ENTER
+          && this.model_.centrumMenu().get() != this.model_.kontenerListyGraczy()) {
+        this.kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText());
+      }
+    });
 
     // layout, gdzie centrum to glowne elementy aplikacji, a dolny element to pasek statusu
     BorderPane layoutMenu = new BorderPane();

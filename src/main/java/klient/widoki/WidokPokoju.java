@@ -103,6 +103,7 @@ public class WidokPokoju extends Widok {
     VBox historiaChatu = this.model_.historiaChatu();
     historiaChatu.setAlignment(Pos.BOTTOM_CENTER);
     historiaChatu.setFillWidth(true);
+    historiaChatu.setSpacing(10);
     historiaChatu.heightProperty().addListener(
         (observable) -> kontenerHistoriiChatu.setVvalue(kontenerHistoriiChatu.getVmax()));
 

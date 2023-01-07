@@ -4,12 +4,12 @@ import static klient.ZasadyGry.KANADYJSKIE;
 import static klient.ZasadyGry.KLASYCZNE;
 import static klient.ZasadyGry.POLSKIE;
 
-import javafx.scene.control.Label;
 import klient.komunikacja.Mediator;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.model.Model;
 import klient.model.ModelPokoju;
+import klient.widoki.widgety.DymekCzatu;
 
 /**
  * Klasa kontrolera widoku pokoju.
@@ -72,10 +72,9 @@ public class KontrolerPokoju implements KontrolerWidoku {
    */
   public void wyslijWiadomosc() {
     String tekst = this.model_.tekstWiadomosci().get();
-    // TODO(Jakub Drzewiecki): Utworzyć klasę reprezentującą chmurki wiadomosci, ktore beda dodawane do historii chatu
     if(!tekst.isBlank()) {
-      Label nodeWiadomosc = new Label(tekst);
-      model_.dodajWiadomoscDoHistorii(nodeWiadomosc);
+      DymekCzatu dymek = new DymekCzatu(tekst, true);
+      model_.dodajWiadomoscDoHistorii(dymek);
       this.model_.ustawTekstWiadomosci("");
 
       Wiadomosc wiadomosc = new Wiadomosc(tekst, TypyWiadomosci.WIADOMOSC);
@@ -95,8 +94,8 @@ public class KontrolerPokoju implements KontrolerWidoku {
       if(i != wyrazy.length - 1)
         tekst.append(" ");
     }
-    Label nodeWiadomosc = new Label(tekst.toString());
-    model_.dodajWiadomoscDoHistorii(nodeWiadomosc);
+    DymekCzatu dymek = new DymekCzatu(tekst.toString(), false);
+    model_.dodajWiadomoscDoHistorii(dymek);
     this.model_.ustawTekstWiadomosci("");
   }
 
