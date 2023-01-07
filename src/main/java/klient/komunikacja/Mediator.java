@@ -95,7 +95,6 @@ public class Mediator {
    * @param wiadomosc Wiadomosc zwrotna otrzymana od serwera.
    */
   public void przekazWiadomoscDoAplikacji(String wiadomosc) {
-    // TODO(Jakub Drzewiecki): Utworzyc rozne rodzaje wiadomosci oraz dostosowac zachowanie na podstawie klasy poprzednio wyslanej wiadomosci
     // sprawdzic, czy otrzymana wiadomosc jest odpowiedzia
     if(!czyOdpowiedz(wiadomosc)) {
       return;
@@ -112,6 +111,9 @@ public class Mediator {
       this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
       this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
+    } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
+      if(wiadomosc.startsWith("false"))
+        this.kontrolerAplikacji_.powiadomOdrzucil();
     }
     this.oczekiwanieNaOdpowiedz_ = false;
   }
@@ -122,7 +124,6 @@ public class Mediator {
    * @param wiadomosc Wiadomosc otrzymana od serwera.
    *
    * @return Czy podana wiadomosc jest odpowiedzia na poprzednio wyslane informacje?
-   * TODO(Jakub Drzewiecki): Sprawdzic jakie komendy, ktore nie sa odpowiedziami, wysyla serwer.
    */
   private boolean czyOdpowiedz(String wiadomosc) {
     if(wiadomosc.startsWith("Zaproszenie")) {
@@ -132,16 +133,10 @@ public class Mediator {
             .wyswietlZaproszenieOdGracza(argumenty[0]);
       }
     } else if(wiadomosc.startsWith("nowy_gracz")) {
-      String[] argumenty = this.wydobadzArgumenty(wiadomosc);
-      StringBuilder gracz = new StringBuilder();
-      for(int i=0; i < argumenty.length; i++) {
-        gracz.append(argumenty[i]);
-        if(i != argumenty.length - 1)
-          gracz.append(" ");
-      }
-      this.kontrolerAplikacji_.zaktualizujListeGraczy(gracz.toString(), true);
+      String gracz = stworzNazwe(wiadomosc);
+      this.kontrolerAplikacji_.zaktualizujListeGraczy(gracz, true);
     } else if(wiadomosc.startsWith("Zaakceptowano")) {
-      // TODO(Jakub Drzewiecki): Dolaczyc do pokoju gracza ktory zaakceptowal zaproszenie
+      this.kontrolerAplikacji_.powiadomDolaczyl();
     } else if(wiadomosc.startsWith("Plansza")) {
       this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     } else if(wiadomosc.startsWith("Czat")) {
@@ -149,10 +144,30 @@ public class Mediator {
         ((KontrolerPokoju) aktualnyKontroler_).odbierzWiadomosc(this.wydobadzArgumenty(wiadomosc));
     } else if(wiadomosc.startsWith("plansza")) { // tutaj wiadomosc o rozpoczeciu gry powinna sie inaczej nazywac
       this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
+    } else if(wiadomosc.startsWith("Rozlaczono")) {
+      String gracz = stworzNazwe(wiadomosc);
+      this.kontrolerAplikacji_.zaktualizujListeGraczy(gracz, false);
     } else {
       return false;
     }
     return true;
+  }
+
+  /**
+   * Metoda wydobywajaca nazwe gracza z otrzymanej wiadomosci.
+   *
+   * @param wiadomosc Otrzymana wiadomosc.
+   * @return Nazwa gracza.
+   */
+  private String stworzNazwe(String wiadomosc) {
+    String[] argumenty = this.wydobadzArgumenty(wiadomosc);
+    StringBuilder gracz = new StringBuilder();
+    for(int i=0; i < argumenty.length; i++) {
+      gracz.append(argumenty[i]);
+      if(i != argumenty.length - 1)
+        gracz.append(" ");
+    }
+    return gracz.toString();
   }
 
   /**

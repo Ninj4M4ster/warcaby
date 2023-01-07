@@ -18,6 +18,7 @@ import klient.kontroler.KontrolerWidokuGraczyOnline;
 
 /**
  * Klasa reprezentujaca powiadomienie w widoku graczy online.
+ * TODO(Jakub Drzewiecki): Zaimplementowac wzorzec Metoda Wytworcza lub Dekorator
  */
 public class Powiadomienie extends VBox {
   /** Nazwa gracza ktory wyslal zaproszenie lub '' jesli powiadomienie nie jest zaproszeniem */
@@ -59,7 +60,6 @@ public class Powiadomienie extends VBox {
       this.stworzPrzyciski(kontroler, powiadomienie);
       this.gracz_ = powiadomienie;
     } else {
-      // TODO(Jakub Drzewiecki): Dodac usuniecie powiadomienia po 5 sekundach
       this.usunPowiadomienie(5);
     }
   }

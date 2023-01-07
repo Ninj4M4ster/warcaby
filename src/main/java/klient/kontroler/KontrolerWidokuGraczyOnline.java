@@ -153,7 +153,7 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    * @param wlascicielPokoju Gracz, ktory zaprosil klienta do pokoju.
    */
   public void odrzucZaproszenie(String wlascicielPokoju) {
-    this.kontrolerGlowny_.odrzucZaproszenie(wlascicielPokoju);
+    this.kontrolerGlowny_.odrzucZaproszenie();
     VBox kontenerPowiadomien = this.model_.kontenerPowiadomien();
     kontenerPowiadomien.getChildren().removeIf(node -> node instanceof Powiadomienie
         && ((Powiadomienie) node).gracz().compareTo(wlascicielPokoju) == 0);

@@ -1,6 +1,7 @@
 package klient.kontroler;
 
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import klient.Aplikacja;
 import klient.komunikacja.Mediator;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
@@ -9,6 +10,7 @@ import klient.model.GlownyModel;
 import klient.widoki.TworcaWidoku;
 import klient.widoki.TypyWidokow;
 import klient.widoki.Widok;
+import klient.widoki.widgety.Powiadomienie;
 
 // TODO(Jakub Drzewiecki): Ta klasa mogłaby implementować wzorzec singleton.
 
@@ -65,12 +67,10 @@ public class KontrolerAplikacji {
    * @param zaproszonyGracz Nazwa zaproszonego gracza.
    */
   public void utworzPokoj(String zaproszonyGracz) {
-    // TODO(Jakub Drzewiecki): Trzeba tylko wysylac zaproszenie do pokoju i dolaczyc gdy zostanie potwierdzone
     Wiadomosc wiadomosc = new Wiadomosc(zaproszonyGracz, TypyWiadomosci.ZAPROSZENIE);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
 
     this.model_.modelPokoju().ustawCzyWlasciciel(true);
-    // do usuniecia
     this.model_.modelPokoju().ustawNazweDrugiegoGracza(zaproszonyGracz);
 
     KontrolerWidoku kontroler =
@@ -87,11 +87,24 @@ public class KontrolerAplikacji {
 
   /**
    * Metoda wywolywana gdy drugi gracz dolaczy do pokoju.
-   *
-   * @param nazwaGracza Nazwa drugiego gracza.
    */
-  public void przylaczGraczaDoPokoju(String nazwaGracza) {
-    this.model_.modelPokoju().ustawNazweDrugiegoGracza(nazwaGracza);
+  public void powiadomDolaczyl() {
+    this.model_.modelPokoju().dodajWiadomoscDoHistorii(
+        new Label(
+            this.model_.modelPokoju().nazwaDrugiegoGracza().get() + " dolaczyl do pokoju.")
+    );
+  }
+
+  /**
+   * Metoda wywolywana, gdy drugi gracz odrzucil zaproszenie.
+   */
+  public void powiadomOdrzucil() {
+    Aplikacja.ustawNowyKorzen(this.utworzPodstawowaScene());
+    this.model_.modelGraczyOnline().kontenerPowiadomien().getChildren().add(
+        new Powiadomienie("Zaproszenie do gry zostało odrzucone",
+            null,
+            false)
+    );
   }
 
   /**
@@ -102,7 +115,7 @@ public class KontrolerAplikacji {
   public void dolaczDoPokoju(String wlascicielPokoju) {
     System.out.println(wlascicielPokoju);
     Wiadomosc wiadomosc =
-        new Wiadomosc("akceptuje " + wlascicielPokoju, TypyWiadomosci.ODPOWIEDZ);
+        new Wiadomosc("akceptuje", TypyWiadomosci.ODPOWIEDZ);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
 
     this.model_.modelPokoju().ustawCzyWlasciciel(false);
@@ -122,12 +135,10 @@ public class KontrolerAplikacji {
 
   /**
    * Metoda uruchamiana gdy klient odrzuci zaproszenie innego gracza do pokoju.
-   *
-   * @param wlascicielPokoju Nazwa zapraszajacego gracza.
    */
-  public void odrzucZaproszenie(String wlascicielPokoju) {
+  public void odrzucZaproszenie() {
     Wiadomosc wiadomosc =
-        new Wiadomosc("odrzuca " + wlascicielPokoju, TypyWiadomosci.ODPOWIEDZ);
+        new Wiadomosc("odrzuca", TypyWiadomosci.ODPOWIEDZ);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
   }
 
