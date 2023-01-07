@@ -28,7 +28,7 @@ public class ModelPokoju implements Model {
       new SimpleObjectProperty<>();
 
   /** Zmienna przechowujaca domyslne zasady gry */
-  private String domyslnyTryb_;
+  private final String domyslnyTryb_;
 
   /** Element, w ktorym uzytkownik wpisuje wiadomosc, ktora potem moze wyslac */
   private final StringProperty tekstWiadomosci_ = new SimpleStringProperty();
@@ -36,7 +36,7 @@ public class ModelPokoju implements Model {
   /** Status czy klient jest wlascicielem pokoju */
   private boolean czyWlasciciel_ = false;
   /** Nazwa drugiego gracza w pokoju */
-  private StringProperty nazwaDrugiegoGracza_ = new SimpleStringProperty();
+  private final StringProperty nazwaDrugiegoGracza_ = new SimpleStringProperty();
 
   /**
    * Konstruktor.
@@ -118,43 +118,12 @@ public class ModelPokoju implements Model {
   }
 
   /**
-   * Metoda ustawiajaca dostepne zasady gry.
-   *
-   * @param lista Lista dostepnych zasad gry.
-   */
-  public void ustawDostepneTryby(ObservableList<String> lista) {
-    this.dostepneTryby_.set(lista);
-    this.ustawDomyslnyTryb(lista.get(0));
-  }
-
-  /**
-   * Metoda ustawiajaca dostepne zasady gry.
-   *
-   * @param tryby Lista dostepnych zasad gry.
-   */
-  public void ustawDostepneTryby(String[] tryby) {
-    ObservableList<String> listaTrybow = FXCollections.observableArrayList(tryby);
-    this.dostepneTryby_.set(listaTrybow);
-    this.ustawDomyslnyTryb(listaTrybow.get(0));
-  }
-
-  /**
    * Metoda zwracajcaca domyslne zasady gry.
    *
    * @return Domyslne zasady gry.
    */
   public String domyslnyTryb() {
     return this.domyslnyTryb_;
-  }
-
-  /**
-   * Metoda zmieniajaca domyslne zasady gry.
-   *
-   * @param tryb Zasady gry.
-   * TODO(Jakub Drzewiecki): Dodac sprawdzenie czy zasady znajduja sie w liscie wszystkich zasad.
-   */
-  public void ustawDomyslnyTryb(String tryb) {
-    this.domyslnyTryb_ = tryb;
   }
 
   /**
