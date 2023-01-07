@@ -20,6 +20,13 @@ public class TestKontrolerAplikacji {
   }
 
   @Test
+  public void testZakonczPolaczenie() {
+    ServerSocket serwer = this.stworzSztucznySerwer();
+    KontrolerAplikacji kontroler = new KontrolerAplikacji();
+    kontroler.zakonczPolaczenie();
+  }
+
+  @Test
   public void testUtworzPodstawowaScene() {
     KontrolerAplikacji kontroler = new KontrolerAplikacji();
     kontroler.utworzPodstawowaScene();
@@ -29,6 +36,30 @@ public class TestKontrolerAplikacji {
   public void testUtworzPokoj() {
     KontrolerAplikacji kontroler = new KontrolerAplikacji();
     kontroler.utworzPokoj("");
+  }
+
+  @Test
+  public void testPowiadomDolaczyl() {
+    KontrolerAplikacji kontroler = new KontrolerAplikacji();
+    kontroler.powiadomDolaczyl();
+  }
+
+  @Test
+  public void testPoiadomOdrzucil() {
+    KontrolerAplikacji kontroler = new KontrolerAplikacji();
+    kontroler.powiadomOdrzucil();
+  }
+
+  @Test
+  public void testDolaczDoPokoju() {
+    KontrolerAplikacji kontroler = new KontrolerAplikacji();
+    kontroler.dolaczDoPokoju("");
+  }
+
+  @Test
+  public void testOdrzucZaproszenie() {
+    KontrolerAplikacji kontroler = new KontrolerAplikacji();
+    kontroler.odrzucZaproszenie();
   }
 
   @Test(expected = NullPointerException.class)
@@ -48,7 +79,9 @@ public class TestKontrolerAplikacji {
   @Test
   public void testRozpocznijGre() {
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontrolerAplikacji.rozpocznijGre(new String[]{"bialy", "8"});
+    kontrolerAplikacji.rozpocznijGre(new String[]{"1", "8"});
+    kontrolerAplikacji.rozpocznijGre(new String[]{"2", "10"});
+    kontrolerAplikacji.rozpocznijGre(new String[]{"1", "12"});
   }
 
 

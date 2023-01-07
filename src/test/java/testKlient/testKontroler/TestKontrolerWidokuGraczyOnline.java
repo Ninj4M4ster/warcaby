@@ -30,6 +30,15 @@ public class TestKontrolerWidokuGraczyOnline extends TestKontroler {
   }
 
   @Test
+  public void testOdnowPolaczenie() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.odnowPolaczenie();
+  }
+
+
+
+  @Test
   public void testZapiszNazweGracza() {
     KontrolerWidokuGraczyOnline kontroler =
         (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(
@@ -97,5 +106,33 @@ public class TestKontrolerWidokuGraczyOnline extends TestKontroler {
           }
         };
     kontroler.przypiszFunkcjeKafelkowi(change);
+  }
+
+  @Test
+  public void testWyswietlZaproszeneOdGracza() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.wyswietlZaproszenieOdGracza("");
+  }
+
+  @Test
+  public void testDolaczDoPokoju() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.dolaczDoPokoju("");
+  }
+
+  @Test
+  public void testOdrzucZaproszenie() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.odrzucZaproszenie("");
+  }
+
+  @Test
+  public void testWyswietlPowiadomienie() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.wyswietlPowiadomienie("");
   }
 }

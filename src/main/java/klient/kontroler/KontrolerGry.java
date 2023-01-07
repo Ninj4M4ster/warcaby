@@ -161,18 +161,18 @@ public class KontrolerGry implements KontrolerWidoku {
     String[] rzedy = wiadmoscPlansza.split("\n");
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
     for(int i = 0; i < polaPlanszy.length; i++) {
-      String[] otrzymaneRzedy = rzedy[i].split(" ");
+      String[] otrzymaneRzedy = rzedy[i].split("");
       for(int j=0; j < polaPlanszy[i].length; j++) {
         probujUsunPionek(i, j); // sprobowac usunac pionek z aktualnego pola
         if(otrzymaneRzedy[j].compareTo("1") == 0) {  // dodac bialy pionek
-          polaPlanszy[i][j].getChildrenUnmodifiable().add(
+          ((StackPane)polaPlanszy[i][j]).getChildren().add(
               new Pionek(Color.valueOf("#dbdbdb"),
                   Color.valueOf("#a3a3a3"),
                   ((StackPane)polaPlanszy[i][j]).widthProperty(),
                   this,
                   "bialy"));
-        } else {  // dodac czarny pionek
-          polaPlanszy[i][j].getChildrenUnmodifiable().add(
+        } else if(otrzymaneRzedy[j].compareTo("2") == 0) {  // dodac czarny pionek
+          ((StackPane)polaPlanszy[i][j]).getChildren().add(
               new Pionek(Color.valueOf("#363636"),
                   Color.valueOf("#424242"),
                   ((StackPane)polaPlanszy[i][j]).widthProperty(),
@@ -192,7 +192,7 @@ public class KontrolerGry implements KontrolerWidoku {
    */
   private void probujUsunPionek(int rzad, int kolumna) {
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
-    ObservableList<Node> elementyPola = polaPlanszy[rzad][kolumna].getChildrenUnmodifiable();
+    ObservableList<Node> elementyPola = ((StackPane)polaPlanszy[rzad][kolumna]).getChildren();
     if(elementyPola.size() != 0) {
       Node pionek = elementyPola.get(0);
       elementyPola.remove(pionek);

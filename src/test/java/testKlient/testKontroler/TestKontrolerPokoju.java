@@ -1,5 +1,6 @@
 package testKlient.testKontroler;
 
+import klient.ZasadyGry;
 import klient.komunikacja.Mediator;
 import klient.kontroler.KontrolerAplikacji;
 import klient.kontroler.KontrolerPokoju;
@@ -33,6 +34,13 @@ public class TestKontrolerPokoju extends TestKontroler {
     kontroler.przekazGlownyKontroler(kontrolerAplikacji);
   }
 
+  @Test
+  public void testOdnowPolaczenie() {
+    KontrolerPokoju kontrolerPokoju =
+        (KontrolerPokoju)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    kontrolerPokoju.odnowPolaczenie();
+  }
+
   @Test(expected = IllegalStateException.class)
   public void testPrzekazGlownyKontrolerError() {
     KontrolerWidoku kontrolerPokoju =
@@ -42,9 +50,16 @@ public class TestKontrolerPokoju extends TestKontroler {
   }
 
   @Test
-  public void testPrzekazWiadomosc() {
+  public void testWyslijWiadomosc() {
     KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontrolerZWiadomoscia(false);
     kontrolerPokoju.wyslijWiadomosc();
+  }
+
+  @Test
+  public void testOdbierzWiadomosc() {
+    KontrolerPokoju kontrolerPokoju =
+        (KontrolerPokoju)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    kontrolerPokoju.odbierzWiadomosc(new String[]{"a", "b", "c"});
   }
 
   @Test
@@ -54,6 +69,15 @@ public class TestKontrolerPokoju extends TestKontroler {
             TypyKontrolerow.KONTROLER_POKOJU,
             false);
     kontrolerPokoju.wyslijRozpocznijGre("");
+  }
+
+  @Test
+  public void testWybierzNumerTrybu() {
+    KontrolerPokoju kontroler =
+        (KontrolerPokoju)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    kontroler.wyslijRozpocznijGre(ZasadyGry.KLASYCZNE.toString());
+    kontroler.wyslijRozpocznijGre(ZasadyGry.POLSKIE.toString());
+    kontroler.wyslijRozpocznijGre(ZasadyGry.KANADYJSKIE.toString());
   }
 
   private KontrolerPokoju utworzGotowyKontrolerZWiadomoscia(boolean statusPolaczenia) {
