@@ -1,5 +1,6 @@
 package serwer.komendy;
 
+import kontroler.KontrolerDanych;
 import serwer.Serwer;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
@@ -12,14 +13,14 @@ public class NadajImie implements Komenda{
     }
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
-        for(Gracz gracz_temp : Serwer.getGracze()) {
+        for(Gracz gracz_temp : KontrolerDanych.getInstance().getGracze()) {
             if(reszta.compareTo(gracz_temp.getNick()) == 0) {
                 return "false";
             }
         }
         gracz.setNick(reszta);
 
-        for(Gracz gracz_temp : Serwer.getGracze()) {
+        for(Gracz gracz_temp : KontrolerDanych.getInstance().getGracze()) {
             if(reszta.compareTo(gracz_temp.getNick()) != 0) {
                 gracz_temp.getSt().Wyslij("nowy_gracz " + reszta);
                 gracz.getSt().Wyslij("nowy_gracz " + gracz_temp.getNick());

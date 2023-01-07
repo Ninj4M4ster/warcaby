@@ -1,5 +1,6 @@
 package serwer;
 
+import kontroler.KontrolerDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 import serwer.komendy.Komenda;
@@ -20,8 +21,7 @@ public class SerwerThread extends Thread {
 
     public SerwerThread(Socket socket, int gracze_id) {
         this.socket = socket;
-        gracz = new Gracz(gracze_id, this);
-        Serwer.addGracz(gracz);
+        gracz = new Gracz(this);
     }
 
     public void Wyslij(String wiadomosc) {
@@ -50,20 +50,20 @@ public class SerwerThread extends Thread {
                 String zwrotne = kom.Wykonaj(pw.getReszta(), pokoj);
                 out.println(zwrotne);
             } catch (IOException e) {
-                for(Gracz gracz : Serwer.getGracze()) {
+                for(Gracz gracz : KontrolerDanych.getInstance().getGracze()) {
                     if(!gracz.equals(this.gracz)) {
                         gracz.getSt().Wyslij("Rozlaczono " + this.gracz.getNick());
                     }
                 }
 
-                Serwer.removeGracz(this.gracz);
+                KontrolerDanych.getInstance().removeGracz(this.gracz);
 
                 if(this.gracz.getPokoj() != null) {
                     Pokoj pokoj1 = this.gracz.getPokoj();
                     pokoj1.kontroler_stanu_gry.PRZERWIJ();
                     pokoj1.setGosc(null);
                     pokoj1.setMistrz(null);
-                    Serwer.removePokoj(pokoj1);
+                    KontrolerDanych.getInstance().removePokoj(pokoj1);
                 }
 
                 System.out.println("Rozłaczono " + this.gracz.getNick());

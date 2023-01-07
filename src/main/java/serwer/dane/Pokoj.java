@@ -1,5 +1,6 @@
 package serwer.dane;
 
+import kontroler.KontrolerDanych;
 import serwer.Serwer;
 import serwer.komendy.zasady.ZasadyGry;
 
@@ -17,7 +18,7 @@ public class Pokoj {
         this.mistrz = mistrz;
         gosc = null;
         this.zasady_gry = zasady_gry;
-        Serwer.addPokoj(this);
+        KontrolerDanych.getInstance().addPokoj(this);
         mistrz.setPokoj(this);
         kontroler_stanu_gry = new KontrolerStanuGry();
     }
@@ -28,7 +29,7 @@ public class Pokoj {
         this.gosc = gosc;
         gosc.setPokoj(this);
         this.zasady_gry = zasady_gry;
-        Serwer.addPokoj(this);
+        KontrolerDanych.getInstance().addPokoj(this);
         id = licznik;
         licznik += 1;
         kontroler_stanu_gry = new KontrolerStanuGry();
@@ -39,7 +40,7 @@ public class Pokoj {
         mistrz.setPokoj(this);
         this.gosc = gosc;
         gosc.setPokoj(this);
-        Serwer.addPokoj(this);
+        KontrolerDanych.getInstance().addPokoj(this);
         id = licznik;
         licznik += 1;
         kontroler_stanu_gry = new KontrolerStanuGry();
@@ -48,7 +49,7 @@ public class Pokoj {
     public Pokoj(Gracz mistrz) {
         this.mistrz = mistrz;
         mistrz.setPokoj(this);
-        Serwer.addPokoj(this);
+        KontrolerDanych.getInstance().addPokoj(this);
         id = licznik;
         licznik += 1;
         kontroler_stanu_gry = new KontrolerStanuGry();

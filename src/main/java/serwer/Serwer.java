@@ -10,11 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Serwer {
-  private static List<Gracz> gracze = new ArrayList<Gracz>();
-  private static List<Pokoj> pokoje = new ArrayList<Pokoj>();
-
-  private Socket socket;
-
   public static void main(String[] args) {
   ServerSocket ss = null;
     
@@ -38,29 +33,5 @@ public class Serwer {
         System.out.println("Problem z połączeniem");
       }
     }
-  }
-
-  public static List<Pokoj> getPokoje() {
-    return pokoje;
-  }
-
-  public static List<Gracz> getGracze() {
-    return gracze;
-  }
-
-  public synchronized static void addPokoj(Pokoj pokoj) {
-    pokoje.add(pokoj);
-  }
-
-  public synchronized static void addGracz(Gracz gracz) {
-    gracze.add(gracz);
-  }
-
-  public synchronized static void removeGracz(Gracz gracz) {
-    gracze.remove(gracz);
-  }
-
-  public synchronized static void removePokoj(Pokoj pokoj) {
-    pokoje.remove(pokoj);
   }
 }
