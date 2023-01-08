@@ -3,12 +3,34 @@ package serwer.komendy.zasady;
 import serwer.dane.Gracz;
 import serwer.dane.KontrolerStanuGry;
 
+import java.util.ArrayList;
+
 public abstract class ZasadyGry {
-    private int[][] plansza;
+    int[][] plansza;
+    ArrayList<Integer> ruchy;
+    int pionek;
+
     KontrolerStanuGry.StanGry stan_gry;
     Gracz gracz;
 
-    public boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
+    boolean czyWToku() {
+        if(stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH || stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) {
+            return true;
+        }
+        return false;
+    }
+
+    boolean czyKolor() {
+        if((pionek == 1 || pionek == 3) && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH) {
+            return true;
+        }
+        if((pionek == 2 || pionek == 4) && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
         if(gracz.getKolor() != kolor) {
             return false;
@@ -16,7 +38,7 @@ public abstract class ZasadyGry {
         if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
-        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || stan_gry == KontrolerStanuGry.StanGry.PRZERWANA || (kolor == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
+        if((kolor == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
             return false;
         }
         if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
@@ -33,7 +55,7 @@ public abstract class ZasadyGry {
         return false;
     }
 
-    public boolean ruchKrolowa(int x, int y, int przesuniecie_x, int przesuniecie_y) {
+    private boolean ruchKrolowa(int x, int y, int przesuniecie_x, int przesuniecie_y) {
         int kolor = plansza[x][y];
         if(gracz.getKolor() != kolor) {
             return false;
@@ -59,12 +81,27 @@ public abstract class ZasadyGry {
         return true;
     }
 
-    abstract public boolean bicie(int x, int y);
+    public boolean promocja(int x, int y) {
+        if((plansza[x][y] == 1 && y == 7) || (plansza[x][y] == 2 && y == 0)) {
+            return true;
+        }
+        return false;
+    }
 
-    abstract public boolean promocja();
+    public boolean sprawdz(int[] ruchy) {
+        if(!czyWToku() || !czyKolor()) {
+            return false;
+        }
+        return false;
+    }
 
     public void setPlansza(int[][] plansza) {
         this.plansza = plansza;
+    }
+
+    public void setRuchy(ArrayList<Integer> ruchy) {
+        this.ruchy = ruchy;
+        pionek = plansza[ruchy.get(0)][ruchy.get(1)];
     }
 
     public void setStanGry(KontrolerStanuGry.StanGry stan_gry) {

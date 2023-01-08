@@ -4,9 +4,11 @@ import serwer.dane.Gracz;
 import serwer.dane.KontrolerStanuGry;
 import serwer.dane.Pokoj;
 
+import java.util.ArrayList;
+
 public class RuchPionka implements Komenda{
-    int x, y, przesuniecie_x, przesuniecie_y;
     int[][] plansza;
+    ArrayList<Integer> ruchy;
     Gracz gracz;
 
     public RuchPionka(Gracz gracz) {
@@ -17,11 +19,13 @@ public class RuchPionka implements Komenda{
     public String Wykonaj(String reszta, Pokoj pokoj) {
         plansza = pokoj.getPlansza();
 
+        String[] ruchy_str = reszta.split(" ");
+        ruchy = new ArrayList<Integer>();
+
         try {
-            x = Integer.parseInt(reszta.split(" ")[0]);
-            y = Integer.parseInt(reszta.split(" ")[1]);
-            przesuniecie_x = Integer.parseInt(reszta.split(" ")[2]);
-            przesuniecie_y = Integer.parseInt(reszta.split(" ")[3]);
+            for(String koord : ruchy_str) {
+                ruchy.add(Integer.parseInt(koord));
+            }
         } catch(NumberFormatException nfe) {
             return "false";
         }
@@ -29,11 +33,12 @@ public class RuchPionka implements Komenda{
         pokoj.getZasadyGry().setPlansza(plansza);
         pokoj.getZasadyGry().setStanGry(pokoj.kontroler_stanu_gry.getStan());
         pokoj.getZasadyGry().setGracz(gracz);
+        pokoj.getZasadyGry().setRuchy(ruchy);
 
-        if(pokoj.getZasadyGry().ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || pokoj.getZasadyGry().ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
-            int pionek = plansza[x][y];
-            plansza[x][y] = 0;
-            plansza[x + przesuniecie_x][y + przesuniecie_y] = pionek;
+        if(pokoj.getZasadyGry().sprawdz()) {      // || zasady_gry.bicie()
+            int pionek = plansza[ruchy.get(0)][ruchy.get(1)];
+            plansza[ruchy.get(0)][ruchy.get(1)] = 0;
+            plansza[ruchy.get(1)][y + nowy_y] = pionek;
             pokoj.setPlansza(plansza);
 
             Gracz gracz2 = (gracz.getPokoj().getMistrz().equals(gracz) ? gracz.getPokoj().getGosc() : gracz.getPokoj().getMistrz());
