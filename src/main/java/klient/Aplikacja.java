@@ -1,5 +1,6 @@
 package klient;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -25,11 +26,6 @@ public class Aplikacja extends javafx.application.Application {
   public void start(Stage stage) throws Exception {
     kontroler_ = new KontrolerAplikacji();
     scena_ = new Scene(kontroler_.utworzPodstawowaScene());
-    // dummy gracze, po skonczeniu GUI trzeba ich usunac
-    kontroler_.zaktualizujListeGraczy("Gracz1", true);
-    kontroler_.zaktualizujListeGraczy("Gracz2", true);
-    kontroler_.zaktualizujListeGraczy("Gracz3", true);
-    kontroler_.zaktualizujListeGraczy("Gracz4", true);
     stage.setTitle("Warcaby");
     stage.setScene(scena_);
     stage.setWidth(1000);
@@ -61,6 +57,6 @@ public class Aplikacja extends javafx.application.Application {
    * @param nowyKorzen Nowy korzeń widoku.
    */
   public static void ustawNowyKorzen(Parent nowyKorzen) {
-    scena_.setRoot(nowyKorzen);
+    Platform.runLater(() -> scena_.setRoot(nowyKorzen));
   }
 }

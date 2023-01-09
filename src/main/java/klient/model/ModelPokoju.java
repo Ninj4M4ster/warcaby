@@ -1,5 +1,6 @@
 package klient.model;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -105,7 +106,7 @@ public class ModelPokoju implements Model {
    * @param kafelekWiadomosc Kontener z nowa wiadomoscia.
    */
   public void dodajWiadomoscDoHistorii(Node kafelekWiadomosc) {
-    this.historiaChatu_.getChildren().add(kafelekWiadomosc);
+    Platform.runLater(() -> this.historiaChatu_.getChildren().add(kafelekWiadomosc));
   }
 
   /**

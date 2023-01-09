@@ -13,13 +13,13 @@ import klient.komunikacja.wiadomosci.Wiadomosc;
  */
 public class Polaczenie extends Thread {
   /** Polaczenie z serwerem */
-  private Socket polaczenie_;
+  private final Socket polaczenie_;
   /** Deskryptor wyjscia */
-  private PrintWriter out_;
+  private final PrintWriter out_;
   /** Deskryptor wejscia */
-  private BufferedReader in_;
+  private final BufferedReader in_;
   /** Mediator miedzy polaczeniem z serwerem oraz aplikaca */
-  private Mediator mediator_;
+  private final Mediator mediator_;
 
   /**
    * Konstruktor, tworzy polaczenie z serwerem oraz deskryptory wejscia i wyjscia.
@@ -29,6 +29,7 @@ public class Polaczenie extends Thread {
    */
   public Polaczenie(Mediator mediator) throws IOException {
     this.polaczenie_ = new Socket("127.0.0.1", 6666);
+    this.polaczenie_.setSoTimeout(1);
     this.out_ = new PrintWriter(polaczenie_.getOutputStream(), true);
     this.in_ = new BufferedReader(new InputStreamReader(polaczenie_.getInputStream()));
     this.mediator_ = mediator;
@@ -40,15 +41,14 @@ public class Polaczenie extends Thread {
    */
   @Override
   public void run() {
-    while(true) {
+    while(!Thread.currentThread().isInterrupted()) {
       try {
         String wiadomosc = this.in_.readLine();
+        System.out.println(wiadomosc);
         this.mediator_.przekazWiadomoscDoAplikacji(wiadomosc);
-      } catch (IOException e) {
-        this.mediator_.ustawCzyPolaczono(false);
-        throw new RuntimeException(e);
-      }
+      } catch (IOException ignored) {}
     }
+    this.mediator_.ustawCzyPolaczono(false);
   }
 
   /**

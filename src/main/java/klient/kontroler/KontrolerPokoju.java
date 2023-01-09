@@ -96,7 +96,6 @@ public class KontrolerPokoju implements KontrolerWidoku {
     }
     DymekCzatu dymek = new DymekCzatu(tekst.toString(), false);
     model_.dodajWiadomoscDoHistorii(dymek);
-    this.model_.ustawTekstWiadomosci("");
   }
 
   /**
@@ -109,7 +108,6 @@ public class KontrolerPokoju implements KontrolerWidoku {
     String numer_trybu = this.wybierzNumerTrybu(tryb);
     Wiadomosc wiadomosc = new Wiadomosc(numer_trybu, TypyWiadomosci.ROZPOCZECIE_GRY);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
-    this.kontrolerGlowny_.rozpocznijGre(new String[]{"bialy", "8"});
   }
 
   /**

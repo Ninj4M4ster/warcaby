@@ -26,6 +26,7 @@ public class SerwerThread extends Thread {
 
     public void Wyslij(String wiadomosc) {
         out.println(wiadomosc);
+        out.flush();
     }
 
     @Override
@@ -49,6 +50,7 @@ public class SerwerThread extends Thread {
                 Komenda kom = pw.getKomenda(gracz);
                 String zwrotne = kom.Wykonaj(pw.getReszta(), pokoj);
                 out.println(zwrotne);
+                out.flush();
             } catch (IOException e) {
                 for(Gracz gracz : KontrolerDanych.getInstance().getGracze()) {
                     if(!gracz.equals(this.gracz)) {

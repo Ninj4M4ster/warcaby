@@ -31,7 +31,6 @@ import klient.kontroler.KontrolerWidokuGraczyOnline;
 import klient.model.ModelGraczyOnline;
 import klient.model.Model;
 import klient.widoki.eventy.OknoKlikniete;
-import klient.widoki.widgety.Powiadomienie;
 
 /**
  * Klasa reprezentujaca widok menu glownego, w ktorym mozliwe jest
@@ -199,7 +198,6 @@ public class WidokGraczyOnline extends Widok {
     // zatwierdzenie nazwy gracza i przejscie do widoku graczy online
     przyciskZatwierdzeniaNazwy.setOnMouseClicked((event) ->
         kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText()));
-    // TODO(Jakub Drzewiecki): Trzeba dodac mozliwosc wprowadzenia nazwy enterem
 
     kontenerWprowadzaniaNazwy.getChildren().addAll(
         opisWprowadzaniaNazwy,
@@ -278,7 +276,5 @@ public class WidokGraczyOnline extends Widok {
 
     this.okno_.setAlignment(Pos.CENTER_RIGHT);
     this.okno_.getChildren().add(kontenerPowiadomien);
-
-    kontenerPowiadomien.getChildren().add(new Powiadomienie("Drzewo", this.kontroler_, true));
   }
 }

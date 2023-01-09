@@ -47,6 +47,7 @@ public abstract class Widok {
 
     pasek.getChildren().addAll(status, przyciskPonowPolaczenie);
     pasek.visibleProperty().bind(model.czyPolaczono().not());
+    pasek.managedProperty().bind(model.czyPolaczono().not());
 
     return pasek;
   }

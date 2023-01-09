@@ -1,5 +1,6 @@
 package klient.model;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -173,7 +174,7 @@ public class ModelGraczyOnline implements Model {
    * @param nazwaGracza Nazwa dostepnego gracza.
    */
   public void dodajGraczaDoListy(String nazwaGracza) {
-    listaGraczy_.getChildren().add(new KafelekGraczaOnline(nazwaGracza));
+    Platform.runLater(() -> listaGraczy_.getChildren().add(new KafelekGraczaOnline(nazwaGracza)));
   }
 
   /**
@@ -182,9 +183,11 @@ public class ModelGraczyOnline implements Model {
    * @param nazwaGracza Nazwa gracza, ktory nie jest juz dluzej dostepny.
    */
   public void usunGraczaLista(String nazwaGracza) {
-    ObservableList<Node> lista = listaGraczy_.getChildren();
-    lista.removeIf(node -> node instanceof KafelekGraczaOnline &&
-        ((KafelekGraczaOnline) node).nazwaGracza().equals(nazwaGracza));
+    Platform.runLater(() -> {
+      ObservableList<Node> lista = listaGraczy_.getChildren();
+      lista.removeIf(node -> node instanceof KafelekGraczaOnline &&
+          ((KafelekGraczaOnline) node).nazwaGracza().equals(nazwaGracza));
+    });
   }
 
   /**

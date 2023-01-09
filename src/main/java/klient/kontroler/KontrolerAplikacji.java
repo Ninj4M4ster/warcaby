@@ -1,5 +1,6 @@
 package klient.kontroler;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import klient.Aplikacja;
@@ -20,7 +21,7 @@ import klient.widoki.widgety.Powiadomienie;
  */
 public class KontrolerAplikacji {
   /** Zmienna przechowujaca mediator pomiedzy aplikacja oraz polaczeniem z serwerem. */
-  private Mediator mediator_;
+  private final Mediator mediator_;
 
   /** Glowny model aplikacji */
   private final GlownyModel model_;
@@ -89,6 +90,7 @@ public class KontrolerAplikacji {
    * Metoda wywolywana gdy drugi gracz dolaczy do pokoju.
    */
   public void powiadomDolaczyl() {
+    // TODO(Jakub Drzewiecki): Tutaj trzeba dodać klase dla powiadomien na czacie
     this.model_.modelPokoju().dodajWiadomoscDoHistorii(
         new Label(
             this.model_.modelPokoju().nazwaDrugiegoGracza().get() + " dolaczyl do pokoju.")
@@ -100,11 +102,12 @@ public class KontrolerAplikacji {
    */
   public void powiadomOdrzucil() {
     Aplikacja.ustawNowyKorzen(this.utworzPodstawowaScene());
-    this.model_.modelGraczyOnline().kontenerPowiadomien().getChildren().add(
+    Platform.runLater(() ->
+        this.model_.modelGraczyOnline().kontenerPowiadomien().getChildren().add(
         new Powiadomienie("Zaproszenie do gry zostało odrzucone",
             null,
             false)
-    );
+    ));
   }
 
   /**

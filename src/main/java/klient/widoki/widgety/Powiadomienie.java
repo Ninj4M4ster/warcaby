@@ -2,6 +2,7 @@ package klient.widoki.widgety;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -60,7 +61,7 @@ public class Powiadomienie extends VBox {
       this.stworzPrzyciski(kontroler, powiadomienie);
       this.gracz_ = powiadomienie;
     } else {
-      this.usunPowiadomienie(5);
+      this.usunPowiadomienie();
     }
   }
 
@@ -124,16 +125,14 @@ public class Powiadomienie extends VBox {
 
   /**
    * Metoda usuwajaca powiadomienie po podanym w sekundach czasie.
-   *
-   * @param czasDoUsuniecia Czas do usuniecia powiadomienia w sekundach.
    */
-  private void usunPowiadomienie(int czasDoUsuniecia) {
+  private void usunPowiadomienie() {
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
-        getParent().getChildrenUnmodifiable().remove(instancja_);
+        Platform.runLater(() -> ((VBox)getParent()).getChildren().remove(instancja_));
       }
-    }, czasDoUsuniecia * 1000L);
+    }, 5 * 1000L);
   }
 }

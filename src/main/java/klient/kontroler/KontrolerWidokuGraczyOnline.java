@@ -1,6 +1,7 @@
 package klient.kontroler;
 
 import java.util.List;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener.Change;
 import javafx.event.Event;
 import javafx.scene.Node;
@@ -78,7 +79,6 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
     mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
 
     this.model_.ustawNazweGracza(nazwa);
-    this.przejdzDoListyGraczy();
   }
 
   /**
@@ -86,8 +86,10 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    * ze nazwa zostala przyjeta.
    */
   public void przejdzDoListyGraczy() {
-    this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyGraczy());
-    this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
+    Platform.runLater(() -> {
+      this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyGraczy());
+      this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
+    });
   }
 
   /**
@@ -130,8 +132,8 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    * @param gracz Gracz zapraszajacy klienta do pokoju.
    */
   public void wyswietlZaproszenieOdGracza(String gracz) {
-    this.model_.kontenerPowiadomien().getChildren().add(
-        new Powiadomienie(gracz, this, true));
+    Platform.runLater(() -> this.model_.kontenerPowiadomien().getChildren().add(
+        new Powiadomienie(gracz, this, true)));
   }
 
   /**
@@ -165,8 +167,7 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    * @param wiadomosc Powiadomienie do wyswietlenia.
    */
   public void wyswietlPowiadomienie(String wiadomosc) {
-    this.model_.kontenerPowiadomien().getChildren().add(
-        new Powiadomienie(wiadomosc, null, false)
-    );
+    Platform.runLater(() -> this.model_.kontenerPowiadomien().getChildren().add(
+        new Powiadomienie(wiadomosc, null, false)));
   }
 }

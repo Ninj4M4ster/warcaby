@@ -1,5 +1,6 @@
 package klient.kontroler;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -165,19 +166,23 @@ public class KontrolerGry implements KontrolerWidoku {
       for(int j=0; j < polaPlanszy[i].length; j++) {
         probujUsunPionek(i, j); // sprobowac usunac pionek z aktualnego pola
         if(otrzymaneRzedy[j].compareTo("1") == 0) {  // dodac bialy pionek
-          ((StackPane)polaPlanszy[i][j]).getChildren().add(
+          int finalI1 = i;
+          int finalJ1 = j;
+          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI1][finalJ1]).getChildren().add(
               new Pionek(Color.valueOf("#dbdbdb"),
                   Color.valueOf("#a3a3a3"),
-                  ((StackPane)polaPlanszy[i][j]).widthProperty(),
+                  ((StackPane) polaPlanszy[finalI1][finalJ1]).widthProperty(),
                   this,
-                  "bialy"));
+                  "bialy")));
         } else if(otrzymaneRzedy[j].compareTo("2") == 0) {  // dodac czarny pionek
-          ((StackPane)polaPlanszy[i][j]).getChildren().add(
+          int finalI = i;
+          int finalJ = j;
+          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI][finalJ]).getChildren().add(
               new Pionek(Color.valueOf("#363636"),
                   Color.valueOf("#424242"),
-                  ((StackPane)polaPlanszy[i][j]).widthProperty(),
+                  ((StackPane) polaPlanszy[finalI][finalJ]).widthProperty(),
                   this,
-                  "czarny"));
+                  "czarny")));
         }
       }
     }

@@ -23,7 +23,7 @@ public class Mediator {
   /** Watek polaczenia z serwerem */
   private Polaczenie polaczenie_;
   /** Status polaczenia z serwerem */
-  private BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
+  private final BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Zmienna przedstawiajaca typ ostatniej wyslanej wiadomosci,
    * na ktorej odpowiedz aplikacja aktualnie oczekuje */
   private TypyWiadomosci typOstatniejWiadomosci_;
@@ -96,7 +96,7 @@ public class Mediator {
    */
   public void przekazWiadomoscDoAplikacji(String wiadomosc) {
     // sprawdzic, czy otrzymana wiadomosc jest odpowiedzia
-    if(!czyOdpowiedz(wiadomosc)) {
+    if(czyOdpowiedz(wiadomosc)) {
       return;
     }
     // zareagowac na odpowiedz od serwera
@@ -108,7 +108,8 @@ public class Mediator {
             .wyswietlPowiadomienie("Wprowadzona nazwa jest juz zajeta");
       }
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
-      this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
+      if(wiadomosc.startsWith("true"))
+        this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
       this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
