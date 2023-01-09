@@ -54,7 +54,7 @@ public abstract class ZasadyGry {
         return false;
     }
 
-    private boolean ruchKrolowa() {
+    private boolean ruchKrol() {
         if(gracz.getKolor() != pionek) {
             return false;
         }
@@ -79,7 +79,7 @@ public abstract class ZasadyGry {
         return true;
     }
 
-    public boolean promocja(int x, int y) {
+    boolean promocja(int x, int y) {
         if((plansza[x][y] == 1 && y == 7) || (plansza[x][y] == 2 && y == 0)) {
             return true;
         }
@@ -89,6 +89,23 @@ public abstract class ZasadyGry {
     public boolean sprawdz(int[] ruchy) {
         if(!czyWToku() || !czyKolor()) {
             return false;
+        }
+        return false;
+    }
+
+    boolean dlugoscBicia(int x, int y, int nowy_x, int nowy_y) {
+        if(pionek < 3 && Math.abs(nowy_x - x) == 2 && Math.abs(nowy_y - y) == 2) {
+            return true;
+        }
+        if(pionek >= 3 && Math.abs(nowy_x - x) >= 2 && Math.abs(nowy_x - x) == Math.abs(nowy_y - y) ) {
+            return true;
+        }
+        return false;
+    }
+
+    boolean czyWPlanszy(int x, int y) {
+        if(x < plansza.length && x >= 0 && y < plansza.length && y >= 0) {
+            return true;
         }
         return false;
     }
