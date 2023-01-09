@@ -30,24 +30,23 @@ public abstract class ZasadyGry {
         return false;
     }
 
-    private boolean ruchPionem(int x, int y, int przesuniecie_x, int przesuniecie_y) {
-        int kolor = plansza[x][y];
-        if(gracz.getKolor() != kolor) {
+    private boolean ruchPionem() {
+        if(gracz.getKolor() != pionek) {
             return false;
         }
-        if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+        if(pionek == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
-        if((kolor == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
+        if((pionek == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (pionek == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
             return false;
         }
         if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
             return false;
         }
-        if(kolor == 1 && przesuniecie_y == 1) {
+        if(pionek == 1 && przesuniecie_y == 1) {
             return true;
         }
-        else if(kolor == 2 && przesuniecie_y == -1) {
+        else if(pionek == 2 && przesuniecie_y == -1) {
             plansza[x][y] = 0;
             plansza[x+przesuniecie_x][y+przesuniecie_y] = 2;
             return true;
@@ -55,15 +54,14 @@ public abstract class ZasadyGry {
         return false;
     }
 
-    private boolean ruchKrolowa(int x, int y, int przesuniecie_x, int przesuniecie_y) {
-        int kolor = plansza[x][y];
-        if(gracz.getKolor() != kolor) {
+    private boolean ruchKrolowa() {
+        if(gracz.getKolor() != pionek) {
             return false;
         }
-        if(kolor == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+        if(pionek == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
             return false;
         }
-        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || stan_gry == KontrolerStanuGry.StanGry.PRZERWANA || (kolor == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (kolor == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
+        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || stan_gry == KontrolerStanuGry.StanGry.PRZERWANA || (pionek == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (pionek == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
             return false;
         }
         if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
