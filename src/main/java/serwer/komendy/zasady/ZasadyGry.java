@@ -13,6 +13,13 @@ public abstract class ZasadyGry {
     KontrolerStanuGry.StanGry stan_gry;
     Gracz gracz;
 
+    public boolean sprawdz() {
+        if(!czyWToku() || !czyKolor()) {
+            return false;
+        }
+        return false;
+    }
+
     boolean czyWToku() {
         if(stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH || stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) {
             return true;
@@ -79,16 +86,9 @@ public abstract class ZasadyGry {
         return true;
     }
 
-    boolean promocja(int x, int y) {
+    public boolean promocja(int x, int y) {
         if((plansza[x][y] == 1 && y == 7) || (plansza[x][y] == 2 && y == 0)) {
             return true;
-        }
-        return false;
-    }
-
-    public boolean sprawdz(int[] ruchy) {
-        if(!czyWToku() || !czyKolor()) {
-            return false;
         }
         return false;
     }
