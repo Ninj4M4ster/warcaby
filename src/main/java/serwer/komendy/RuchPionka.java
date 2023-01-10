@@ -52,10 +52,10 @@ public class RuchPionka implements Komenda{
 
             pokoj.setPlansza(plansza);
 
-            if(pokoj.getZasadyGry().czyWygrana() == 0) {
-                Gracz gracz_temp = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
-                gracz_temp.getSt().wyslij("Ruch " + reszta);
+            Gracz gracz_temp = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
+            gracz_temp.getSt().wyslij("Ruch " + pokoj.planszaToString());
 
+            if(pokoj.getZasadyGry().czyWygrana() == 0) {
                 pokoj.kontroler_stanu_gry.RUCH();
             }
             else if(pokoj.getZasadyGry().czyWygrana() == 1) {
