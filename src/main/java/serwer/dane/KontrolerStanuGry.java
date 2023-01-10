@@ -1,6 +1,5 @@
 package serwer.dane;
 
-import java.util.EnumMap;
 
 public class KontrolerStanuGry {
     private StanGry stan;

@@ -4,7 +4,6 @@ import serwer.dane.Gracz;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class TworcaKomendy {
-    ZasadyGry zasady_gry;
     public Komenda tworzKomende(String komenda, Gracz gracz) {
         switch(komenda) {
             case "WTG":

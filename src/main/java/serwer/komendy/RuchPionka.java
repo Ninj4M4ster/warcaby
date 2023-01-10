@@ -1,12 +1,13 @@
 package serwer.komendy;
 
 import serwer.dane.Gracz;
-import serwer.dane.KontrolerStanuGry;
 import serwer.dane.Pokoj;
 
+import java.util.ArrayList;
+
 public class RuchPionka implements Komenda{
-    int x, y, przesuniecie_x, przesuniecie_y;
     int[][] plansza;
+    ArrayList<Integer> ruchy;
     Gracz gracz;
 
     public RuchPionka(Gracz gracz) {
@@ -17,11 +18,13 @@ public class RuchPionka implements Komenda{
     public String Wykonaj(String reszta, Pokoj pokoj) {
         plansza = pokoj.getPlansza();
 
+        String[] ruchy_str = reszta.split(" ");
+        ruchy = new ArrayList<Integer>();
+
         try {
-            x = Integer.parseInt(reszta.split(" ")[0]);
-            y = Integer.parseInt(reszta.split(" ")[1]);
-            przesuniecie_x = Integer.parseInt(reszta.split(" ")[2]);
-            przesuniecie_y = Integer.parseInt(reszta.split(" ")[3]);
+            for(String koord : ruchy_str) {
+                ruchy.add(Integer.parseInt(koord));
+            }
         } catch(NumberFormatException nfe) {
             return "false";
         }
@@ -29,18 +32,41 @@ public class RuchPionka implements Komenda{
         pokoj.getZasadyGry().setPlansza(plansza);
         pokoj.getZasadyGry().setStanGry(pokoj.kontroler_stanu_gry.getStan());
         pokoj.getZasadyGry().setGracz(gracz);
+        pokoj.getZasadyGry().setRuchy(ruchy);
 
-        if(pokoj.getZasadyGry().ruchPionem(x, y, przesuniecie_x, przesuniecie_y) || pokoj.getZasadyGry().ruchKrolowa(x, y, przesuniecie_x, przesuniecie_y)) {      // || zasady_gry.bicie()
-            int pionek = plansza[x][y];
-            plansza[x][y] = 0;
-            plansza[x + przesuniecie_x][y + przesuniecie_y] = pionek;
+        if(pokoj.getZasadyGry().sprawdz()) {
+            for(int i = 0; i + 3 < ruchy.size(); i += 2) {
+                plansza[ruchy.get(i + 2)][ruchy.get(i + 3)] = plansza[ruchy.get(i)][ruchy.get(i + 1)];
+                plansza[ruchy.get(i)][ruchy.get(i + 1)] = 0;
+
+                for(int j = 1; j < Math.abs(ruchy.get(i + 2) - ruchy.get(i)) - 1; j += 1) {
+                    plansza[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)] = 0;
+                }
+            }
+
+            if(pokoj.getZasadyGry().promocja(ruchy.get(ruchy.size() - 2), ruchy.get(ruchy.size() - 1))) {
+                plansza[ruchy.get(ruchy.size() - 2)][ruchy.get(ruchy.size() - 1)] += 2;
+            }
+
             pokoj.setPlansza(plansza);
 
-            Gracz gracz2 = (gracz.getPokoj().getMistrz().equals(gracz) ? gracz.getPokoj().getGosc() : gracz.getPokoj().getMistrz());
-            gracz2.getSt().Wyslij("Plansza " + pokoj.planszaToString());
+            Gracz gracz_temp = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
+            gracz_temp.getSt().wyslij("Ruch " + pokoj.planszaToString());
 
-            pokoj.kontroler_stanu_gry.RUCH();
-            return "true " + pokoj.planszaToString();
+            if(pokoj.getZasadyGry().czyWygrana() == 0) {
+                pokoj.kontroler_stanu_gry.RUCH();
+            }
+            else if(pokoj.getZasadyGry().czyWygrana() == 1) {
+                pokoj.getGosc().getSt().wyslij("Wygrana biale");
+                pokoj.getMistrz().getSt().wyslij("Wygrana biale");
+                pokoj.kontroler_stanu_gry.ZAKONCZ();
+            }
+            else if(pokoj.getZasadyGry().czyWygrana() == 2) {
+                pokoj.getGosc().getSt().wyslij("Wygrana czrane");
+                pokoj.getMistrz().getSt().wyslij("Wygrana czarne");
+                pokoj.kontroler_stanu_gry.ZAKONCZ();
+            }
+            return "true";
         }
         return "false";
     }

@@ -7,18 +7,6 @@ import serwer.komendy.zasady.ZasadyGry;
 public class WybierzTrybGry implements Komenda{
     private int plansza_rozmiar;
 
-    /**
-     * plansza - tablica zawierająca informacje o umiejscowieniu pionkow<br>
-     * plansza[x][y]<br>
-     *  x+<br>
-     * y<br>
-     * +<br>
-     *  0 = puste<br>
-     *  1 = biale<br>
-     *  2 = czarne
-     */
-    private int[][] plansza;
-
     public ZasadyGry wybierz(String rodzaj) {
         switch (rodzaj) {
             case "0":
@@ -40,17 +28,17 @@ public class WybierzTrybGry implements Komenda{
         if(pokoj != null) {
             pokoj.setZasadyGry(wybierz(reszta));
 
-            plansza = tworzPlansze();
+            int[][] plansza = tworzPlansze();
 
             pokoj.setPlansza(plansza);
 
             pokoj.getMistrz().setKolor((int) (Math.random() * (2 - 1) + 1));
             pokoj.getGosc().setKolor(3 - pokoj.getMistrz().getKolor());
 
-            pokoj.getGosc().getSt().Wyslij("plansza " + String.valueOf(pokoj.getGosc().getKolor()) + pokoj.planszaToString());
+            pokoj.getGosc().getSt().wyslij("plansza " + pokoj.getGosc().getKolor() + pokoj.planszaToString());
             pokoj.kontroler_stanu_gry.START();
 
-            return "true " + String.valueOf(pokoj.getMistrz().getKolor()) + pokoj.planszaToString();
+            return "true " + pokoj.getMistrz().getKolor() + pokoj.planszaToString();
         }
         return "false";
     }
@@ -72,9 +60,5 @@ public class WybierzTrybGry implements Komenda{
             }
         }
         return plansza_temp;
-    }
-
-    public int[][] getPlansza() {
-        return plansza;
     }
 }
