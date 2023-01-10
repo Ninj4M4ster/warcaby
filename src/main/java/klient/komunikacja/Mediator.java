@@ -113,7 +113,7 @@ public class Mediator {
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
       this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
-      if(wiadomosc.startsWith("false"))
+      if(wiadomosc.startsWith("Odrzucono"))
         this.kontrolerAplikacji_.powiadomOdrzucil();
     }
     this.oczekiwanieNaOdpowiedz_ = false;

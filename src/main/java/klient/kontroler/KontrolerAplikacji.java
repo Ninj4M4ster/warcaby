@@ -49,12 +49,10 @@ public class KontrolerAplikacji {
    */
   public Parent utworzPodstawowaScene() {
     KontrolerWidoku kontroler =
-        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE);
-    assert kontroler != null;
-    kontroler.przekazModel(model_.modelGraczyOnline());
-    kontroler.przekazGlownyKontroler(this);
-    kontroler.przekazMediator(this.mediator_);
-    this.mediator_.ustawAktualnyKontroler(kontroler);
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE,
+            this.model_.modelGraczyOnline(),
+            this,
+            this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_GRACZY_ONLINE);
     assert widok != null;
@@ -66,20 +64,20 @@ public class KontrolerAplikacji {
    * oraz wyslanie do serwera nazwy zaproszonego gracza.
    *
    * @param zaproszonyGracz Nazwa zaproszonego gracza.
+   * @param czyWlasciciel Czy klient jest wlascicielem pokoju?
+   * @param wiadomosc Wiadomosc do wyslania do serwera.
    */
-  public void utworzPokoj(String zaproszonyGracz) {
-    Wiadomosc wiadomosc = new Wiadomosc(zaproszonyGracz, TypyWiadomosci.ZAPROSZENIE);
+  public void utworzPokoj(String zaproszonyGracz, boolean czyWlasciciel, Wiadomosc wiadomosc) {
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
 
-    this.model_.modelPokoju().ustawCzyWlasciciel(true);
+    this.model_.modelPokoju().ustawCzyWlasciciel(czyWlasciciel);
     this.model_.modelPokoju().ustawNazweDrugiegoGracza(zaproszonyGracz);
 
     KontrolerWidoku kontroler =
-        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
-    assert kontroler != null;
-    kontroler.przekazModel(model_.modelPokoju());
-    kontroler.przekazGlownyKontroler(this);
-    kontroler.przekazMediator(this.mediator_);
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU,
+            this.model_.modelPokoju(),
+            this,
+            this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
     assert widok != null;
@@ -90,7 +88,6 @@ public class KontrolerAplikacji {
    * Metoda wywolywana gdy drugi gracz dolaczy do pokoju.
    */
   public void powiadomDolaczyl() {
-    // TODO(Jakub Drzewiecki): Tutaj trzeba dodać klase dla powiadomien na czacie
     this.model_.modelPokoju().dodajWiadomoscDoHistorii(
         new Label(
             this.model_.modelPokoju().nazwaDrugiegoGracza().get() + " dolaczyl do pokoju.")
@@ -111,37 +108,13 @@ public class KontrolerAplikacji {
   }
 
   /**
-   * Metoda uruchamiana gdy klient zaakceptuje zaproszenie drugiego gracza do pokoju.
+   * Metoda uruchamiana gdy klient odrzuci zaproszenie innego gracza do pokoju.
    *
    * @param wlascicielPokoju Wlasciciel innego pokoju.
    */
-  public void dolaczDoPokoju(String wlascicielPokoju) {
-    System.out.println(wlascicielPokoju);
+  public void odrzucZaproszenie(String wlascicielPokoju) {
     Wiadomosc wiadomosc =
-        new Wiadomosc("akceptuje", TypyWiadomosci.ODPOWIEDZ);
-    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
-
-    this.model_.modelPokoju().ustawCzyWlasciciel(false);
-    this.model_.modelPokoju().ustawNazweDrugiegoGracza(wlascicielPokoju);
-
-    KontrolerWidoku kontroler =
-        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
-    assert kontroler != null;
-    kontroler.przekazModel(this.model_.modelPokoju());
-    kontroler.przekazGlownyKontroler(this);
-    kontroler.przekazMediator(this.mediator_);
-
-    Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
-    assert widok != null;
-    Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelPokoju()));
-  }
-
-  /**
-   * Metoda uruchamiana gdy klient odrzuci zaproszenie innego gracza do pokoju.
-   */
-  public void odrzucZaproszenie() {
-    Wiadomosc wiadomosc =
-        new Wiadomosc("odrzuca", TypyWiadomosci.ODPOWIEDZ);
+        new Wiadomosc("odrzuca " + wlascicielPokoju, TypyWiadomosci.ODPOWIEDZ);
     this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
   }
 
@@ -170,11 +143,11 @@ public class KontrolerAplikacji {
       this.model_.modelGry().ustawKolorPionkow("czarny");
     this.model_.modelGry().ustawIloscPol(Integer.parseInt(argumenty[1]));
 
-    KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY);
-    assert kontroler != null;
-    kontroler.przekazModel(model_.modelGry());
-    kontroler.przekazGlownyKontroler(this);
-    kontroler.przekazMediator(this.mediator_);
+    KontrolerWidoku kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY,
+            this.model_.modelGry(),
+            this,
+            this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_GRY);
     assert widok != null;

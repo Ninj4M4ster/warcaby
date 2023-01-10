@@ -3,6 +3,8 @@ package testKlient.testKontroler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import javafx.application.Platform;
+import klient.komunikacja.wiadomosci.TypyWiadomosci;
+import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.kontroler.KontrolerAplikacji;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +37,9 @@ public class TestKontrolerAplikacji {
   @Test
   public void testUtworzPokoj() {
     KontrolerAplikacji kontroler = new KontrolerAplikacji();
-    kontroler.utworzPokoj("");
+    kontroler.utworzPokoj("",
+        true,
+        new Wiadomosc("", TypyWiadomosci.ZAPROSZENIE));
   }
 
   @Test
@@ -53,13 +57,15 @@ public class TestKontrolerAplikacji {
   @Test
   public void testDolaczDoPokoju() {
     KontrolerAplikacji kontroler = new KontrolerAplikacji();
-    kontroler.dolaczDoPokoju("");
+    kontroler.utworzPokoj("",
+        false,
+        new Wiadomosc("", TypyWiadomosci.ODPOWIEDZ));
   }
 
   @Test
   public void testOdrzucZaproszenie() {
     KontrolerAplikacji kontroler = new KontrolerAplikacji();
-    kontroler.odrzucZaproszenie();
+    kontroler.odrzucZaproszenie("");
   }
 
   @Test(expected = NullPointerException.class)

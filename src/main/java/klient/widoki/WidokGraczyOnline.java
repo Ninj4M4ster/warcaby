@@ -87,7 +87,10 @@ public class WidokGraczyOnline extends Widok {
 
     this.utworzMenu(layoutMenu);
     this.utworzWidokWprowadzaniaNazwy();
-    this.utworzWidokPoWprowadzeniuNazwy();
+    if(this.model_.nazwaGracza() == null)
+      this.utworzWidokPoWprowadzeniuNazwy();
+    else
+      this.listaGraczy_ = this.model_.listaGraczy();
     this.utworzPasekPowiadomien();
 
     okno_.setOnMouseClicked(mouseEvent ->
@@ -128,11 +131,7 @@ public class WidokGraczyOnline extends Widok {
     poleGlownegoOpisu.getChildren().add(glownyOpis);
 
     // kontener w centrum, z nim klient wchodzi w interakcje
-    oknoGlowne_ = new BorderPane();
-    oknoGlowne_.centerProperty().bind(this.model_.centrumMenu());
-    oknoGlowne_.topProperty().bind(this.model_.goraMenu());
-    oknoGlowne_.setPrefSize(400, 200);
-    oknoGlowne_.setMaxSize(600, 600);
+    oknoGlowne_ = this.model_.oknoGlowne();
     oknoGlowne_.setBorder(
         new Border(
             new BorderStroke(

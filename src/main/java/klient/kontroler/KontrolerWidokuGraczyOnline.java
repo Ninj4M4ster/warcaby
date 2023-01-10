@@ -119,8 +119,13 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
         List<? extends Node> lista = change.getAddedSubList();
         for(Node node: lista) {
           KafelekGraczaOnline kafelek = (KafelekGraczaOnline) node;
+          Wiadomosc wiadomosc = new Wiadomosc(kafelek.nazwaGracza(), TypyWiadomosci.ZAPROSZENIE);
           kafelek.przyciskZapros().setOnMouseClicked(
-              (mouseEvent) -> this.kontrolerGlowny_.utworzPokoj(kafelek.nazwaGracza()));
+              (mouseEvent) ->
+                  this.kontrolerGlowny_.utworzPokoj(
+                      kafelek.nazwaGracza(),
+                      true,
+                      wiadomosc));
         }
       }
     }
@@ -142,7 +147,9 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    * @param wlascicielPokoju Wlasiciel pokoju, do ktorego dolacza klient.
    */
   public void dolaczDoPokoju(String wlascicielPokoju) {
-    this.kontrolerGlowny_.dolaczDoPokoju(wlascicielPokoju);
+    Wiadomosc wiadomosc =
+        new Wiadomosc("Akceptuje " + wlascicielPokoju, TypyWiadomosci.ODPOWIEDZ);
+    this.kontrolerGlowny_.utworzPokoj(wlascicielPokoju, false, wiadomosc);
     this.model_.kontenerPowiadomien().getChildren().removeIf(node -> {
       Powiadomienie powiadomienie = (Powiadomienie) node;
       return powiadomienie.gracz().compareTo(wlascicielPokoju) == 0;
@@ -155,7 +162,7 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    * @param wlascicielPokoju Gracz, ktory zaprosil klienta do pokoju.
    */
   public void odrzucZaproszenie(String wlascicielPokoju) {
-    this.kontrolerGlowny_.odrzucZaproszenie();
+    this.kontrolerGlowny_.odrzucZaproszenie(wlascicielPokoju);
     VBox kontenerPowiadomien = this.model_.kontenerPowiadomien();
     kontenerPowiadomien.getChildren().removeIf(node -> node instanceof Powiadomienie
         && ((Powiadomienie) node).gracz().compareTo(wlascicielPokoju) == 0);

@@ -20,17 +20,14 @@ import klient.model.ModelPokoju;
  */
 public abstract class TestKontroler {
   public KontrolerWidoku utworzGotowyKontroler(TypyKontrolerow typ, boolean statusPolaczenia) {
-    KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(typ);
     Model model = this.utworzModel(typ, statusPolaczenia);
     KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
     Mediator mediator = new Mediator(kontrolerAplikacji);
 
-    assert kontroler != null;
-    kontroler.przekazMediator(mediator);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-    kontroler.przekazModel(model);
-
-    return kontroler;
+    return TworcaKontrolera.wybierzKontroler(typ,
+    model,
+    kontrolerAplikacji,
+    mediator);
   }
 
   public Model utworzModel(TypyKontrolerow typ, boolean statusPolaczenia) {

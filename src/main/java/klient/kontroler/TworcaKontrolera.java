@@ -1,5 +1,8 @@
 package klient.kontroler;
 
+import klient.komunikacja.Mediator;
+import klient.model.Model;
+
 /**
  * Klasa odpowiedzialna za tworzenie kontrolera.
  */
@@ -17,15 +20,28 @@ public class TworcaKontrolera {
    * @param typ Typ kontrolera.
    * @return Nowy kontroler widoku.
    */
-  public static KontrolerWidoku wybierzKontroler(TypyKontrolerow typ) {
+  public static KontrolerWidoku wybierzKontroler(TypyKontrolerow typ,
+      Model model,
+      KontrolerAplikacji kontrolerAplikacji,
+      Mediator mediator) {
+    KontrolerWidoku kontroler;
     switch(typ) {
       case KONTROLER_GRACZY_ONLINE:
-        return new KontrolerWidokuGraczyOnline();
+        kontroler = new KontrolerWidokuGraczyOnline();
+        break;
       case KONTROLER_POKOJU:
-        return new KontrolerPokoju();
+        kontroler = new KontrolerPokoju();
+        break;
       case KONTROLER_GRY:
-        return new KontrolerGry();
+        kontroler = new KontrolerGry();
+        break;
+      default:
+        throw new IllegalStateException("Unexpected value: " + typ);
     }
-    return null;
+    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    kontroler.przekazModel(model);
+    kontroler.przekazMediator(mediator);
+    mediator.ustawAktualnyKontroler(kontroler);
+    return kontroler;
   }
 }
