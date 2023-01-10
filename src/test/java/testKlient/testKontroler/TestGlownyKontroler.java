@@ -16,27 +16,27 @@ public class TestGlownyKontroler {
   }
   @Test
   public void testKontrolerAplikacji() {
-    new GlownyKontroler();
+    GlownyKontroler.instancja();
     ServerSocket serwer = this.stworzSztucznySerwer();
-    new GlownyKontroler();
+    GlownyKontroler.instancja();
   }
 
   @Test
   public void testZakonczPolaczenie() {
     ServerSocket serwer = this.stworzSztucznySerwer();
-    GlownyKontroler kontroler = new GlownyKontroler();
+    GlownyKontroler kontroler = GlownyKontroler.instancja();
     kontroler.zakonczPolaczenie();
   }
 
   @Test
   public void testUtworzPodstawowaScene() {
-    GlownyKontroler kontroler = new GlownyKontroler();
+    GlownyKontroler kontroler = GlownyKontroler.instancja();
     kontroler.utworzPodstawowaScene();
   }
 
   @Test
   public void testUtworzPokoj() {
-    GlownyKontroler kontroler = new GlownyKontroler();
+    GlownyKontroler kontroler = GlownyKontroler.instancja();
     kontroler.utworzPokoj("",
         true,
         new Wiadomosc("", TypyWiadomosci.ZAPROSZENIE));
@@ -44,19 +44,19 @@ public class TestGlownyKontroler {
 
   @Test
   public void testPowiadomDolaczyl() {
-    GlownyKontroler kontroler = new GlownyKontroler();
+    GlownyKontroler kontroler = GlownyKontroler.instancja();
     kontroler.powiadomDolaczyl();
   }
 
   @Test
   public void testPoiadomOdrzucil() {
-    GlownyKontroler kontroler = new GlownyKontroler();
+    GlownyKontroler kontroler = GlownyKontroler.instancja();
     kontroler.powiadomOdrzucil();
   }
 
   @Test
   public void testDolaczDoPokoju() {
-    GlownyKontroler kontroler = new GlownyKontroler();
+    GlownyKontroler kontroler = GlownyKontroler.instancja();
     kontroler.utworzPokoj("",
         false,
         new Wiadomosc("", TypyWiadomosci.ODPOWIEDZ));
@@ -64,19 +64,19 @@ public class TestGlownyKontroler {
 
   @Test
   public void testOdrzucZaproszenie() {
-    GlownyKontroler kontroler = new GlownyKontroler();
+    GlownyKontroler kontroler = GlownyKontroler.instancja();
     kontroler.odrzucZaproszenie("");
   }
 
   @Test(expected = NullPointerException.class)
   public void testZaktualizujListeGraczyException() {
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
     glownyKontroler.zaktualizujListeGraczy("", true);
   }
 
   @Test
   public void testZaktualizujListeGraczy() {
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
     glownyKontroler.utworzPodstawowaScene();
     glownyKontroler.zaktualizujListeGraczy("", true);
     glownyKontroler.zaktualizujListeGraczy("", false);
@@ -84,7 +84,7 @@ public class TestGlownyKontroler {
 
   @Test
   public void testRozpocznijGre() {
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
     glownyKontroler.rozpocznijGre(new String[]{"1", "8"});
     glownyKontroler.rozpocznijGre(new String[]{"2", "10"});
     glownyKontroler.rozpocznijGre(new String[]{"1", "12"});

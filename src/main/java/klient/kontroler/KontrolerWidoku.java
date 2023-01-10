@@ -17,13 +17,6 @@ public interface KontrolerWidoku {
   void przekazModel(Model model);
 
   /**
-   * Metoda odpowiedzialna za przechowanie glownego kontrolera aplikacji.
-   * @param kontrolerGlowny Glowny kontroler aplikacji.
-   * TODO(Jakub Drzewiecki): Zmienic interfejs na klase abstrakcyjna i zaimplementowac ta metode.
-   */
-  void przekazGlownyKontroler(GlownyKontroler kontrolerGlowny);
-
-  /**
    * Metoda odpowiedzialna za przekazanie instancji mediatora do kontrolera.
    *
    * @param mediator Mediator miedzy aplikacja oraz polaczeniem z serwerem.

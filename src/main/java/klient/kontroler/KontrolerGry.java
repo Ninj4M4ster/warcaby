@@ -23,9 +23,6 @@ import klient.widoki.widgety.PolePlanszy;
 public class KontrolerGry implements KontrolerWidoku {
   /** Model widoku */
   private ModelGry model_;
-
-  /** Glowny kontroler aplikacji */
-  private GlownyKontroler kontrolerGlowny_;
   /** Mediator pomiedzy aplikacja oraz polaczeniem z serwerem */
   private Mediator mediator_;
 
@@ -44,19 +41,6 @@ public class KontrolerGry implements KontrolerWidoku {
     if(this.model_ != null)
       throw new IllegalStateException("Nie mozna dwa razy przekazac modelu do kontrolera widoku");
     this.model_ = (ModelGry) model;
-  }
-
-  /**
-   * Metoda odpowiedzialna za przechowanie glownego kontrolera.
-   *
-   * @param kontrolerGlowny Glowny kontroler aplikacji.
-   */
-  @Override
-  public void przekazGlownyKontroler(GlownyKontroler kontrolerGlowny) {
-    if(this.kontrolerGlowny_ != null)
-      throw new IllegalStateException("Nie mozna dwa razy przekazac kontrolera "
-          + "aplikacji do kontrolera widoku");
-    this.kontrolerGlowny_ = kontrolerGlowny;
   }
 
   /**

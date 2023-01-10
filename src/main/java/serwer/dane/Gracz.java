@@ -1,6 +1,6 @@
 package serwer.dane;
 
-import kontroler.KontrolerDanych;
+import serwer.KontrolerDanych;
 import serwer.SerwerThread;
 
 public class Gracz {

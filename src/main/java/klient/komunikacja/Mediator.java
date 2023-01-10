@@ -32,11 +32,9 @@ public class Mediator {
 
   /**
    * Konstruktor. Tworzy polaczenie z serwerem i zapisuje status polaczenia.
-   *
-   * @param glownyKontroler Kontroler aplikacji.
    */
-  public Mediator(GlownyKontroler glownyKontroler) {
-    this.glownyKontroler_ = glownyKontroler;
+  public Mediator() {
+    this.glownyKontroler_ = GlownyKontroler.instancja();
     try {
       this.polaczenie_ = new Polaczenie(this);
       this.czyPolaczono_.set(true);
@@ -85,7 +83,6 @@ public class Mediator {
       this.typOstatniejWiadomosci_ = wiadomosc.typWiadomosci();
       this.oczekiwanieNaOdpowiedz_ = true;
     }
-    // TODO(Jakub Drzewiecki): Tutaj mozna byloby dodac kolejkowanie wiadomosci jesli aplikacja czeka na odpowiedz oraz aplikacja jest polaczona z serwerem
   }
 
   /**

@@ -5,14 +5,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-// TODO(Jakub Drzewiecki): Ta klasa mogłaby implementować wzorzec singleton
-
 /**
  * Klasa reprezentujaca model calej aplikacji.
  */
 public class GlownyModel {
-  // TODO(Jakub Drzewiecki): Trzeba zmienić ta zmienna na BooleanProperty i bindować ją w widoku do odpowiedniego widgetu
-  // TODO(Jakub Drzewiecki): zmienna czyPolaczono miec swoj wlasny widget dostepny z poziomu wszystkich widokow
   /** Zmienna przechowujaca informacje czy uzytkownik jest polaczony z serwerem */
   private final BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
 

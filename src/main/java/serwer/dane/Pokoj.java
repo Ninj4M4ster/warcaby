@@ -1,7 +1,6 @@
 package serwer.dane;
 
-import kontroler.KontrolerDanych;
-import serwer.Serwer;
+import serwer.KontrolerDanych;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class Pokoj {

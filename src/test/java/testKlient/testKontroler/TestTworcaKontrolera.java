@@ -18,26 +18,22 @@ public class TestTworcaKontrolera {
   public void testWybierzKontroler() {
     BooleanProperty czyPolaczono = new SimpleBooleanProperty(false);
     GlownyModel model = new GlownyModel(czyPolaczono);
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
-    Mediator mediator = new Mediator(glownyKontroler);
+    Mediator mediator = new Mediator();
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU,
             model.modelPokoju(),
-            glownyKontroler,
             mediator);
     assert(kontroler instanceof KontrolerPokoju);
 
     kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY,
             model.modelGry(),
-            glownyKontroler,
             mediator);
     assert(kontroler instanceof KontrolerGry);
 
     kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE,
             model.modelGraczyOnline(),
-            glownyKontroler,
             mediator);
     assert(kontroler instanceof KontrolerWidokuGraczyOnline);
   }

@@ -24,7 +24,7 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   private ModelGraczyOnline model_;
 
   /** Glowny kontroler aplikacji */
-  private GlownyKontroler kontrolerGlowny_;
+  private final GlownyKontroler kontrolerGlowny_ = GlownyKontroler.instancja();
   /** Mediator pomiedzy aplikacja oraz polaczeniem z serwerem */
   private Mediator mediator_;
 
@@ -37,17 +37,6 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   public void przekazModel(Model model) {
     this.model_ = (ModelGraczyOnline) model;
   }
-
-  /**
-   * Metoda odpowiedzialna za przechowanie glownego kontrolera aplikacji.
-   *
-   * @param kontrolerGlowny Glowny kontroler aplikacji.
-   */
-  @Override
-  public void przekazGlownyKontroler(GlownyKontroler kontrolerGlowny) {
-    this.kontrolerGlowny_ = kontrolerGlowny;
-  }
-
 
   /**
    * Metoda odpowiedzialna za przekazanie instancji mediatora do aplikacji.

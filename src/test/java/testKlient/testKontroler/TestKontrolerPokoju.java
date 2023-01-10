@@ -28,25 +28,10 @@ public class TestKontrolerPokoju extends TestKontroler {
   }
 
   @Test
-  public void testPrzekazGlownyKontroler() {
-    KontrolerPokoju kontroler = new KontrolerPokoju();
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
-    kontroler.przekazGlownyKontroler(glownyKontroler);
-  }
-
-  @Test
   public void testOdnowPolaczenie() {
     KontrolerPokoju kontrolerPokoju =
         (KontrolerPokoju)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
     kontrolerPokoju.odnowPolaczenie();
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testPrzekazGlownyKontrolerError() {
-    KontrolerWidoku kontrolerPokoju =
-        this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
-    kontrolerPokoju.przekazGlownyKontroler(glownyKontroler);
   }
 
   @Test
@@ -85,11 +70,9 @@ public class TestKontrolerPokoju extends TestKontroler {
     ModelPokoju model =
         (ModelPokoju)this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, statusPolaczenia);
     model.ustawTekstWiadomosci("abc");
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
-    Mediator mediator = new Mediator(glownyKontroler);
+    Mediator mediator = new Mediator();
 
     kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(glownyKontroler);
     kontroler.przekazMediator(mediator);
     return kontroler;
   }

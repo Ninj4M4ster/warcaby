@@ -17,9 +17,6 @@ import klient.widoki.widgety.DymekCzatu;
 public class KontrolerPokoju implements KontrolerWidoku {
   /** Model widoku pokoju */
   private ModelPokoju model_;
-
-  /** Glowny kontroler aplikacji */
-  private GlownyKontroler kontrolerGlowny_;
   /** Mediator pomiedzy aplikacja oraz polaczeniem z serwerem */
   private Mediator mediator_;
 
@@ -33,19 +30,6 @@ public class KontrolerPokoju implements KontrolerWidoku {
     if(this.model_ != null)
       throw new IllegalStateException("Nie mozna dwa razy przekazac modelu do kontrolera widoku.");
     this.model_ = (ModelPokoju) model;
-  }
-
-  /**
-   * Metoda odpowiedzialna za przechowanie glownego kontrolera aplikacji.
-   *
-   * @param kontrolerGlowny Glowny kontroler aplikacji.
-   */
-  @Override
-  public void przekazGlownyKontroler(GlownyKontroler kontrolerGlowny) {
-    if(this.kontrolerGlowny_ != null)
-      throw new IllegalStateException("Nie mozna dwa razy przekaza kontrolera aplikacji "
-          + "do kontrolera widoku.");
-    this.kontrolerGlowny_ = kontrolerGlowny;
   }
 
   /**

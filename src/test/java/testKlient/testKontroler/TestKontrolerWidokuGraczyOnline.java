@@ -23,13 +23,6 @@ public class TestKontrolerWidokuGraczyOnline extends TestKontroler {
   }
 
   @Test
-  public void testPrzekazGlownyKontroler() {
-    KontrolerWidokuGraczyOnline kontroler = new KontrolerWidokuGraczyOnline();
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
-    kontroler.przekazGlownyKontroler(glownyKontroler);
-  }
-
-  @Test
   public void testOdnowPolaczenie() {
     KontrolerWidokuGraczyOnline kontroler =
         (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);

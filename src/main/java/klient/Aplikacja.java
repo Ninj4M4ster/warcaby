@@ -24,7 +24,7 @@ public class Aplikacja extends javafx.application.Application {
    */
   @Override
   public void start(Stage stage) throws Exception {
-    kontroler_ = new GlownyKontroler();
+    kontroler_ = GlownyKontroler.instancja();
     scena_ = new Scene(kontroler_.utworzPodstawowaScene());
     stage.setTitle("Warcaby");
     stage.setScene(scena_);

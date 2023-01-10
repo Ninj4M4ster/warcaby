@@ -22,7 +22,6 @@ public class TworcaKontrolera {
    */
   public static KontrolerWidoku wybierzKontroler(TypyKontrolerow typ,
       Model model,
-      GlownyKontroler glownyKontroler,
       Mediator mediator) {
     KontrolerWidoku kontroler;
     switch(typ) {
@@ -38,7 +37,6 @@ public class TworcaKontrolera {
       default:
         throw new IllegalStateException("Unexpected value: " + typ);
     }
-    kontroler.przekazGlownyKontroler(glownyKontroler);
     kontroler.przekazModel(model);
     kontroler.przekazMediator(mediator);
     mediator.ustawAktualnyKontroler(kontroler);

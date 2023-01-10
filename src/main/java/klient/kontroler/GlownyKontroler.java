@@ -13,13 +13,13 @@ import klient.widoki.TypyWidokow;
 import klient.widoki.Widok;
 import klient.widoki.widgety.Powiadomienie;
 
-// TODO(Jakub Drzewiecki): Ta klasa mogłaby implementować wzorzec singleton.
-
 /**
  * Glowny kontroler, odpowiedzialny za utworzenie polaczenia z serwerem
  * oraz tworzenie nowych widokow.
  */
 public class GlownyKontroler {
+  /** Instancja glownego kontrolera. */
+  private static GlownyKontroler instancja_;
   /** Zmienna przechowujaca mediator pomiedzy aplikacja oraz polaczeniem z serwerem. */
   private final Mediator mediator_;
 
@@ -29,9 +29,26 @@ public class GlownyKontroler {
   /**
    * Konstruktor, tworzy polaczenie i glowny model.
    */
-  public GlownyKontroler() {
-    mediator_ = new Mediator(this);
+  private GlownyKontroler() {
+    mediator_ = new Mediator();
     model_ = new GlownyModel(mediator_.czyPolaczono());
+  }
+
+  /**
+   * Metoda sluzaca do uzyskania dostepu do instancji tej klasy.
+   *
+   * @return Instancja glownego kontrolera.
+   */
+  public static GlownyKontroler instancja() {
+    if(instancja_ != null) {
+      return instancja_;
+    }
+    synchronized(GlownyKontroler.class) {
+      if(instancja_ == null) {
+        instancja_ = new GlownyKontroler();
+      }
+      return instancja_;
+    }
   }
 
   /**
@@ -51,11 +68,9 @@ public class GlownyKontroler {
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE,
             this.model_.modelGraczyOnline(),
-            this,
             this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_GRACZY_ONLINE);
-    assert widok != null;
     return widok.utworzWidok(kontroler, model_.modelGraczyOnline());
   }
 
@@ -76,11 +91,9 @@ public class GlownyKontroler {
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU,
             this.model_.modelPokoju(),
-            this,
             this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
-    assert widok != null;
     Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelPokoju()));
   }
 
@@ -146,11 +159,9 @@ public class GlownyKontroler {
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY,
             this.model_.modelGry(),
-            this,
             this.mediator_);
 
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_GRY);
-    assert widok != null;
     Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelGry()));
   }
 }

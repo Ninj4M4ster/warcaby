@@ -39,21 +39,6 @@ public class TestKontrolerGry extends TestKontroler {
   }
 
   @Test
-  public void testPrzekazGlownyKontroler() {
-    KontrolerGry kontroler = new KontrolerGry();
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
-    kontroler.przekazGlownyKontroler(glownyKontroler);
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testPrzekazGlownyKontrolerError() {
-    KontrolerWidoku kontroler =
-        utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
-    kontroler.przekazGlownyKontroler(glownyKontroler);
-  }
-
-  @Test
   public void testOdnowPolaczenie() {
     KontrolerWidoku kontroler =
         utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
@@ -112,14 +97,13 @@ public class TestKontrolerGry extends TestKontroler {
 
   @Test
   public void testZaktualizujPlansze() {
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
     KontrolerGry kontroler = new KontrolerGry();
-    kontroler.przekazGlownyKontroler(glownyKontroler);
     BooleanProperty czyPolaczono = new SimpleBooleanProperty();
     czyPolaczono.set(false);
     ModelGry model = new ModelGry(czyPolaczono);
     kontroler.przekazModel(model);
-    Mediator mediator = new Mediator(glownyKontroler);
+    Mediator mediator = new Mediator();
     kontroler.przekazMediator(mediator);
 
     glownyKontroler.rozpocznijGre(new String[]{"1", "8"});
@@ -163,14 +147,13 @@ public class TestKontrolerGry extends TestKontroler {
 
   @Test
   public void testProbujUsunPionek() {
-    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
     KontrolerGry kontroler = new KontrolerGry();
-    kontroler.przekazGlownyKontroler(glownyKontroler);
     BooleanProperty czyPolaczono = new SimpleBooleanProperty();
     czyPolaczono.set(false);
     ModelGry model = new ModelGry(czyPolaczono);
     kontroler.przekazModel(model);
-    Mediator mediator = new Mediator(glownyKontroler);
+    Mediator mediator = new Mediator();
     kontroler.przekazMediator(mediator);
 
     glownyKontroler.rozpocznijGre(new String[]{"1", "8"});
