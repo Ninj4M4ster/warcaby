@@ -45,7 +45,29 @@ public class RuchPionka implements Komenda{
                     }
                 }
             }
+
+            if(pokoj.getZasadyGry().promocja(ruchy.get(ruchy.size() - 2), ruchy.get(ruchy.size() - 1))) {
+                plansza[ruchy.get(ruchy.size() - 2)][ruchy.get(ruchy.size() - 1)] += 2;
+            }
+
             pokoj.setPlansza(plansza);
+
+            if(pokoj.getZasadyGry().czyWygrana() == 0) {
+                Gracz gracz_temp = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
+                gracz_temp.getSt().wyslij("Ruch " + reszta);
+
+                pokoj.kontroler_stanu_gry.RUCH();
+            }
+            else if(pokoj.getZasadyGry().czyWygrana() == 1) {
+                pokoj.getGosc().getSt().wyslij("Wygrana biale");
+                pokoj.getMistrz().getSt().wyslij("Wygrana biale");
+                pokoj.kontroler_stanu_gry.ZAKONCZ();
+            }
+            else if(pokoj.getZasadyGry().czyWygrana() == 2) {
+                pokoj.getGosc().getSt().wyslij("Wygrana czrane");
+                pokoj.getMistrz().getSt().wyslij("Wygrana czarne");
+                pokoj.kontroler_stanu_gry.ZAKONCZ();
+            }
             return "true";
         }
         return "false";

@@ -10,8 +10,8 @@ public class WybierzTrybGryTest {
     public static void main(String args[]) {
         WybierzTrybGry wbg = new WybierzTrybGry();
 
-        Pokoj pokoj = new Pokoj(new Gracz(1));
-        pokoj.setZasadyGry(wbg.wybierz("2"));
+        Pokoj pokoj = new Pokoj(new Gracz());
+        pokoj.setZasadyGry(wbg.wybierz("0"));
 
         int[][] plansza;
         plansza = wbg.tworzPlansze();

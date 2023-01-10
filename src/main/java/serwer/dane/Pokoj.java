@@ -1,7 +1,6 @@
 package serwer.dane;
 
 import kontroler.KontrolerDanych;
-import serwer.Serwer;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class Pokoj {
@@ -9,7 +8,16 @@ public class Pokoj {
     private static int licznik = 0;
     private int id;
 
-
+    /**
+     * plansza - tablica zawierająca informacje o umiejscowieniu pionkow<br>
+     * plansza[x][y]<br>
+     *  x+<br>
+     * y<br>
+     * +<br>
+     *  0 = puste<br>
+     *  1 = bialy pion   3 = bialy krol<br>
+     *  2 = czarne       4 = czrany krol
+     */
     private int[][] plansza;
     private ZasadyGry zasady_gry;
     public KontrolerStanuGry kontroler_stanu_gry;
@@ -96,7 +104,7 @@ public class Pokoj {
 
         for(int y = 0; y < plansza.length; y += 1) {
             for(int x = 0; x < plansza.length; x += 1) {
-                plansza_temp.append(String.valueOf(plansza[x][y]));
+                plansza_temp.append(plansza[x][y]);
             }
         }
         return plansza_temp.toString();

@@ -20,31 +20,22 @@ public abstract class ZasadyGry {
         if(sprawdzBicie()) {
             return true;
         }
-        if((pionek < 3 && ruchPionem()) || (pionek > 2 && ruchKrol())) {
-            return true;
-        }
-        return false;
+        return (pionek < 3 && ruchPionem()) || (pionek > 2 && ruchKrol());
     }
 
     boolean czyWToku() {
-        if(stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH || stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) {
-            return true;
-        }
-        return false;
+        return stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH || stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH;
     }
 
     boolean czyKolor() {
-        if((pionek == 1 || pionek == 3) && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH && pionek % 2 == gracz.getKolor()) {
+        if((pionek == 1 || pionek == 3) && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH && 1 == gracz.getKolor()) {
             return true;
         }
-        if((pionek == 2 || pionek == 4) && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH && pionek % 2 == gracz.getKolor()) {
-            return true;
-        }
-        return false;
+        return (pionek == 2 || pionek == 4) && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH && 2 == gracz.getKolor();
     }
 
     boolean ruchPionem() {
-        if(czyWPlanszy(ruchy.get(2), ruchy.get(3))) {
+        if(!czyWPlanszy(ruchy.get(2), ruchy.get(3)) && czyWPlanszy(ruchy.get(0), ruchy.get(1))) {
             return false;
         }
         if(pionek == 0 || plansza[ruchy.get(2)][ruchy.get(3)] != 0 || Math.abs(ruchy.get(2) - ruchy.get(0)) != 1) {
@@ -53,14 +44,11 @@ public abstract class ZasadyGry {
         if(pionek == 1 && ruchy.get(3) - ruchy.get(1) != 1) {
             return false;
         }
-        else if(pionek == 2 && ruchy.get(3) - ruchy.get(1) != -1) {
-            return false;
-        }
-        return true;
+        else return !(pionek == 2 && ruchy.get(3) - ruchy.get(1) != -1);
     }
 
     boolean ruchKrol() {
-        if(czyWPlanszy(ruchy.get(2), ruchy.get(3))) {
+        if(!czyWPlanszy(ruchy.get(2), ruchy.get(3))) {
             return false;
         }
         if(pionek == 0 || plansza[ruchy.get(2)][ruchy.get(3)] != 0 || Math.abs(ruchy.get(2) - ruchy.get(0)) != Math.abs(ruchy.get(3) - ruchy.get(1))) {
@@ -76,27 +64,39 @@ public abstract class ZasadyGry {
     }
 
     public boolean promocja(int x, int y) {
-        if((plansza[x][y] == 1 && y == 7) || (plansza[x][y] == 2 && y == 0)) {
-            return true;
+        return (plansza[x][y] == 1 && y == 7) || (plansza[x][y] == 2 && y == 0);
+    }
+
+    public int czyWygrana() {
+        int biale = 0, czarne = 0;
+        for(int x = 0; x < plansza.length; x += 1) {
+            for(int y = 0; y < plansza.length; y += 1) {
+                if(plansza[x][y] % 2 == 1) {
+                    biale += 1;
+                }
+                else if(plansza[x][y] % 2 == 0 && plansza[x][y] != 0) {
+                    czarne += 1;
+                }
+            }
         }
-        return false;
+        if(biale == 0) {
+            return 1;
+        }
+        if(czarne == 0) {
+            return 2;
+        }
+        return 0;
     }
 
     boolean dlugoscBicia(int x, int y, int nowy_x, int nowy_y) {
         if(pionek < 3 && Math.abs(nowy_x - x) == 2 && Math.abs(nowy_y - y) == 2) {
             return true;
         }
-        if(pionek >= 3 && Math.abs(nowy_x - x) >= 2 && Math.abs(nowy_x - x) == Math.abs(nowy_y - y) ) {
-            return true;
-        }
-        return false;
+        return pionek >= 3 && Math.abs(nowy_x - x) >= 2 && Math.abs(nowy_x - x) == Math.abs(nowy_y - y);
     }
 
     boolean czyWPlanszy(int x, int y) {
-        if(x < plansza.length && x >= 0 && y < plansza.length && y >= 0) {
-            return true;
-        }
-        return false;
+        return x < plansza.length && x >= 0 && y < plansza.length && y >= 0;
     }
 
     public void setPlansza(int[][] plansza) {

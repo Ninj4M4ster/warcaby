@@ -5,10 +5,10 @@ public class Zasady1 extends ZasadyGry {
         if(!czyWToku() || !czyKolor()) {
             return false;
         }
-        if(!sprawdzBicie()) {
-            return false;
+        if(sprawdzBicie()) {
+            return true;
         }
-        return false;
+        return (pionek < 3 && ruchPionem()) || (pionek > 2 && ruchKrol());
     }
     boolean sprawdzBicie() {
         int max_bicie = 0, max_temp;
