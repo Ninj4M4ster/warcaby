@@ -5,14 +5,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.GlownyKontroler;
 
 /**
  * Glowna klasa, odpowiedzialna za utworzenie GUI oraz zmiane widoku.
  */
 public class Aplikacja extends javafx.application.Application {
   /** Glowny kontroler aplikacji */
-  KontrolerAplikacji kontroler_;
+  GlownyKontroler kontroler_;
   /** Scena widoczna aktualnie w GUI */
   static Scene scena_ = new Scene(new StackPane());
 
@@ -24,7 +24,7 @@ public class Aplikacja extends javafx.application.Application {
    */
   @Override
   public void start(Stage stage) throws Exception {
-    kontroler_ = new KontrolerAplikacji();
+    kontroler_ = new GlownyKontroler();
     scena_ = new Scene(kontroler_.utworzPodstawowaScene());
     stage.setTitle("Warcaby");
     stage.setScene(scena_);

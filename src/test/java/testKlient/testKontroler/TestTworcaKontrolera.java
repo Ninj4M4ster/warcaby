@@ -3,7 +3,7 @@ package testKlient.testKontroler;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import klient.komunikacja.Mediator;
-import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.GlownyKontroler;
 import klient.kontroler.KontrolerGry;
 import klient.kontroler.KontrolerPokoju;
 import klient.kontroler.KontrolerWidoku;
@@ -18,26 +18,26 @@ public class TestTworcaKontrolera {
   public void testWybierzKontroler() {
     BooleanProperty czyPolaczono = new SimpleBooleanProperty(false);
     GlownyModel model = new GlownyModel(czyPolaczono);
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    Mediator mediator = new Mediator(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    Mediator mediator = new Mediator(glownyKontroler);
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU,
             model.modelPokoju(),
-            kontrolerAplikacji,
+            glownyKontroler,
             mediator);
     assert(kontroler instanceof KontrolerPokoju);
 
     kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY,
             model.modelGry(),
-            kontrolerAplikacji,
+            glownyKontroler,
             mediator);
     assert(kontroler instanceof KontrolerGry);
 
     kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE,
             model.modelGraczyOnline(),
-            kontrolerAplikacji,
+            glownyKontroler,
             mediator);
     assert(kontroler instanceof KontrolerWidokuGraczyOnline);
   }

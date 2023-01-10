@@ -13,8 +13,6 @@ import klient.model.Model;
 
 /**
  * Interfejs przedstawiajacy widok aplikacji.
- * TODO(Jakub Drzewiecki): Zmienic na klase abstrakcyjna oraz dodac metode
- *  tworzaca pasek informujacy o aktualnym stanie polaczenia.
  */
 public abstract class Widok {
 

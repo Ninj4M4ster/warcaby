@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import klient.komunikacja.Mediator;
-import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.GlownyKontroler;
 import klient.kontroler.KontrolerWidoku;
 import klient.kontroler.TworcaKontrolera;
 import klient.kontroler.TypyKontrolerow;
@@ -21,12 +21,12 @@ import klient.model.ModelPokoju;
 public abstract class TestKontroler {
   public KontrolerWidoku utworzGotowyKontroler(TypyKontrolerow typ, boolean statusPolaczenia) {
     Model model = this.utworzModel(typ, statusPolaczenia);
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    Mediator mediator = new Mediator(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    Mediator mediator = new Mediator(glownyKontroler);
 
     return TworcaKontrolera.wybierzKontroler(typ,
     model,
-    kontrolerAplikacji,
+        glownyKontroler,
     mediator);
   }
 

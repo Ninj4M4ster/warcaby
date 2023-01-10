@@ -19,7 +19,7 @@ import klient.widoki.widgety.Powiadomienie;
  * Glowny kontroler, odpowiedzialny za utworzenie polaczenia z serwerem
  * oraz tworzenie nowych widokow.
  */
-public class KontrolerAplikacji {
+public class GlownyKontroler {
   /** Zmienna przechowujaca mediator pomiedzy aplikacja oraz polaczeniem z serwerem. */
   private final Mediator mediator_;
 
@@ -29,7 +29,7 @@ public class KontrolerAplikacji {
   /**
    * Konstruktor, tworzy polaczenie i glowny model.
    */
-  public KontrolerAplikacji() {
+  public GlownyKontroler() {
     mediator_ = new Mediator(this);
     model_ = new GlownyModel(mediator_.czyPolaczono());
   }

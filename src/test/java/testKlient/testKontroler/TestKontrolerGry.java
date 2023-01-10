@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import klient.komunikacja.Mediator;
-import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.GlownyKontroler;
 import klient.kontroler.KontrolerGry;
 import klient.kontroler.KontrolerWidoku;
 import klient.kontroler.TypyKontrolerow;
@@ -41,16 +41,16 @@ public class TestKontrolerGry extends TestKontroler {
   @Test
   public void testPrzekazGlownyKontroler() {
     KontrolerGry kontroler = new KontrolerGry();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    kontroler.przekazGlownyKontroler(glownyKontroler);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testPrzekazGlownyKontrolerError() {
     KontrolerWidoku kontroler =
         utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    kontroler.przekazGlownyKontroler(glownyKontroler);
   }
 
   @Test
@@ -112,17 +112,17 @@ public class TestKontrolerGry extends TestKontroler {
 
   @Test
   public void testZaktualizujPlansze() {
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
     KontrolerGry kontroler = new KontrolerGry();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    kontroler.przekazGlownyKontroler(glownyKontroler);
     BooleanProperty czyPolaczono = new SimpleBooleanProperty();
     czyPolaczono.set(false);
     ModelGry model = new ModelGry(czyPolaczono);
     kontroler.przekazModel(model);
-    Mediator mediator = new Mediator(kontrolerAplikacji);
+    Mediator mediator = new Mediator(glownyKontroler);
     kontroler.przekazMediator(mediator);
 
-    kontrolerAplikacji.rozpocznijGre(new String[]{"1", "8"});
+    glownyKontroler.rozpocznijGre(new String[]{"1", "8"});
     Parent[][] polaPlanszy = new Parent[8][8];
     for(int i=0; i < 8; i++)
       for(int j=0; j < 8; j++) {
@@ -163,17 +163,17 @@ public class TestKontrolerGry extends TestKontroler {
 
   @Test
   public void testProbujUsunPionek() {
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
     KontrolerGry kontroler = new KontrolerGry();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    kontroler.przekazGlownyKontroler(glownyKontroler);
     BooleanProperty czyPolaczono = new SimpleBooleanProperty();
     czyPolaczono.set(false);
     ModelGry model = new ModelGry(czyPolaczono);
     kontroler.przekazModel(model);
-    Mediator mediator = new Mediator(kontrolerAplikacji);
+    Mediator mediator = new Mediator(glownyKontroler);
     kontroler.przekazMediator(mediator);
 
-    kontrolerAplikacji.rozpocznijGre(new String[]{"1", "8"});
+    glownyKontroler.rozpocznijGre(new String[]{"1", "8"});
     Parent[][] polaPlanszy = new Parent[8][8];
     for(int i=0; i < 8; i++)
       for(int j=0; j < 8; j++) {

@@ -2,7 +2,7 @@ package testKlient.testKontroler;
 
 import klient.ZasadyGry;
 import klient.komunikacja.Mediator;
-import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.GlownyKontroler;
 import klient.kontroler.KontrolerPokoju;
 import klient.kontroler.KontrolerWidoku;
 import klient.kontroler.TypyKontrolerow;
@@ -30,8 +30,8 @@ public class TestKontrolerPokoju extends TestKontroler {
   @Test
   public void testPrzekazGlownyKontroler() {
     KontrolerPokoju kontroler = new KontrolerPokoju();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    kontroler.przekazGlownyKontroler(glownyKontroler);
   }
 
   @Test
@@ -45,8 +45,8 @@ public class TestKontrolerPokoju extends TestKontroler {
   public void testPrzekazGlownyKontrolerError() {
     KontrolerWidoku kontrolerPokoju =
         this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontrolerPokoju.przekazGlownyKontroler(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    kontrolerPokoju.przekazGlownyKontroler(glownyKontroler);
   }
 
   @Test
@@ -85,11 +85,11 @@ public class TestKontrolerPokoju extends TestKontroler {
     ModelPokoju model =
         (ModelPokoju)this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, statusPolaczenia);
     model.ustawTekstWiadomosci("abc");
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    Mediator mediator = new Mediator(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    Mediator mediator = new Mediator(glownyKontroler);
 
     kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    kontroler.przekazGlownyKontroler(glownyKontroler);
     kontroler.przekazMediator(mediator);
     return kontroler;
   }

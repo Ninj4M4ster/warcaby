@@ -21,7 +21,7 @@ public interface KontrolerWidoku {
    * @param kontrolerGlowny Glowny kontroler aplikacji.
    * TODO(Jakub Drzewiecki): Zmienic interfejs na klase abstrakcyjna i zaimplementowac ta metode.
    */
-  void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny);
+  void przekazGlownyKontroler(GlownyKontroler kontrolerGlowny);
 
   /**
    * Metoda odpowiedzialna za przekazanie instancji mediatora do kontrolera.

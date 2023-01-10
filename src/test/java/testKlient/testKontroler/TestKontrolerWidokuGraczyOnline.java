@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.GlownyKontroler;
 import klient.kontroler.KontrolerWidokuGraczyOnline;
 import klient.kontroler.TypyKontrolerow;
 import klient.model.Model;
@@ -25,8 +25,8 @@ public class TestKontrolerWidokuGraczyOnline extends TestKontroler {
   @Test
   public void testPrzekazGlownyKontroler() {
     KontrolerWidokuGraczyOnline kontroler = new KontrolerWidokuGraczyOnline();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    GlownyKontroler glownyKontroler = new GlownyKontroler();
+    kontroler.przekazGlownyKontroler(glownyKontroler);
   }
 
   @Test
@@ -50,7 +50,6 @@ public class TestKontrolerWidokuGraczyOnline extends TestKontroler {
 
   @Test
   public void testUruchomWydarzenieNaKazdymDziecku() {
-    //TODO(Jakub Drzewiecki): trzeba utworzyc bardziej rozbudowany event w celu testu
     Event event = new Event(MouseEvent.MOUSE_CLICKED);
     KontrolerWidokuGraczyOnline kontroler = new KontrolerWidokuGraczyOnline();
     kontroler.uruchomWydarzenieNaKazdymDziecku(event);

@@ -19,7 +19,7 @@ public class KontrolerPokoju implements KontrolerWidoku {
   private ModelPokoju model_;
 
   /** Glowny kontroler aplikacji */
-  private KontrolerAplikacji kontrolerGlowny_;
+  private GlownyKontroler kontrolerGlowny_;
   /** Mediator pomiedzy aplikacja oraz polaczeniem z serwerem */
   private Mediator mediator_;
 
@@ -41,7 +41,7 @@ public class KontrolerPokoju implements KontrolerWidoku {
    * @param kontrolerGlowny Glowny kontroler aplikacji.
    */
   @Override
-  public void przekazGlownyKontroler(KontrolerAplikacji kontrolerGlowny) {
+  public void przekazGlownyKontroler(GlownyKontroler kontrolerGlowny) {
     if(this.kontrolerGlowny_ != null)
       throw new IllegalStateException("Nie mozna dwa razy przekaza kontrolera aplikacji "
           + "do kontrolera widoku.");

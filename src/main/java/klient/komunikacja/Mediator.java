@@ -5,7 +5,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
-import klient.kontroler.KontrolerAplikacji;
+import klient.kontroler.GlownyKontroler;
 import klient.kontroler.KontrolerGry;
 import klient.kontroler.KontrolerPokoju;
 import klient.kontroler.KontrolerWidoku;
@@ -17,7 +17,7 @@ import klient.kontroler.KontrolerWidokuGraczyOnline;
  */
 public class Mediator {
   /** Kontroler aplikacji */
-  private final KontrolerAplikacji kontrolerAplikacji_;
+  private final GlownyKontroler glownyKontroler_;
   /** Kontroler aktualnego widoku aplikacji */
   private KontrolerWidoku aktualnyKontroler_;
   /** Watek polaczenia z serwerem */
@@ -33,10 +33,10 @@ public class Mediator {
   /**
    * Konstruktor. Tworzy polaczenie z serwerem i zapisuje status polaczenia.
    *
-   * @param kontrolerAplikacji Kontroler aplikacji.
+   * @param glownyKontroler Kontroler aplikacji.
    */
-  public Mediator(KontrolerAplikacji kontrolerAplikacji) {
-    this.kontrolerAplikacji_ = kontrolerAplikacji;
+  public Mediator(GlownyKontroler glownyKontroler) {
+    this.glownyKontroler_ = glownyKontroler;
     try {
       this.polaczenie_ = new Polaczenie(this);
       this.czyPolaczono_.set(true);
@@ -109,12 +109,12 @@ public class Mediator {
       }
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
       if(wiadomosc.startsWith("true"))
-        this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
+        this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
       this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
       if(wiadomosc.startsWith("Odrzucono"))
-        this.kontrolerAplikacji_.powiadomOdrzucil();
+        this.glownyKontroler_.powiadomOdrzucil();
     }
     this.oczekiwanieNaOdpowiedz_ = false;
   }
@@ -135,19 +135,19 @@ public class Mediator {
       }
     } else if(wiadomosc.startsWith("nowy_gracz")) {
       String gracz = stworzNazwe(wiadomosc);
-      this.kontrolerAplikacji_.zaktualizujListeGraczy(gracz, true);
+      this.glownyKontroler_.zaktualizujListeGraczy(gracz, true);
     } else if(wiadomosc.startsWith("Zaakceptowano")) {
-      this.kontrolerAplikacji_.powiadomDolaczyl();
+      this.glownyKontroler_.powiadomDolaczyl();
     } else if(wiadomosc.startsWith("Plansza")) {
       this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     } else if(wiadomosc.startsWith("Czat")) {
       if(aktualnyKontroler_ instanceof KontrolerPokoju)
         ((KontrolerPokoju) aktualnyKontroler_).odbierzWiadomosc(this.wydobadzArgumenty(wiadomosc));
     } else if(wiadomosc.startsWith("plansza")) { // tutaj wiadomosc o rozpoczeciu gry powinna sie inaczej nazywac
-      this.kontrolerAplikacji_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
+      this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
     } else if(wiadomosc.startsWith("Rozlaczono")) {
       String gracz = stworzNazwe(wiadomosc);
-      this.kontrolerAplikacji_.zaktualizujListeGraczy(gracz, false);
+      this.glownyKontroler_.zaktualizujListeGraczy(gracz, false);
     } else {
       return false;
     }

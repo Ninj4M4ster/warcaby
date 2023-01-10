@@ -20,8 +20,6 @@ import klient.widoki.widgety.PolePlanszy;
 
 /**
  * Klasa reprezentujaca widok rozgrywki w warcaby.
- * TODO(Jakub Drzewiecki): Kolory poszczegolnych elementow widoku moglyby
- *  znajdywac sie w jakiejs globalnej konfiguracji badz modelu.
  */
 public class WidokGry extends Widok {
   /** Model widoku */
@@ -127,9 +125,6 @@ public class WidokGry extends Widok {
 
     planszaGry_.getRowConstraints().add(rzad);
   }
-
-  // TODO(Jakub Drzewiecki): Dosyć długa ta funkcja,
-  //  trzeba się zastanowić czy nie da się jej jakoś sensownie uprościć
 
   /**
    * Metoda odpowiedzialna za utworzenie i dodanie do planszy pol
