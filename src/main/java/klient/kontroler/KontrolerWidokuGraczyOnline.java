@@ -14,7 +14,9 @@ import klient.model.Model;
 import klient.model.ModelGraczyOnline;
 import klient.widoki.eventy.OknoKlikniete;
 import klient.widoki.widgety.KafelekGraczaOnline;
-import klient.widoki.widgety.Powiadomienie;
+import klient.widoki.widgety.powiadomienie.Powiadomienie;
+import klient.widoki.widgety.powiadomienie.Zaproszenie;
+import klient.widoki.widgety.powiadomienie.ZnikajacePowiadomienie;
 
 /**
  * Klasa kontrolera widoku menu glownego (graczy online).
@@ -127,7 +129,7 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    */
   public void wyswietlZaproszenieOdGracza(String gracz) {
     Platform.runLater(() -> this.model_.kontenerPowiadomien().getChildren().add(
-        new Powiadomienie(gracz, this, true)));
+        new Zaproszenie(gracz, this)));
   }
 
   /**
@@ -164,6 +166,6 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
    */
   public void wyswietlPowiadomienie(String wiadomosc) {
     Platform.runLater(() -> this.model_.kontenerPowiadomien().getChildren().add(
-        new Powiadomienie(wiadomosc, null, false)));
+        new ZnikajacePowiadomienie(wiadomosc)));
   }
 }

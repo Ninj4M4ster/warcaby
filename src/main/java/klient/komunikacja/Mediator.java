@@ -33,8 +33,8 @@ public class Mediator {
   /**
    * Konstruktor. Tworzy polaczenie z serwerem i zapisuje status polaczenia.
    */
-  public Mediator() {
-    this.glownyKontroler_ = GlownyKontroler.instancja();
+  public Mediator(GlownyKontroler kontroler) {
+    this.glownyKontroler_ = kontroler;
     try {
       this.polaczenie_ = new Polaczenie(this);
       this.czyPolaczono_.set(true);

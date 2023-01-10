@@ -11,7 +11,7 @@ import klient.model.GlownyModel;
 import klient.widoki.TworcaWidoku;
 import klient.widoki.TypyWidokow;
 import klient.widoki.Widok;
-import klient.widoki.widgety.Powiadomienie;
+import klient.widoki.widgety.powiadomienie.ZnikajacePowiadomienie;
 
 /**
  * Glowny kontroler, odpowiedzialny za utworzenie polaczenia z serwerem
@@ -30,7 +30,7 @@ public class GlownyKontroler {
    * Konstruktor, tworzy polaczenie i glowny model.
    */
   private GlownyKontroler() {
-    mediator_ = new Mediator();
+    mediator_ = new Mediator(this);
     model_ = new GlownyModel(mediator_.czyPolaczono());
   }
 
@@ -114,9 +114,7 @@ public class GlownyKontroler {
     Aplikacja.ustawNowyKorzen(this.utworzPodstawowaScene());
     Platform.runLater(() ->
         this.model_.modelGraczyOnline().kontenerPowiadomien().getChildren().add(
-        new Powiadomienie("Zaproszenie do gry zostało odrzucone",
-            null,
-            false)
+        new ZnikajacePowiadomienie("Zaproszenie do gry zostało odrzucone")
     ));
   }
 
