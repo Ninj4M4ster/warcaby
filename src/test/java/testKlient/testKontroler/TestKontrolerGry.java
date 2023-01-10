@@ -103,7 +103,7 @@ public class TestKontrolerGry extends TestKontroler {
     czyPolaczono.set(false);
     ModelGry model = new ModelGry(czyPolaczono);
     kontroler.przekazModel(model);
-    Mediator mediator = new Mediator();
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
     kontroler.przekazMediator(mediator);
 
     glownyKontroler.rozpocznijGre(new String[]{"1", "8"});
@@ -153,7 +153,7 @@ public class TestKontrolerGry extends TestKontroler {
     czyPolaczono.set(false);
     ModelGry model = new ModelGry(czyPolaczono);
     kontroler.przekazModel(model);
-    Mediator mediator = new Mediator();
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
     kontroler.przekazMediator(mediator);
 
     glownyKontroler.rozpocznijGre(new String[]{"1", "8"});

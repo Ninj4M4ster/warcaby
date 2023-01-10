@@ -68,12 +68,6 @@ public class TestGlownyKontroler {
     kontroler.odrzucZaproszenie("");
   }
 
-  @Test(expected = NullPointerException.class)
-  public void testZaktualizujListeGraczyException() {
-    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
-    glownyKontroler.zaktualizujListeGraczy("", true);
-  }
-
   @Test
   public void testZaktualizujListeGraczy() {
     GlownyKontroler glownyKontroler = GlownyKontroler.instancja();

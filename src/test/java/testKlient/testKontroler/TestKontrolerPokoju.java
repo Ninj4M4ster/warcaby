@@ -70,7 +70,7 @@ public class TestKontrolerPokoju extends TestKontroler {
     ModelPokoju model =
         (ModelPokoju)this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, statusPolaczenia);
     model.ustawTekstWiadomosci("abc");
-    Mediator mediator = new Mediator();
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
 
     kontroler.przekazModel(model);
     kontroler.przekazMediator(mediator);

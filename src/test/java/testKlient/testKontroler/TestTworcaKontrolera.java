@@ -18,7 +18,7 @@ public class TestTworcaKontrolera {
   public void testWybierzKontroler() {
     BooleanProperty czyPolaczono = new SimpleBooleanProperty(false);
     GlownyModel model = new GlownyModel(czyPolaczono);
-    Mediator mediator = new Mediator();
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU,
             model.modelPokoju(),

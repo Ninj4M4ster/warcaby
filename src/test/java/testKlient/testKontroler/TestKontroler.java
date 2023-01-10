@@ -21,10 +21,10 @@ import klient.model.ModelPokoju;
 public abstract class TestKontroler {
   public KontrolerWidoku utworzGotowyKontroler(TypyKontrolerow typ, boolean statusPolaczenia) {
     Model model = this.utworzModel(typ, statusPolaczenia);
-    Mediator mediator = new Mediator();
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
 
     return TworcaKontrolera.wybierzKontroler(typ,
-    model,
+        model,
         mediator);
   }
 

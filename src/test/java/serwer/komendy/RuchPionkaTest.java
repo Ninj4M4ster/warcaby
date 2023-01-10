@@ -7,12 +7,12 @@ import serwer.dane.Pokoj;
 import java.net.Socket;
 
 public class RuchPionkaTest {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         WybierzTrybGry wbg = new WybierzTrybGry();
 
-        Gracz gracz = new Gracz(1);
+        Gracz gracz = new Gracz();
         gracz.setKolor(1);
-        Pokoj pokoj = new Pokoj(gracz, new Gracz(2, new SerwerThread(new Socket(), 2)));
+        Pokoj pokoj = new Pokoj(gracz, new Gracz(new SerwerThread(new Socket(), 2)));
         pokoj.setZasadyGry(wbg.wybierz("2"));
         pokoj.setPlansza(wbg.tworzPlansze());
         pokoj.kontroler_stanu_gry.START();
