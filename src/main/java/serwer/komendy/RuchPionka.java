@@ -1,7 +1,6 @@
 package serwer.komendy;
 
 import serwer.dane.Gracz;
-import serwer.dane.KontrolerStanuGry;
 import serwer.dane.Pokoj;
 
 import java.util.ArrayList;
@@ -35,17 +34,19 @@ public class RuchPionka implements Komenda{
         pokoj.getZasadyGry().setGracz(gracz);
         pokoj.getZasadyGry().setRuchy(ruchy);
 
-        if(pokoj.getZasadyGry().sprawdz()) {      // || zasady_gry.bicie()
-            int pionek = plansza[ruchy.get(0)][ruchy.get(1)];
-            plansza[ruchy.get(0)][ruchy.get(1)] = 0;
-            plansza[ruchy.get(1)][y + nowy_y] = pionek;
+        if(pokoj.getZasadyGry().sprawdz()) {
+            for(int i = 0; i + 3 < ruchy.size(); i += 2) {
+                plansza[ruchy.get(i + 2)][ruchy.get(i + 3)] = plansza[ruchy.get(i)][ruchy.get(i + 1)];
+                plansza[ruchy.get(i)][ruchy.get(i + 1)] = 0;
+
+                for(int j = 1; j < Math.abs(ruchy.get(i + 2) - ruchy.get(i)) - 1; j += 1) {
+                    if(plansza[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)] != 0) {
+                        plansza[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)] = 0;
+                    }
+                }
+            }
             pokoj.setPlansza(plansza);
-
-            Gracz gracz2 = (gracz.getPokoj().getMistrz().equals(gracz) ? gracz.getPokoj().getGosc() : gracz.getPokoj().getMistrz());
-            gracz2.getSt().Wyslij("Plansza " + pokoj.planszaToString());
-
-            pokoj.kontroler_stanu_gry.RUCH();
-            return "true " + pokoj.planszaToString();
+            return "true";
         }
         return "false";
     }

@@ -1,7 +1,16 @@
 package serwer.komendy.zasady;
 
 public class Zasady1 extends ZasadyGry {
-    private boolean sprawdzBicie() {
+    public boolean sprawdz() {
+        if(!czyWToku() || !czyKolor()) {
+            return false;
+        }
+        if(!sprawdzBicie()) {
+            return false;
+        }
+        return false;
+    }
+    boolean sprawdzBicie() {
         int max_bicie = 0, max_temp;
 
         for(int x = 0; x < plansza.length; x += 1) {
@@ -16,11 +25,10 @@ public class Zasady1 extends ZasadyGry {
                 }
             }
         }
-
-        if(max_bicie == (ruchy.size() / 2) - 1) {
+        if(max_bicie + 1 == ruchy.size() / 2) {
             return bij();
         }
-        return (max_bicie == 0 && ruchy.size() == 4);
+        return false;
     }
 
     private int mozliweBiciePion(int x, int y, int[][] plansza) {
@@ -226,7 +234,7 @@ public class Zasady1 extends ZasadyGry {
                 int x_dozbicia = -1, y_dozbicia = -1;
 
                 for(int j = 1; j < Math.abs((ruchy.get(j + 2) - ruchy.get(j))); j += 1) {
-                    int pionek_temp = plansza_temp[ruchy.get(i) + (ruchy.get(i+2)/Math.abs(ruchy.get(i+2)) * j)][ruchy.get(i + 1) + (ruchy.get(i+3)/Math.abs(ruchy.get(i+3)) * j)];
+                    int pionek_temp = plansza_temp[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)];
 
                     if(pionek_temp % 2 == pionek % 2) {
                         return false;

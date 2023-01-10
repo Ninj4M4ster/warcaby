@@ -17,6 +17,12 @@ public abstract class ZasadyGry {
         if(!czyWToku() || !czyKolor()) {
             return false;
         }
+        if(sprawdzBicie()) {
+            return true;
+        }
+        if((pionek < 3 && ruchPionem()) || (pionek > 2 && ruchKrol())) {
+            return true;
+        }
         return false;
     }
 
@@ -28,58 +34,41 @@ public abstract class ZasadyGry {
     }
 
     boolean czyKolor() {
-        if((pionek == 1 || pionek == 3) && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH) {
+        if((pionek == 1 || pionek == 3) && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH && pionek % 2 == gracz.getKolor()) {
             return true;
         }
-        if((pionek == 2 || pionek == 4) && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean ruchPionem() {
-        if(gracz.getKolor() != pionek) {
-            return false;
-        }
-        if(pionek == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
-            return false;
-        }
-        if((pionek == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (pionek == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
-            return false;
-        }
-        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
-            return false;
-        }
-        if(pionek == 1 && przesuniecie_y == 1) {
-            return true;
-        }
-        else if(pionek == 2 && przesuniecie_y == -1) {
-            plansza[x][y] = 0;
-            plansza[x+przesuniecie_x][y+przesuniecie_y] = 2;
+        if((pionek == 2 || pionek == 4) && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH && pionek % 2 == gracz.getKolor()) {
             return true;
         }
         return false;
     }
 
-    private boolean ruchKrol() {
-        if(gracz.getKolor() != pionek) {
+    boolean ruchPionem() {
+        if(czyWPlanszy(ruchy.get(2), ruchy.get(3))) {
             return false;
         }
-        if(pionek == 0 || plansza[x+przesuniecie_x][y+przesuniecie_y] != 0 || Math.abs(przesuniecie_x) != Math.abs(przesuniecie_y)) {
+        if(pionek == 0 || plansza[ruchy.get(2)][ruchy.get(3)] != 0 || Math.abs(ruchy.get(2) - ruchy.get(0)) != 1) {
             return false;
         }
-        if(stan_gry == KontrolerStanuGry.StanGry.NIEROZPOCZETA || stan_gry == KontrolerStanuGry.StanGry.SKONCZONA || stan_gry == KontrolerStanuGry.StanGry.PRZERWANA || (pionek == 1 && stan_gry == KontrolerStanuGry.StanGry.RUCH_CZARNYCH) || (pionek == 2 && stan_gry == KontrolerStanuGry.StanGry.RUCH_BIALYCH)) {
+        if(pionek == 1 && ruchy.get(3) - ruchy.get(1) != 1) {
             return false;
         }
-        if(x+przesuniecie_x < 0 || x + przesuniecie_x > plansza.length || y + przesuniecie_y < 0 || y + przesuniecie_y > plansza.length) {
+        else if(pionek == 2 && ruchy.get(3) - ruchy.get(1) != -1) {
             return false;
         }
-        int licznik = 0;
-        for(int i = 0; i < przesuniecie_x; i += 1) {
-            if(plansza[x + (i * przesuniecie_x/Math.abs(przesuniecie_x))][y + (i * przesuniecie_y/Math.abs(przesuniecie_y))] != 0) {
-                licznik += 1;
-            }
-            if(licznik > 1) {
+        return true;
+    }
+
+    boolean ruchKrol() {
+        if(czyWPlanszy(ruchy.get(2), ruchy.get(3))) {
+            return false;
+        }
+        if(pionek == 0 || plansza[ruchy.get(2)][ruchy.get(3)] != 0 || Math.abs(ruchy.get(2) - ruchy.get(0)) != Math.abs(ruchy.get(3) - ruchy.get(1))) {
+            return false;
+        }
+
+        for(int i = 1; i < Math.abs(ruchy.get(2) - ruchy.get(0)) - 1; i += 1) {
+            if(plansza[ruchy.get(0) + ((ruchy.get(2) - ruchy.get(0))/Math.abs(ruchy.get(2) - ruchy.get(0)) * i)][ruchy.get(1) + ((ruchy.get(3) - ruchy.get(1))/Math.abs(ruchy.get(3) - ruchy.get(1)) * i)] != 0) {
                 return false;
             }
         }
@@ -126,4 +115,6 @@ public abstract class ZasadyGry {
     public void setGracz(Gracz gracz) {
         this.gracz = gracz;
     }
+
+    abstract boolean sprawdzBicie();
 }
