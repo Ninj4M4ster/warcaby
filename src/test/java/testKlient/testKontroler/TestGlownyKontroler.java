@@ -2,18 +2,12 @@ package testKlient.testKontroler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import javafx.application.Platform;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.kontroler.GlownyKontroler;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestGlownyKontroler {
-  @BeforeClass
-  public static void inicjalizujJavaFX() {
-    Platform.startup(() -> {});
-  }
   @Test
   public void testKontrolerAplikacji() {
     GlownyKontroler.instancja();

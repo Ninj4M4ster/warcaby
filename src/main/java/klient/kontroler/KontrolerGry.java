@@ -14,6 +14,7 @@ import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.model.Model;
 import klient.model.ModelGry;
+import klient.widoki.widgety.Krolowka;
 import klient.widoki.widgety.Pionek;
 import klient.widoki.widgety.PolePlanszy;
 
@@ -160,6 +161,24 @@ public class KontrolerGry implements KontrolerWidoku {
           int finalJ = j;
           Platform.runLater(() -> ((StackPane) polaPlanszy[finalI][finalJ]).getChildren().add(
               new Pionek(Color.valueOf("#363636"),
+                  Color.valueOf("#424242"),
+                  ((StackPane) polaPlanszy[finalI][finalJ]).widthProperty(),
+                  this,
+                  "czarny")));
+        } else if(otrzymaneRzedy[j].compareTo("3") == 0) {  // dodac biala krolowa
+          int finalI1 = i;
+          int finalJ1 = j;
+          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI1][finalJ1]).getChildren().add(
+              new Krolowka(Color.valueOf("#dbdbdb"),
+                  Color.valueOf("#a3a3a3"),
+                  ((StackPane) polaPlanszy[finalI1][finalJ1]).widthProperty(),
+                  this,
+                  "bialy")));
+        } else if(otrzymaneRzedy[j].compareTo("4") == 0) {  // dodac czarna krolowa
+          int finalI = i;
+          int finalJ = j;
+          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI][finalJ]).getChildren().add(
+              new Krolowka(Color.valueOf("#363636"),
                   Color.valueOf("#424242"),
                   ((StackPane) polaPlanszy[finalI][finalJ]).widthProperty(),
                   this,

@@ -25,6 +25,7 @@ public class Pionek extends StackPane {
    * @param kolorObramowki Kolor obramowania kola.
    * @param propertySzerokoscPola Szerokosc pola, w ktorym znajduje sie kolo.
    * @param kontroler Kontroler widoku gry.
+   * @param kolorPionka Napis przedstawiajacy kolor pionka.
    */
   public Pionek(Color kolor,
       Color kolorObramowki,

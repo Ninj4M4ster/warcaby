@@ -168,10 +168,10 @@ public class TestKontrolerGry extends TestKontroler {
 
     String plansza = "01010101\n"
         + "10101010\n"
-        + "01010101\n"
+        + "03030303\n"
         + "00000000\n"
         + "00000000\n"
-        + "20202020\n"
+        + "40404040\n"
         + "02020202\n"
         + "20202020\n";
     kontroler.zaktualizujPlansze(plansza);
