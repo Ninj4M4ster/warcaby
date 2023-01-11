@@ -1,6 +1,11 @@
 package serwer.komendy.zasady;
 
 public class Zasady1 extends ZasadyGry {
+
+    /**
+     * Sprawdza wszytskie zasady warcab dla podanego ruchu (poza tym czy gra skonczona)
+     * @return false/true
+     */
     public boolean sprawdz() {
         if(!czyWToku() || !czyKolor()) {
             return false;
@@ -10,6 +15,11 @@ public class Zasady1 extends ZasadyGry {
         }
         return (pionek < 3 && ruchPionem()) || (pionek > 2 && ruchKrol());
     }
+
+    /**
+     * Sprawdza czy bicie powinno wystapic, jak dlugie czy wystapilo odpowiednio dlugie oraz czy bylo poprawne
+     * @return
+     */
     boolean sprawdzBicie() {
         int max_bicie = 0, max_temp;
 
@@ -31,6 +41,13 @@ public class Zasady1 extends ZasadyGry {
         return false;
     }
 
+    /**
+     * Sprawdza czy w obecnej planszy jest mozliwe bicie pionkiem
+     * @param x - kolumna sprawdzanego pionka
+     * @param y - rzad sprawdzanego pionka
+     * @param plansza - obecna plansza
+     * @return int liczba bic w jednym ruchu
+     */
     private int mozliweBiciePion(int x, int y, int[][] plansza) {
         int[][] plansza_temp = plansza;
         int pionek = plansza_temp[x][y];
@@ -79,6 +96,13 @@ public class Zasady1 extends ZasadyGry {
         return max;
     }
 
+    /**
+     * Sprawdza czy w obecnej planszy jest mozliwe bicie krolem
+     * @param x - kolumna sprawdzanego krola
+     * @param y - rzad sprawdzanego krola
+     * @param plansza - obecna plansza
+     * @return int liczba bic w jednym ruchu
+     */
     private int mozliweBicieKrol(int x, int y, int[][] plansza) {
         int[][] plansza_temp = plansza;
         int pionek = plansza_temp[x][y];
@@ -216,6 +240,10 @@ public class Zasady1 extends ZasadyGry {
         return max;
     }
 
+    /**
+     * Sprawdza czy wykonane bicie jest poprawne
+     * @return
+     */
     private boolean bij() {
         int[][] plansza_temp = plansza;
 
