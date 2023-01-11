@@ -242,7 +242,7 @@ public class Zasady1 extends ZasadyGry {
 
     /**
      * Sprawdza czy wykonane bicie jest poprawne
-     * @return
+     * @return true jesli bicie bylo poprawne
      */
     private boolean bij() {
         int[][] plansza_temp = plansza;
