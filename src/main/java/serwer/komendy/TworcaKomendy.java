@@ -7,7 +7,7 @@ public class TworcaKomendy {
     public Komenda tworzKomende(String komenda, Gracz gracz) {
         switch(komenda) {
             case "WTG":
-                return new WybierzTrybGry();
+                return new WybierzTrybGry(gracz);
             case "PDR":
                 //return new PodajDostepneRuchy();
                 return null;

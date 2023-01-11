@@ -8,9 +8,10 @@ import java.net.Socket;
 
 public class WybierzTrybGryTest {
     public static void main(String args[]) {
-        WybierzTrybGry wbg = new WybierzTrybGry();
+        Gracz gracz = new Gracz();
+        WybierzTrybGry wbg = new WybierzTrybGry(gracz);
 
-        Pokoj pokoj = new Pokoj(new Gracz());
+        Pokoj pokoj = new Pokoj(gracz);
         pokoj.setZasadyGry(wbg.wybierz("0"));
 
         int[][] plansza;

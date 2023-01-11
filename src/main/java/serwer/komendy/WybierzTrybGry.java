@@ -1,11 +1,17 @@
 package serwer.komendy;
 
+import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 import serwer.komendy.zasady.Zasady1;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class WybierzTrybGry implements Komenda{
     private int plansza_rozmiar;
+    private Gracz gracz;
+
+    public WybierzTrybGry(Gracz gracz) {
+        this.gracz = gracz;
+    }
 
     public ZasadyGry wybierz(String rodzaj) {
         switch (rodzaj) {
@@ -26,6 +32,10 @@ public class WybierzTrybGry implements Komenda{
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         if(pokoj != null) {
+            if(gracz == pokoj.getGosc()) {
+                return "false";
+            }
+
             pokoj.setZasadyGry(wybierz(reszta));
 
             int[][] plansza = tworzPlansze();
