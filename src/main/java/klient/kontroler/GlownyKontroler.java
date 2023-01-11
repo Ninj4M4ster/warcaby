@@ -147,12 +147,13 @@ public class GlownyKontroler {
    *
    * @param argumenty Argumenty - kolor pionkow oraz rozmiar planszy.
    */
-  public void rozpocznijGre(String[] argumenty) {
-    if(argumenty[0].compareTo("1") == 0)
+  public void rozpocznijGre(String argumenty) {
+    if(argumenty.charAt(0) == '1')
       this.model_.modelGry().ustawKolorPionkow("bialy");
     else
       this.model_.modelGry().ustawKolorPionkow("czarny");
-    this.model_.modelGry().ustawIloscPol(Integer.parseInt(argumenty[1]));
+    // TODO(Jakub Drzewiecki): Dodac obliczanie ilosci pol
+//    this.model_.modelGry().ustawIloscPol(Integer.parseInt(String.valueOf(argumenty.charAt(1))));
 
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY,

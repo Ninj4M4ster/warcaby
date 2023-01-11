@@ -130,9 +130,6 @@ public class KontrolerGry implements KontrolerWidoku {
               docelowyRzad,
               TypyWiadomosci.RUCH_PIONKA);
       this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
-
-      startowePole.getChildren().remove(this.kontenerAktualniePrzesuwanegoPionka_);
-      pole.getChildren().add(this.kontenerAktualniePrzesuwanegoPionka_);
     }
     this.pionekPrzesuwany_ = false;
   }
@@ -180,11 +177,14 @@ public class KontrolerGry implements KontrolerWidoku {
    * @param kolumna Kolumna pola.
    */
   private void probujUsunPionek(int rzad, int kolumna) {
+
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
     ObservableList<Node> elementyPola = ((StackPane)polaPlanszy[rzad][kolumna]).getChildren();
     if(elementyPola.size() != 0) {
-      Node pionek = elementyPola.get(0);
-      elementyPola.remove(pionek);
+      Platform.runLater(() -> {
+        Node pionek = elementyPola.get(0);
+        elementyPola.remove(pionek);
+      });
     }
   }
 }

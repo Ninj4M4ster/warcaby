@@ -79,9 +79,9 @@ public class TestGlownyKontroler {
   @Test
   public void testRozpocznijGre() {
     GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
-    glownyKontroler.rozpocznijGre(new String[]{"1", "8"});
-    glownyKontroler.rozpocznijGre(new String[]{"2", "10"});
-    glownyKontroler.rozpocznijGre(new String[]{"1", "12"});
+    glownyKontroler.rozpocznijGre("11");
+    glownyKontroler.rozpocznijGre("22");
+    glownyKontroler.rozpocznijGre("13");
   }
 
 

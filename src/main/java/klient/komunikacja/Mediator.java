@@ -106,9 +106,10 @@ public class Mediator {
       }
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ROZPOCZECIE_GRY) {
       if(wiadomosc.startsWith("true"))
-        this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
+        this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc)[0]);
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
-      this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
+      if(wiadomosc.startsWith("true"))
+        this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
       if(wiadomosc.startsWith("Odrzucono"))
         this.glownyKontroler_.powiadomOdrzucil();
@@ -141,7 +142,7 @@ public class Mediator {
       if(aktualnyKontroler_ instanceof KontrolerPokoju)
         ((KontrolerPokoju) aktualnyKontroler_).odbierzWiadomosc(this.wydobadzArgumenty(wiadomosc));
     } else if(wiadomosc.startsWith("plansza")) { // tutaj wiadomosc o rozpoczeciu gry powinna sie inaczej nazywac
-      this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc));
+      this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc)[0]);
     } else if(wiadomosc.startsWith("Rozlaczono")) {
       String gracz = stworzNazwe(wiadomosc);
       this.glownyKontroler_.zaktualizujListeGraczy(gracz, false);
