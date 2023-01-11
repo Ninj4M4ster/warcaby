@@ -73,9 +73,13 @@ public class TestGlownyKontroler {
   @Test
   public void testRozpocznijGre() {
     GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
-    glownyKontroler.rozpocznijGre("11");
-    glownyKontroler.rozpocznijGre("22");
-    glownyKontroler.rozpocznijGre("13");
+    glownyKontroler.rozpocznijGre("110101010010101011010101000000000"
+        + "00000000020202022020202002020202");
+    glownyKontroler.rozpocznijGre("210101010100101010101101010101001010101010000000000000"
+        + "00000002020202020020202020220202020200202020202");
+    glownyKontroler.rozpocznijGre("110101010101001010101010110101010101001010101010110101"
+        + "0101010000000000000000000000000202020202020020202020202202020202020020202020202202020202"
+        + "020");
   }
 
 

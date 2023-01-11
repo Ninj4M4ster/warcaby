@@ -152,8 +152,7 @@ public class GlownyKontroler {
       this.model_.modelGry().ustawKolorPionkow("bialy");
     else
       this.model_.modelGry().ustawKolorPionkow("czarny");
-    // TODO(Jakub Drzewiecki): Dodac obliczanie ilosci pol
-//    this.model_.modelGry().ustawIloscPol(Integer.parseInt(String.valueOf(argumenty.charAt(1))));
+    this.model_.modelGry().ustawIloscPol((int)(Math.sqrt(argumenty.split("").length - 1)));
 
     KontrolerWidoku kontroler =
         TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY,

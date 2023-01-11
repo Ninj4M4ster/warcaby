@@ -106,7 +106,8 @@ public class TestKontrolerGry extends TestKontroler {
     Mediator mediator = new Mediator(GlownyKontroler.instancja());
     kontroler.przekazMediator(mediator);
 
-    glownyKontroler.rozpocznijGre("11");
+    glownyKontroler.rozpocznijGre("110101010010101011010101000000000"
+            + "00000000020202022020202002020202");
     Parent[][] polaPlanszy = new Parent[8][8];
     for(int i=0; i < 8; i++)
       for(int j=0; j < 8; j++) {
@@ -156,7 +157,8 @@ public class TestKontrolerGry extends TestKontroler {
     Mediator mediator = new Mediator(GlownyKontroler.instancja());
     kontroler.przekazMediator(mediator);
 
-    glownyKontroler.rozpocznijGre("11");
+    glownyKontroler.rozpocznijGre("110101010010101011010101000000000"
+        + "00000000020202022020202002020202");
     Parent[][] polaPlanszy = new Parent[8][8];
     for(int i=0; i < 8; i++)
       for(int j=0; j < 8; j++) {
