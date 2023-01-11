@@ -12,13 +12,13 @@ public class RuchPionkaTest {
 
         Gracz gracz = new Gracz();
         gracz.setKolor(1);
-        Pokoj pokoj = new Pokoj(gracz, new Gracz(new SerwerThread(new Socket(), 2)));
+        Pokoj pokoj = new Pokoj(gracz, new Gracz(new SerwerThread(new Socket())));
         pokoj.setZasadyGry(wbg.wybierz("2"));
         pokoj.setPlansza(wbg.tworzPlansze());
         pokoj.kontroler_stanu_gry.START();
 
         RuchPionka rp = new RuchPionka(gracz);
-        System.out.println(rp.Wykonaj("0 4 1 1", pokoj));
+        System.out.println(rp.Wykonaj("0 4 1 5", pokoj));
 
         int[][] plansza = pokoj.getPlansza();
         for(int y = plansza.length - 1; y >= 0; y -= 1) {

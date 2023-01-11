@@ -12,8 +12,8 @@ public class Czat implements Komenda {
 
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
-        Gracz gracz2 = (gracz.getPokoj().getMistrz().equals(gracz) ? gracz.getPokoj().getGosc() : gracz.getPokoj().getMistrz());
-        gracz2.getSt().Wyslij("Czat " + reszta);
+        Gracz gracz2 = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
+        gracz2.getSt().wyslij("Czat " + reszta);
         return "true";
     }
 }

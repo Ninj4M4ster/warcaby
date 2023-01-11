@@ -12,18 +12,17 @@ import java.net.Socket;
 
 public class SerwerThread extends Thread {
     private Socket socket;
-    private Pokoj pokoj;
     private Gracz gracz;
     BufferedReader in = null;
     PrintWriter out = null;
 
 
-    public SerwerThread(Socket socket, int gracze_id) {
+    public SerwerThread(Socket socket) {
         this.socket = socket;
         gracz = new Gracz(this);
     }
 
-    public void Wyslij(String wiadomosc) {
+    public void wyslij(String wiadomosc) {
         out.println(wiadomosc);
         out.flush();
     }
@@ -47,13 +46,13 @@ public class SerwerThread extends Thread {
                 wiadomosc = in.readLine();
                 pw.setWiadomosc(wiadomosc);
                 Komenda kom = pw.getKomenda(gracz);
-                String zwrotne = kom.Wykonaj(pw.getReszta(), pokoj);
+                String zwrotne = kom.Wykonaj(pw.getReszta(), gracz.getPokoj());
                 out.println(zwrotne);
                 out.flush();
             } catch (IOException e) {
                 for(Gracz gracz : KontrolerDanych.getInstance().getGracze()) {
                     if(!gracz.equals(this.gracz)) {
-                        gracz.getSt().Wyslij("Rozlaczono " + this.gracz.getNick());
+                        gracz.getSt().wyslij("Rozlaczono " + this.gracz.getNick());
                     }
                 }
 

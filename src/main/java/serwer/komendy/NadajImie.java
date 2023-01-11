@@ -21,8 +21,8 @@ public class NadajImie implements Komenda{
 
         for(Gracz gracz_temp : KontrolerDanych.getInstance().getGracze()) {
             if(gracz_temp.getNick() != null && reszta.compareTo(gracz_temp.getNick()) != 0) {
-                gracz_temp.getSt().Wyslij("nowy_gracz " + reszta);
-                gracz.getSt().Wyslij("nowy_gracz " + gracz_temp.getNick());
+                gracz_temp.getSt().wyslij("nowy_gracz " + reszta);
+                gracz.getSt().wyslij("nowy_gracz " + gracz_temp.getNick());
             }
         }
         System.out.println("Nadano imie ");
