@@ -109,4 +109,15 @@ public class Pokoj {
         }
         return plansza_temp.toString();
     }
+
+    public void wypiszPlansze(int[][] plansza) {
+        for(int y = plansza.length - 1; y >= 0; y -= 1) {
+            for(int x = 0; x < plansza.length; x += 1) {
+                System.out.print(plansza[x][y]);
+                if(x == plansza.length - 1) {
+                    System.out.print("\n");
+                }
+            }
+        }
+    }
 }
