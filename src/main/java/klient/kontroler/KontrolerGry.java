@@ -1,5 +1,6 @@
 package klient.kontroler;
 
+import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import klient.komunikacja.Mediator;
+import klient.komunikacja.wiadomosci.RuchPionka;
 import klient.komunikacja.wiadomosci.TypyWiadomosci;
 import klient.komunikacja.wiadomosci.Wiadomosc;
 import klient.model.Model;
@@ -33,10 +35,25 @@ public class KontrolerGry implements KontrolerWidoku {
   /** Czy jakis pionek jest aktualnie przesuwany? */
   private boolean pionekPrzesuwany_;
 
+  /** Wspolrzedne pionka przed rozpoczeciem ruszenia i po puszczeniu myszki */
   private int kolumnaStartowa_ = -1;
   private int kolumnaDocelowa_ = -1;
   private int rzadStartowy_ = -1;
   private int rzadDocelowy_ = -1;
+
+  /** Wspolrzedne pionka przed rozpoczeciem bicia */
+  private int kolumnaPrzedBiciem_ = -1;
+  private int rzadPrzedBiciem_ = -1;
+  private boolean seriaRuchow_ = false;
+  private Pionek bijacyPionek_;
+  private PolePlanszy poleBijacegoPionka_;
+
+  /** Zmienna przechowujaca wspolrzedne startowe oraz
+   * wszystkie kolejne wspolrzedne podczas poruszania pionka */
+  private RuchPionka ruch_ = new RuchPionka();
+  /** Zmienna ta przechowuje wszystkie pola nad ktorymi poruszyl sie pionek w celu
+   * pozniejszego usuniecia z nich pionkow przeciwnika */
+  private final ArrayList<Integer> polaPionkiDoUsuniecia = new ArrayList<>();
 
   /**
    * Metoda odpowiedzialna za przechowanie modelu widoku gry.
@@ -129,32 +146,142 @@ public class KontrolerGry implements KontrolerWidoku {
       kolumnaDocelowa_ = pole.kolumna();
       rzadDocelowy_ = pole.rzad();
 
-      Wiadomosc wiadomosc =
-          new Wiadomosc(kolumnaStartowa_,
-              rzadStartowy_,
-              kolumnaDocelowa_,
-              rzadDocelowy_,
-              TypyWiadomosci.RUCH_PIONKA);
-      this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+      if(!ruch_.ruchZaczety()) {
+        ruch_.dodajRuch(rzadStartowy_, kolumnaStartowa_);
+        kolumnaPrzedBiciem_ = kolumnaStartowa_;
+        rzadPrzedBiciem_ = rzadStartowy_;
+        bijacyPionek_ = this.kontenerAktualniePrzesuwanegoPionka_;
+      }
+
+      ruch_.dodajRuch(rzadDocelowy_, kolumnaDocelowa_);
+
+      if(this.kolejneBicieDostepne()) {
+        this.zatwierdzRuch(false);
+        this.seriaRuchow_ = true;
+      } else {
+        Wiadomosc wiadomosc =
+            new Wiadomosc(ruch_.napisListaRuchow(),
+                TypyWiadomosci.RUCH_PIONKA);
+        this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+        ruch_.usunRuchy();
+      }
     }
     this.pionekPrzesuwany_ = false;
   }
 
   /**
+   * Metoda ta sprawdza, czy pionek po wykonaniu ruchu bedzie mial dostepne kolejne bicie.
+   *
+   * @return Czy pionek moze dalej bic?
+   */
+  public boolean kolejneBicieDostepne() {
+    if(Math.abs(rzadStartowy_ - rzadDocelowy_) < 2)
+      return false;
+    Parent[][] polaPlanszy = this.model_.polaPlanszy();
+    StackPane pionekBezKlasy = (StackPane)polaPlanszy[rzadStartowy_][kolumnaStartowa_];
+    if(pionekBezKlasy instanceof Krolowka) {
+      for(int i=rzadDocelowy_ + 1, j=kolumnaDocelowa_ + 1;
+          i < this.model_.iloscPol() - 1 && j < this.model_.iloscPol() - 1; i++, j++) {
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i+1][j+1].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
+          if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
+            return true;
+          else
+            break;
+        }
+      }
+      for(int i=rzadDocelowy_ + 1, j=kolumnaDocelowa_ - 1;
+          i < this.model_.iloscPol() - 1 && j > 0; i++, j--) {
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i+1][j-1].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
+          if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
+            return true;
+          else
+            break;
+        }
+      }
+      for(int i=rzadDocelowy_ - 1, j=kolumnaDocelowa_ + 1;
+          i > 0 && j < this.model_.iloscPol() - 1; i--, j++) {
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i-1][j+1].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
+          if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
+            return true;
+          else
+            break;
+        }
+      }
+      for(int i=rzadDocelowy_ - 1, j=kolumnaDocelowa_ - 1;
+          i > 0 && j > 0; i--, j--) {
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i-1][j-1].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
+          if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
+            return true;
+          else
+            break;
+        }
+      }
+    } else {
+      if(rzadDocelowy_ > 1 && kolumnaDocelowa_ > 1
+          && rzadDocelowy_ < this.model_.iloscPol() - 2
+          && kolumnaDocelowa_ < this.model_.iloscPol() - 2) {
+        int i = rzadDocelowy_;
+        int j = kolumnaDocelowa_;
+        if(polaPlanszy[i + 1][j + 1].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i + 2][j + 2].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i+1][j+1].getChildrenUnmodifiable().get(0);
+          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
+        }
+        if(polaPlanszy[i + 1][j - 1].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i + 2][j - 2].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i+1][j-1].getChildrenUnmodifiable().get(0);
+          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
+        }
+        if(polaPlanszy[i - 1][j + 1].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i - 2][j + 2].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i-1][j+1].getChildrenUnmodifiable().get(0);
+          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
+        }
+        if(polaPlanszy[i - 1][j - 1].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i - 2][j - 2].getChildrenUnmodifiable().size() == 0) {
+          Pionek bityPionek = (Pionek) polaPlanszy[i-1][j-1].getChildrenUnmodifiable().get(0);
+          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
    * Metoda odpowiedzialna za zatwierdzenie ruchu, ktory chcial wykonac gracz.
    */
-  public void zatwierdzRuch() {
+  public void zatwierdzRuch(boolean czyUsuwacPionki) {
     if(kolumnaStartowa_ != -1) {
       Parent[][] polaPlanszy = this.model_.polaPlanszy();
       probujUsunPionek(rzadStartowy_, kolumnaStartowa_);
+      // dodaj pola nad ktorymi poruszyl sie pionek, aby pozniej usunac z nich pionki.
       if(Math.abs(rzadStartowy_ - rzadDocelowy_) >= 2) {
         int iloscPrzeskoczonyPol = Math.abs(rzadStartowy_ - rzadDocelowy_);
         int lewyDolnyRzad = Math.min(rzadStartowy_, rzadDocelowy_);
         int lewaDolnaKolumna = Math.min(kolumnaDocelowa_, kolumnaStartowa_);
         for(int i=0; i < iloscPrzeskoczonyPol; i++) {
           probujUsunPionek(lewyDolnyRzad + i, lewaDolnaKolumna + i);
+          polaPionkiDoUsuniecia.add(lewyDolnyRzad + i);
+          polaPionkiDoUsuniecia.add(lewaDolnaKolumna + i);
         }
       }
+      // usun pionki po zatwierdzeniu ruchu przez serwer
+      if(czyUsuwacPionki) {
+        for(int i=0; i < polaPionkiDoUsuniecia.size(); i += 2) {
+          probujUsunPionek(polaPionkiDoUsuniecia.get(i), polaPionkiDoUsuniecia.get(i+1));
+        }
+        polaPionkiDoUsuniecia.clear();
+      }
+      poleBijacegoPionka_ = (PolePlanszy) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_];
+      System.out.println(poleBijacegoPionka_.rzad() + " " + poleBijacegoPionka_.kolumna());
       if(rzadDocelowy_ == 0 || rzadDocelowy_ == 7) {
         if (this.model_.kolorPionkow().compareTo("bialy") == 0)
             Platform.runLater(() ->
@@ -191,6 +318,24 @@ public class KontrolerGry implements KontrolerWidoku {
                       "czarny")));
       }
     }
+  }
+
+  /**
+   * Metoda odpowiedzialna za cofniecie ruchu pionka.
+   * Wymagana jest, jesli pionek wykonal wiecej niz jeden ruch lub wiecej niz jedno bicie.
+   */
+  public void cofnijRuch() {
+    if(this.seriaRuchow_) {
+      Platform.runLater(() -> {
+        Parent[][] polaPlanszy = this.model_.polaPlanszy();
+        System.out.println(bijacyPionek_.getParent());
+        poleBijacegoPionka_.getChildren().remove(bijacyPionek_);
+        ((StackPane) polaPlanszy[rzadPrzedBiciem_][kolumnaPrzedBiciem_])
+            .getChildren().add(bijacyPionek_);
+      });
+    }
+    this.seriaRuchow_ = false;
+    polaPionkiDoUsuniecia.clear();
   }
 
   /**
@@ -249,11 +394,11 @@ public class KontrolerGry implements KontrolerWidoku {
   private void probujUsunPionek(int rzad, int kolumna) {
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
     ObservableList<Node> elementyPola = ((StackPane)polaPlanszy[rzad][kolumna]).getChildren();
-    if(elementyPola.size() != 0) {
-      Platform.runLater(() -> {
+    Platform.runLater(() -> {
+      if(elementyPola.size() != 0) {
         Node pionek = elementyPola.get(0);
         elementyPola.remove(pionek);
-      });
-    }
+      }
+    });
   }
 }

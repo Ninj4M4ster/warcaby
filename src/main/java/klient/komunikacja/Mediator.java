@@ -109,7 +109,9 @@ public class Mediator {
         this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc)[0]);
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
       if(wiadomosc.startsWith("true"))
-        ((KontrolerGry)this.aktualnyKontroler_).zatwierdzRuch();
+        ((KontrolerGry)this.aktualnyKontroler_).zatwierdzRuch(true);
+      else
+        ((KontrolerGry)this.aktualnyKontroler_).cofnijRuch();
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
       if(wiadomosc.startsWith("Odrzucono"))
         this.glownyKontroler_.powiadomOdrzucil();
