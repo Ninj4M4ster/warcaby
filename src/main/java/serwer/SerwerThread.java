@@ -1,5 +1,6 @@
 package serwer;
 
+import kontrolerDanych.KontrolerDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 import serwer.komendy.Komenda;

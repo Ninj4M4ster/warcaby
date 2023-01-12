@@ -77,7 +77,6 @@ public class Mediator {
    * @param wiadomosc Wiadomosc wyslana przez aplikacje.
    */
   public void wyslijWiadomoscDoSerwera(Wiadomosc wiadomosc) {
-    System.out.println(wiadomosc);
     if(!oczekiwanieNaOdpowiedz_ && this.czyPolaczono_.get()) {
       this.polaczenie_.wyslijWiadomosc(wiadomosc);
       this.typOstatniejWiadomosci_ = wiadomosc.typWiadomosci();
@@ -110,7 +109,7 @@ public class Mediator {
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
       if(wiadomosc.startsWith("true"))
         ((KontrolerGry)this.aktualnyKontroler_).zatwierdzRuch(true);
-      else
+      else if(wiadomosc.startsWith("false"))
         ((KontrolerGry)this.aktualnyKontroler_).cofnijRuch();
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
       if(wiadomosc.startsWith("Odrzucono"))

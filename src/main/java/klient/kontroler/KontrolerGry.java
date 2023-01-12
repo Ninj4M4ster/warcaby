@@ -178,15 +178,25 @@ public class KontrolerGry implements KontrolerWidoku {
    * @return Czy pionek moze dalej bic?
    */
   public boolean kolejneBicieDostepne() {
-    if(Math.abs(rzadStartowy_ - rzadDocelowy_) < 2)
+    // sprawdz czy pionek bije
+    if(Math.abs(rzadStartowy_ - rzadDocelowy_) < 2) {
       return false;
+    }
+    // sprawdz czy pionek idzie po przekatnej
+    if(Math.abs(rzadDocelowy_ - rzadStartowy_) != Math.abs(kolumnaDocelowa_ - kolumnaStartowa_))
+      return false;
+
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
+    // sprawdz czy pionek staje na pustym polu
     if(polaPlanszy[rzadDocelowy_][kolumnaDocelowa_].getChildrenUnmodifiable().size() > 0)
       return false;
     StackPane pionekBezKlasy = (StackPane)polaPlanszy[rzadStartowy_][kolumnaStartowa_];
     if(pionekBezKlasy instanceof Krolowka) {
       for(int i=rzadDocelowy_ + 1, j=kolumnaDocelowa_ + 1;
           i < this.model_.iloscPol() - 1 && j < this.model_.iloscPol() - 1; i++, j++) {
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i+1][j+1].getChildrenUnmodifiable().size() > 0)
+          break;
         if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
             && polaPlanszy[i+1][j+1].getChildrenUnmodifiable().size() == 0) {
           Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
@@ -199,6 +209,9 @@ public class KontrolerGry implements KontrolerWidoku {
       for(int i=rzadDocelowy_ + 1, j=kolumnaDocelowa_ - 1;
           i < this.model_.iloscPol() - 1 && j > 0; i++, j--) {
         if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i+1][j-1].getChildrenUnmodifiable().size() > 0)
+          break;
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
             && polaPlanszy[i+1][j-1].getChildrenUnmodifiable().size() == 0) {
           Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
           if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
@@ -210,7 +223,10 @@ public class KontrolerGry implements KontrolerWidoku {
       for(int i=rzadDocelowy_ - 1, j=kolumnaDocelowa_ + 1;
           i > 0 && j < this.model_.iloscPol() - 1; i--, j++) {
         if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
-            && polaPlanszy[i-1][j+1].getChildrenUnmodifiable().size() == 0) {
+            && polaPlanszy[i-1][j+1].getChildrenUnmodifiable().size() > 0)
+          break;
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+          && polaPlanszy[i-1][j+1].getChildrenUnmodifiable().size() == 0) {
           Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
           if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
             return true;
@@ -221,6 +237,9 @@ public class KontrolerGry implements KontrolerWidoku {
       for(int i=rzadDocelowy_ - 1, j=kolumnaDocelowa_ - 1;
           i > 0 && j > 0; i--, j--) {
         if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
+            && polaPlanszy[i-1][j-1].getChildrenUnmodifiable().size() > 0)
+          break;
+        if(polaPlanszy[i][j].getChildrenUnmodifiable().size() > 0
             && polaPlanszy[i-1][j-1].getChildrenUnmodifiable().size() == 0) {
           Pionek bityPionek = (Pionek) polaPlanszy[i][j].getChildrenUnmodifiable().get(0);
           if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
@@ -230,31 +249,38 @@ public class KontrolerGry implements KontrolerWidoku {
         }
       }
     } else {
-      if(rzadDocelowy_ > 1 && kolumnaDocelowa_ > 1
-          && rzadDocelowy_ < this.model_.iloscPol() - 2
-          && kolumnaDocelowa_ < this.model_.iloscPol() - 2) {
-        int i = rzadDocelowy_;
-        int j = kolumnaDocelowa_;
-        if(polaPlanszy[i + 1][j + 1].getChildrenUnmodifiable().size() > 0
-            && polaPlanszy[i + 2][j + 2].getChildrenUnmodifiable().size() == 0) {
-          Pionek bityPionek = (Pionek) polaPlanszy[i+1][j+1].getChildrenUnmodifiable().get(0);
-          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
-        }
-        if(polaPlanszy[i + 1][j - 1].getChildrenUnmodifiable().size() > 0
-            && polaPlanszy[i + 2][j - 2].getChildrenUnmodifiable().size() == 0) {
-          Pionek bityPionek = (Pionek) polaPlanszy[i+1][j-1].getChildrenUnmodifiable().get(0);
-          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
-        }
-        if(polaPlanszy[i - 1][j + 1].getChildrenUnmodifiable().size() > 0
-            && polaPlanszy[i - 2][j + 2].getChildrenUnmodifiable().size() == 0) {
-          Pionek bityPionek = (Pionek) polaPlanszy[i-1][j+1].getChildrenUnmodifiable().get(0);
-          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
-        }
-        if(polaPlanszy[i - 1][j - 1].getChildrenUnmodifiable().size() > 0
-            && polaPlanszy[i - 2][j - 2].getChildrenUnmodifiable().size() == 0) {
-          Pionek bityPionek = (Pionek) polaPlanszy[i-1][j-1].getChildrenUnmodifiable().get(0);
-          return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
-        }
+      // pionek ruszyl sie o wiecej niz dwa pola
+      if(Math.abs(rzadStartowy_ - rzadDocelowy_) > 2)
+        return false;
+      // szukaj czy pionek ma dostepne bicie
+      int i = rzadDocelowy_;
+      int j = kolumnaDocelowa_;
+      if(i < this.model_.iloscPol() - 2 && j < this.model_.iloscPol() - 2
+          &&  polaPlanszy[i + 1][j + 1].getChildrenUnmodifiable().size() > 0
+          && polaPlanszy[i + 2][j + 2].getChildrenUnmodifiable().size() == 0) {
+        Pionek bityPionek = (Pionek) polaPlanszy[i+1][j+1].getChildrenUnmodifiable().get(0);
+        if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
+          return true;
+      }
+      if(i < this.model_.iloscPol() - 2 && j > 1
+          && polaPlanszy[i + 1][j - 1].getChildrenUnmodifiable().size() > 0
+          && polaPlanszy[i + 2][j - 2].getChildrenUnmodifiable().size() == 0) {
+        Pionek bityPionek = (Pionek) polaPlanszy[i+1][j-1].getChildrenUnmodifiable().get(0);
+        if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
+          return true;
+      }
+      if(i > 1 && j < this.model_.iloscPol() - 2
+          && polaPlanszy[i - 1][j + 1].getChildrenUnmodifiable().size() > 0
+          && polaPlanszy[i - 2][j + 2].getChildrenUnmodifiable().size() == 0) {
+        Pionek bityPionek = (Pionek) polaPlanszy[i-1][j+1].getChildrenUnmodifiable().get(0);
+        if(bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0)
+          return true;
+      }
+      if(i > 1 && j > 1
+          && polaPlanszy[i - 1][j - 1].getChildrenUnmodifiable().size() > 0
+          && polaPlanszy[i - 2][j - 2].getChildrenUnmodifiable().size() == 0) {
+        Pionek bityPionek = (Pionek) polaPlanszy[i-1][j-1].getChildrenUnmodifiable().get(0);
+        return bityPionek.kolorPionka().compareTo(this.model_.kolorPionkow()) != 0;
       }
     }
     return false;
@@ -266,15 +292,18 @@ public class KontrolerGry implements KontrolerWidoku {
   public void zatwierdzRuch(boolean czyUsuwacPionki) {
     if(kolumnaStartowa_ != -1) {
       Parent[][] polaPlanszy = this.model_.polaPlanszy();
+      boolean czyKrolowka =
+          ((PolePlanszy) polaPlanszy[rzadStartowy_][kolumnaStartowa_]).getChildren()
+          .get(0) instanceof Krolowka;
       probujUsunPionek(rzadStartowy_, kolumnaStartowa_);
       // dodaj pola nad ktorymi poruszyl sie pionek, aby pozniej usunac z nich pionki.
       if(Math.abs(rzadStartowy_ - rzadDocelowy_) >= 2) {
         int iloscPrzeskoczonyPol = Math.abs(rzadStartowy_ - rzadDocelowy_);
-        int lewyDolnyRzad = Math.min(rzadStartowy_, rzadDocelowy_);
-        int lewaDolnaKolumna = Math.min(kolumnaDocelowa_, kolumnaStartowa_);
+        int wspolczynnikRzad = rzadDocelowy_ > rzadStartowy_ ? 1 : -1;
+        int wspolczynnikKolumna = kolumnaDocelowa_ > kolumnaStartowa_ ? 1 : -1;
         for(int i=0; i < iloscPrzeskoczonyPol; i++) {
-          polaPionkiDoUsuniecia.add(lewyDolnyRzad + i);
-          polaPionkiDoUsuniecia.add(lewaDolnaKolumna + i);
+          polaPionkiDoUsuniecia.add(rzadStartowy_ + (i * wspolczynnikRzad));
+          polaPionkiDoUsuniecia.add(kolumnaStartowa_ + (i * wspolczynnikKolumna));
         }
       }
       // usun pionki po zatwierdzeniu ruchu przez serwer
@@ -286,7 +315,10 @@ public class KontrolerGry implements KontrolerWidoku {
       }
       this.aktualnyRzadBijacegoPionka_ = rzadDocelowy_;
       this.aktualnaKolumnaBijacegoPionka_ = kolumnaDocelowa_;
-      if(rzadDocelowy_ == 0 || rzadDocelowy_ == this.model_.iloscPol() - 1) {
+      if(rzadDocelowy_ == 0 && this.model_.kolorPionkow().compareTo("czarny") == 0
+          || rzadDocelowy_ == this.model_.iloscPol() - 1
+          && this.model_.kolorPionkow().compareTo("bialy") == 0
+          || czyKrolowka) {
         if (this.model_.kolorPionkow().compareTo("bialy") == 0)
             Platform.runLater(() ->
             ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).getChildren().add(
@@ -332,14 +364,17 @@ public class KontrolerGry implements KontrolerWidoku {
     if(this.seriaRuchow_) {
       Platform.runLater(() -> {
         Parent[][] polaPlanszy = this.model_.polaPlanszy();
-        Pionek pionek =
-            (Pionek) ((PolePlanszy)polaPlanszy
-                [aktualnyRzadBijacegoPionka_][aktualnaKolumnaBijacegoPionka_]).getChildren().get(0);
-        ((StackPane) polaPlanszy[aktualnyRzadBijacegoPionka_][aktualnaKolumnaBijacegoPionka_])
-            .getChildren().remove(pionek);
-        ((StackPane) polaPlanszy[rzadPrzedBiciem_][kolumnaPrzedBiciem_])
-            .getChildren().add(pionek);
-      });
+        if(((PolePlanszy)polaPlanszy[aktualnyRzadBijacegoPionka_][aktualnaKolumnaBijacegoPionka_]).getChildren().size() > 0) {
+          Pionek pionek =
+              (Pionek) ((PolePlanszy) polaPlanszy
+                  [aktualnyRzadBijacegoPionka_][aktualnaKolumnaBijacegoPionka_]).getChildren()
+                  .get(0);
+          ((StackPane) polaPlanszy[aktualnyRzadBijacegoPionka_][aktualnaKolumnaBijacegoPionka_])
+              .getChildren().remove(pionek);
+          ((StackPane) polaPlanszy[rzadPrzedBiciem_][kolumnaPrzedBiciem_])
+              .getChildren().add(pionek);
+          }
+        });
     }
     this.seriaRuchow_ = false;
     polaPionkiDoUsuniecia.clear();
