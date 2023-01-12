@@ -44,7 +44,6 @@ public class Polaczenie extends Thread {
     while(!Thread.currentThread().isInterrupted()) {
       try {
         String wiadomosc = this.in_.readLine();
-        System.out.println(wiadomosc);
         this.mediator_.przekazWiadomoscDoAplikacji(wiadomosc);
       } catch (IOException ignored) {}
     }
