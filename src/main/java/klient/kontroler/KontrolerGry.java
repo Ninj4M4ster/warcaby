@@ -284,7 +284,7 @@ public class KontrolerGry implements KontrolerWidoku {
       }
       this.aktualnyRzadBijacegoPionka_ = rzadDocelowy_;
       this.aktualnaKolumnaBijacegoPionka_ = kolumnaDocelowa_;
-      if(rzadDocelowy_ == 0 || rzadDocelowy_ == 7) {
+      if(rzadDocelowy_ == 0 || rzadDocelowy_ == this.model_.iloscPol() - 1) {
         if (this.model_.kolorPionkow().compareTo("bialy") == 0)
             Platform.runLater(() ->
             ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).getChildren().add(
@@ -352,8 +352,8 @@ public class KontrolerGry implements KontrolerWidoku {
     String[] rzedy = wiadomoscPlansza.split("");
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
     for(int i = 0; i < rzedy.length; i++) {
-      int rzad = i / 8;
-      int kolumna = i % 8;
+      int rzad = i / this.model_.iloscPol();
+      int kolumna = i % this.model_.iloscPol();
       probujUsunPionek(rzad, kolumna); // sprobowac usunac pionek z aktualnego pola
       if(rzedy[i].compareTo("1") == 0) {  // dodac bialy pionek
         Platform.runLater(() -> ((StackPane) polaPlanszy[rzad][kolumna]).getChildren().add(
