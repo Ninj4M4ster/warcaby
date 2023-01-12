@@ -14,6 +14,13 @@ public class RuchPionka implements Komenda{
         this.gracz = gracz;
     }
 
+    /**
+     * zmienia ruchy z stringów na inty, przesyla potrzebne inforamcje zasadom zeby mogly sprawdzic ruch
+     * wywołuje zasady, wykonuje ruch, ewentulanie promuje pionka na krola, powiadamia graczy o ewentualnym zwyciezcy
+     * @param reszta - ruchy pionka/krola
+     * @param pokoj - pokoj w ktorym jest gracz wysylajacy komende
+     * @return czy pomyslnie wykonano komende
+     */
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         plansza = pokoj.getPlansza();

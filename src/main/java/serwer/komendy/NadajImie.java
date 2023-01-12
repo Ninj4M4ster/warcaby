@@ -10,6 +10,13 @@ public class NadajImie implements Komenda{
     protected NadajImie(Gracz gracz) {
         this.gracz = gracz;
     }
+
+    /**
+     * Nadaje imie graczowi, sprawda czy nikt takiego imienia nie ma i rozsyla informacje do wszystkich ze jest nowy gracz
+     * @param reszta - nick gracza
+     * @param pokoj - pokoj w ktorym jest gracz wysylajacy komende
+     * @return czy poprawnie wykonano komende
+     */
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         for(Gracz gracz_temp : KontrolerDanych.getInstance().getGracze()) {

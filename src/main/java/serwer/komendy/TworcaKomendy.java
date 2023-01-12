@@ -4,6 +4,13 @@ import serwer.dane.Gracz;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class TworcaKomendy {
+
+    /**
+     * Sprawdza jaka komenda zostala wywolana i wybiera ja
+     * @param komenda - komenda wywolana przez gracza
+     * @param gracz - gracz wywolujacy komende
+     * @return obiekt komendy wywolanej przez gracza
+     */
     public Komenda tworzKomende(String komenda, Gracz gracz) {
         switch(komenda) {
             case "WTG":

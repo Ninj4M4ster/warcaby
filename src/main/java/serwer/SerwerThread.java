@@ -23,10 +23,20 @@ public class SerwerThread extends Thread {
         gracz = new Gracz(this);
     }
 
+
+    /**
+     * Metoda wysylajaca wiadomosc do gracza
+     * @param wiadomosc
+     */
     public void wyslij(String wiadomosc) {
         out.println(wiadomosc);
     }
 
+    /**
+     * Główna metoda wątku serwera<br>
+     * Obsługuje wysyła i odbiera wiadomości<br>
+     * W razie potrzeby powiadamia innych uzytkowników o rozłączeniu się gracza
+     */
     @Override
     public void run() {
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
