@@ -1,4 +1,4 @@
-package serwer;
+package kontrolerDanych;
 
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
