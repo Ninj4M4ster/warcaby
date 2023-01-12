@@ -5,13 +5,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import klient.kontroller.KontrolerGry;
-import klient.kontroller.KontrolerWidoku;
+import klient.kontroler.KontrolerGry;
+import klient.kontroler.KontrolerWidoku;
 import klient.model.Model;
 import klient.model.ModelGry;
 import klient.widoki.widgety.Pionek;
@@ -19,10 +20,8 @@ import klient.widoki.widgety.PolePlanszy;
 
 /**
  * Klasa reprezentujaca widok rozgrywki w warcaby.
- * TODO(Jakub Drzewiecki): Kolory poszczegolnych elementow widoku moglyby
- *  znajdywac sie w jakiejs globalnej konfiguracji badz modelu.
  */
-public class WidokGry implements Widok {
+public class WidokGry extends Widok {
   /** Model widoku */
   private ModelGry model_;
 
@@ -30,7 +29,7 @@ public class WidokGry implements Widok {
   private KontrolerGry kontroler_;
 
   /** Kontener zawierajacy wszystkie elementy widoku */
-  private StackPane okno_;
+  private BorderPane okno_;
 
   /** Kontener przechowujacy plansze gry, czyli wszystkie jej pola */
   private GridPane planszaGry_;
@@ -54,10 +53,10 @@ public class WidokGry implements Widok {
     this.model_ = (ModelGry) model;
     this.kontroler_ = (KontrolerGry) kontroler;
 
-    this.okno_ = new StackPane();
-    this.okno_.setAlignment(Pos.CENTER);
+    this.okno_ = new BorderPane();
     this.okno_.setBackground(Background.fill(Color.valueOf("#242424")));
 
+    this.okno_.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
     this.utworzPlanszeGry();
 
     return this.okno_;
@@ -100,7 +99,7 @@ public class WidokGry implements Widok {
     else
       this.wyswietlWidokCzarny(listaPol);
 
-    this.okno_.getChildren().add(planszaGry_);
+    this.okno_.setCenter(planszaGry_);
   }
 
   /**
@@ -126,9 +125,6 @@ public class WidokGry implements Widok {
 
     planszaGry_.getRowConstraints().add(rzad);
   }
-
-  // TODO(Jakub Drzewiecki): Dosyć długa ta funkcja,
-  //  trzeba się zastanowić czy nie da się jej jakoś sensownie uprościć
 
   /**
    * Metoda odpowiedzialna za utworzenie i dodanie do planszy pol
@@ -268,15 +264,15 @@ public class WidokGry implements Widok {
   private Parent[][] stworzListePolPlanszy() {
     int iloscPol = this.model_.iloscPol();
     Parent[][] listaPol = new Parent[iloscPol][iloscPol];
-    // i - kolumny, j - rzedy
+    // i - rzedy, j - kolumny
     for(int i=0; i < iloscPol; i+=2) {
       for(int j=0; j < iloscPol; j += 2) {
-        listaPol[i][j] = this.utworzPolePlanszy(Color.BEIGE, i, j);
-        listaPol[i][j+1] = this.utworzPolePlanszy(Color.valueOf("#212121"), i, j + 1);
+        listaPol[i][j] = this.utworzPolePlanszy(Color.valueOf("#212121"), i, j);
+        listaPol[i][j+1] = this.utworzPolePlanszy(Color.BEIGE, i, j + 1);
       }
       for(int j=0; j < iloscPol; j += 2) {
-        listaPol[i+1][j] = this.utworzPolePlanszy(Color.valueOf("#212121"), i + 1, j);
-        listaPol[i+1][j+1] = this.utworzPolePlanszy(Color.BEIGE, i + 1, j + 1);
+        listaPol[i+1][j] = this.utworzPolePlanszy(Color.BEIGE, i + 1, j);
+        listaPol[i+1][j+1] = this.utworzPolePlanszy(Color.valueOf("#212121"), i + 1, j + 1);
       }
     }
     return listaPol;
@@ -290,8 +286,8 @@ public class WidokGry implements Widok {
    * @param rzad Numer rzedu, w ktorym dodawany jest pionek.
    * @return Widget reprezentujacy pole planszy.
    */
-  private PolePlanszy utworzPolePlanszy(Color kolor, int kolumna, int rzad) {
-    PolePlanszy pole = new PolePlanszy(kolumna, rzad);
+  private PolePlanszy utworzPolePlanszy(Color kolor, int rzad, int kolumna) {
+    PolePlanszy pole = new PolePlanszy(rzad, kolumna);
     pole.setBackground(Background.fill(kolor));
     pole.setAlignment(Pos.CENTER);
     pole.setOnMouseEntered(
@@ -308,25 +304,25 @@ public class WidokGry implements Widok {
     int iloscPol = this.model_.iloscPol();
     for(int rzad=0; rzad < iloscPol/2 - 1; rzad++) {
       for(int kolumna=0; kolumna < iloscPol; kolumna++) {
-        if(rzad%2 == 0 && kolumna%2 == 1 || rzad%2 == 1 && kolumna%2 == 0) {
-          this.dodajPionekNaPlansze(kolumna,
-              rzad,
-              listaPol,
-              Color.valueOf("#363636"),
-              Color.valueOf("#424242"),
-              "czarny");
-        }
-      }
-    }
-    for(int rzad=iloscPol - 1; rzad > iloscPol/2; rzad--) {
-      for(int kolumna=0; kolumna < iloscPol; kolumna++) {
-        if(rzad%2 == 0 && kolumna%2 == 1 || rzad%2 == 1 && kolumna%2 == 0) {
+        if(rzad%2 == 0 && kolumna%2 == 0 || rzad%2 == 1 && kolumna%2 == 1) {
           this.dodajPionekNaPlansze(kolumna,
               rzad,
               listaPol,
               Color.valueOf("#dbdbdb"),
               Color.valueOf("#a3a3a3"),
               "bialy");
+        }
+      }
+    }
+    for(int rzad=iloscPol - 1; rzad > iloscPol/2; rzad--) {
+      for(int kolumna=0; kolumna < iloscPol; kolumna++) {
+        if(rzad%2 == 0 && kolumna%2 == 0 || rzad%2 == 1 && kolumna%2 == 1) {
+          this.dodajPionekNaPlansze(kolumna,
+              rzad,
+              listaPol,
+              Color.valueOf("#363636"),
+              Color.valueOf("#424242"),
+              "czarny");
         }
       }
     }
@@ -348,7 +344,7 @@ public class WidokGry implements Widok {
       Color kolor,
       Color kolorObramowki,
       String kolorPionka) {
-    StackPane pole = (StackPane) listaPol[kolumna][rzad];
+    StackPane pole = (StackPane) listaPol[rzad][kolumna];
     Pionek pionek =
         new Pionek(kolor, kolorObramowki, pole.widthProperty(), this.kontroler_, kolorPionka);
 
@@ -364,7 +360,7 @@ public class WidokGry implements Widok {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
       for(int j=0; j < iloscPol; j++) {
-        this.planszaGry_.add(listaPol[i][j], i + 1, j + 1);
+        this.planszaGry_.add(listaPol[iloscPol - i - 1][j], j + 1, i + 1);
       }
     }
   }
@@ -378,7 +374,7 @@ public class WidokGry implements Widok {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
       for(int j=0; j < iloscPol; j++) {
-        this.planszaGry_.add(listaPol[iloscPol - i - 1][iloscPol - j - 1], i + 1, j + 1);
+        this.planszaGry_.add(listaPol[i][iloscPol - j - 1], j + 1, i + 1);
       }
     }
   }

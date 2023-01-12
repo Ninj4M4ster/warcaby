@@ -2,6 +2,7 @@ package serwer.komendy.zasady;
 
 import serwer.dane.Gracz;
 import serwer.dane.KontrolerStanuGry;
+import serwer.dane.Pokoj;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ public abstract class ZasadyGry {
     int[][] plansza;
     ArrayList<Integer> ruchy;
     int pionek;
+    Pokoj pokoj;
 
     KontrolerStanuGry.StanGry stan_gry;
     Gracz gracz;
@@ -35,7 +37,7 @@ public abstract class ZasadyGry {
     }
 
     boolean ruchPionem() {
-        if(!czyWPlanszy(ruchy.get(2), ruchy.get(3)) && czyWPlanszy(ruchy.get(0), ruchy.get(1))) {
+        if(!czyWPlanszy(ruchy.get(2), ruchy.get(3)) || !czyWPlanszy(ruchy.get(0), ruchy.get(1))) {
             return false;
         }
         if(pionek == 0 || plansza[ruchy.get(2)][ruchy.get(3)] != 0 || Math.abs(ruchy.get(2) - ruchy.get(0)) != 1) {
@@ -64,7 +66,7 @@ public abstract class ZasadyGry {
     }
 
     public boolean promocja(int x, int y) {
-        return (plansza[x][y] == 1 && y == 7) || (plansza[x][y] == 2 && y == 0);
+        return (plansza[x][y] == 1 && y == plansza.length - 1) || (plansza[x][y] == 2 && y == 0);
     }
 
     public int czyWygrana() {
@@ -100,7 +102,12 @@ public abstract class ZasadyGry {
     }
 
     public void setPlansza(int[][] plansza) {
-        this.plansza = plansza;
+        this.plansza = new int[plansza.length][plansza.length];
+        for(int x = 0; x < plansza.length; x +=1) {
+            for(int y = 0; y < plansza.length; y += 1) {
+                this.plansza[x][y] = plansza[x][y];
+            }
+        }
     }
 
     public void setRuchy(ArrayList<Integer> ruchy) {
@@ -117,4 +124,8 @@ public abstract class ZasadyGry {
     }
 
     abstract boolean sprawdzBicie();
+
+    public void setPokoj(Pokoj pokoj) {
+        this.pokoj = pokoj;
+    }
 }

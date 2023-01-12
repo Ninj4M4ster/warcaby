@@ -7,10 +7,10 @@ import javafx.scene.layout.StackPane;
  */
 public class PolePlanszy extends StackPane {
   /** Kolumna, w ktorej znajduje sie pole */
-  private int kolumna_;
+  private final int kolumna_;
 
   /** Rzad, w ktorym znajduje sie pole */
-  private int rzad_;
+  private final int rzad_;
 
   /**
    * Konstruktor. Zapisuje wprowadzone argumenty.
@@ -18,7 +18,7 @@ public class PolePlanszy extends StackPane {
    * @param kolumna Kolumna, w ktorej znajduje sie pole.
    * @param rzad Rzad, w ktorym znajduje sie pole.
    */
-  public PolePlanszy(int kolumna, int rzad) {
+  public PolePlanszy(int rzad, int kolumna) {
     super();
     this.kolumna_ = kolumna;
     this.rzad_ = rzad;

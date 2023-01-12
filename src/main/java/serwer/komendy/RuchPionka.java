@@ -40,8 +40,13 @@ public class RuchPionka implements Komenda{
         pokoj.getZasadyGry().setStanGry(pokoj.kontroler_stanu_gry.getStan());
         pokoj.getZasadyGry().setGracz(gracz);
         pokoj.getZasadyGry().setRuchy(ruchy);
+        pokoj.getZasadyGry().setPokoj(pokoj);
 
+        System.out.println("przed zasadami");
+        pokoj.wypiszPlansze(pokoj.getPlansza());
         if(pokoj.getZasadyGry().sprawdz()) {
+            System.out.println("przed ruchem");
+            pokoj.wypiszPlansze(pokoj.getPlansza());
             for(int i = 0; i + 3 < ruchy.size(); i += 2) {
                 plansza[ruchy.get(i + 2)][ruchy.get(i + 3)] = plansza[ruchy.get(i)][ruchy.get(i + 1)];
                 plansza[ruchy.get(i)][ruchy.get(i + 1)] = 0;
@@ -54,8 +59,8 @@ public class RuchPionka implements Komenda{
             if(pokoj.getZasadyGry().promocja(ruchy.get(ruchy.size() - 2), ruchy.get(ruchy.size() - 1))) {
                 plansza[ruchy.get(ruchy.size() - 2)][ruchy.get(ruchy.size() - 1)] += 2;
             }
-
-            pokoj.setPlansza(plansza);
+            System.out.println("po ruchu");
+            pokoj.wypiszPlansze(pokoj.getPlansza());
 
             Gracz gracz_temp = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
             gracz_temp.getSt().wyslij("Ruch " + pokoj.planszaToString());

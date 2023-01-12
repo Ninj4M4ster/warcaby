@@ -30,7 +30,7 @@ public class Zasady1 extends ZasadyGry {
 
         for(int x = 0; x < plansza.length; x += 1) {
             for(int y = 0; y < plansza.length; y += 1) {
-                if(pionek % 2 == plansza[x][y] % 2 && plansza[x][y] != 0) {
+                if(pionek % 2 == plansza[x][y] % 2) {
                     if(plansza[x][y] < 3) {
                         max_bicie = ((max_temp = mozliweBiciePion(x, y, plansza)) > max_bicie ? max_temp : max_bicie);
                     }
