@@ -1,12 +1,16 @@
 package klient.model;
 
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import klient.widoki.widgety.KafelekGraczaOnline;
 
@@ -15,6 +19,8 @@ import klient.widoki.widgety.KafelekGraczaOnline;
  * Przechowuje informacje takie jak aktualnie aktywni gracze, czy nazwa uzytkownika.
  */
 public class ModelGraczyOnline implements Model {
+  /** Status polaczenia z serwerem */
+  private final BooleanProperty czyPolaczono_ = new SimpleBooleanProperty();
   /** Wprowadzona nazwa gracza */
   private final StringProperty nazwaGracza_ = new SimpleStringProperty();
 
@@ -24,6 +30,9 @@ public class ModelGraczyOnline implements Model {
   /** Element reprezentujacy gorna czesc widgetu, z ktorym uzytkownik wchodzi w interkacje */
   private final ObjectProperty<Node> goraMenu_ = new SimpleObjectProperty<>();
 
+  /** Glowne okno menu, z nim uzytkownik wchodzi w interakcje */
+  private final BorderPane oknoGlowne_ = new BorderPane();
+
   /** Kontener przechowujacy opis widoczny, gdy widoczni sa aktualnie dostepni gracze */
   private VBox kontenerOpisuListyGraczy_;
 
@@ -32,15 +41,42 @@ public class ModelGraczyOnline implements Model {
 
   /** Kontener przechowujacy kafelki z dostepnymi graczami */
   private VBox listaGraczy_;
+  /** Kontener na powiadomienia dla klienta */
+  private final VBox kontenerPowiadomien_ = new VBox();
 
   /**
    * Konstruktor.
    *
    * @param nazwaGracza Nazwa podana przez uzytkownika.
+   * @param czyPolaczono Stan aktualnego polaczenia.
    */
-  public ModelGraczyOnline(StringProperty nazwaGracza) {
+  public ModelGraczyOnline(StringProperty nazwaGracza, BooleanProperty czyPolaczono) {
     nazwaGracza.bind(nazwaGracza_);
     nazwaGracza_.set(nazwaGracza.get());
+    this.ustawCzyPolaczono(czyPolaczono);
+    this.oknoGlowne_.centerProperty().bind(this.centrumMenu_);
+    this.oknoGlowne_.topProperty().bind(this.goraMenu_);
+    this.oknoGlowne_.setPrefSize(400, 200);
+    this.oknoGlowne_.setMaxSize(600, 600);
+  }
+
+  /**
+   * Metoda przypisujaca stan aktualnego polaczenia.
+   *
+   * @param czyPolaczono Stan aktualnego polaczenia.
+   */
+  @Override
+  public void ustawCzyPolaczono(BooleanProperty czyPolaczono) {
+    this.czyPolaczono_.bind(czyPolaczono);
+  }
+
+  /**
+   * Metoda zwracajaca stan aktualnego polaczenia.
+   *
+   * @return Stan aktualnego polaczenia.
+   */
+  public BooleanProperty czyPolaczono() {
+    return this.czyPolaczono_;
   }
 
   /**
@@ -53,6 +89,24 @@ public class ModelGraczyOnline implements Model {
   }
 
   /**
+   * Metoda zwracajaca wprowadzona przez uzytkownika nazwe.
+   *
+   * @return Wprowadzona przez uzytkownika nazwa.
+   */
+  public String nazwaGracza() {
+    return this.nazwaGracza_.get();
+  }
+
+  /**
+   * Metoda zwracajaca glowne okno menu, z ktorym uzytkownik wchodzi w interakcje.
+   *
+   * @return Menu, z ktorym uzytkownik wchodzi w interakcje.
+   */
+  public BorderPane oknoGlowne() {
+    return this.oknoGlowne_;
+  }
+
+  /**
    * Metoda zwracajaca element reprezentujacy srodkowa czesc widgetu,
    * z ktorym uzytkownik wchodzi w interakcje.
    *
@@ -60,16 +114,6 @@ public class ModelGraczyOnline implements Model {
    */
   public ObjectProperty<Node> centrumMenu() {
     return this.centrumMenu_;
-  }
-
-  /**
-   * Metoda zwracajaca element reprezentujacy gorna czesc widgetu,
-   * z ktorym uzytkownik wchodzi w interakcje.
-   *
-   * @return Element reprezentujacy gorna czesc widgetu.
-   */
-  public ObjectProperty<Node> goraMenu() {
-    return this.goraMenu_;
   }
 
   /**
@@ -111,6 +155,10 @@ public class ModelGraczyOnline implements Model {
     this.kontenerListyGraczy_ = kontener;
   }
 
+  public VBox listaGraczy() {
+    return this.listaGraczy_;
+  }
+
   /**
    * Metoda zmieniajaca wartosc zmiennej reprezentujacej
    * kontener na kafelki dostepnych aktualnie graczy.
@@ -146,7 +194,7 @@ public class ModelGraczyOnline implements Model {
    * @param nazwaGracza Nazwa dostepnego gracza.
    */
   public void dodajGraczaDoListy(String nazwaGracza) {
-    listaGraczy_.getChildren().add(new KafelekGraczaOnline(nazwaGracza));
+    Platform.runLater(() -> listaGraczy_.getChildren().add(new KafelekGraczaOnline(nazwaGracza)));
   }
 
   /**
@@ -155,9 +203,20 @@ public class ModelGraczyOnline implements Model {
    * @param nazwaGracza Nazwa gracza, ktory nie jest juz dluzej dostepny.
    */
   public void usunGraczaLista(String nazwaGracza) {
-    ObservableList<Node> lista = listaGraczy_.getChildren();
-    lista.removeIf(node -> node instanceof KafelekGraczaOnline &&
-        ((KafelekGraczaOnline) node).nazwaGracza().equals(nazwaGracza));
+    Platform.runLater(() -> {
+      ObservableList<Node> lista = listaGraczy_.getChildren();
+      lista.removeIf(node -> node instanceof KafelekGraczaOnline &&
+          ((KafelekGraczaOnline) node).nazwaGracza().equals(nazwaGracza));
+    });
+  }
+
+  /**
+   * Metoda zwracajaca kontener powiadomien.
+   *
+   * @return Kontener powiadomien.
+   */
+  public VBox kontenerPowiadomien() {
+    return this.kontenerPowiadomien_;
   }
 
 }

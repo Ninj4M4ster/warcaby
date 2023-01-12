@@ -1,23 +1,40 @@
 package testKlient.testKontroler;
 
-import klient.kontroller.KontrolerGry;
-import klient.kontroller.KontrolerPokoju;
-import klient.kontroller.KontrolerWidoku;
-import klient.kontroller.KontrolerWidokuGraczyOnline;
-import klient.kontroller.TworcaKontrolera;
-import klient.kontroller.TypyKontrolerow;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import klient.komunikacja.Mediator;
+import klient.kontroler.GlownyKontroler;
+import klient.kontroler.KontrolerGry;
+import klient.kontroler.KontrolerPokoju;
+import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.KontrolerWidokuGraczyOnline;
+import klient.kontroler.TworcaKontrolera;
+import klient.kontroler.TypyKontrolerow;
+import klient.model.GlownyModel;
 import org.junit.Test;
 
 public class TestTworcaKontrolera {
   @Test
   public void testWybierzKontroler() {
-    KontrolerWidoku kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU);
+    BooleanProperty czyPolaczono = new SimpleBooleanProperty(false);
+    GlownyModel model = new GlownyModel(czyPolaczono);
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
+    KontrolerWidoku kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU,
+            model.modelPokoju(),
+            mediator);
     assert(kontroler instanceof KontrolerPokoju);
 
-    kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY);
+    kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRY,
+            model.modelGry(),
+            mediator);
     assert(kontroler instanceof KontrolerGry);
 
-    kontroler = TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE);
+    kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE,
+            model.modelGraczyOnline(),
+            mediator);
     assert(kontroler instanceof KontrolerWidokuGraczyOnline);
   }
 }

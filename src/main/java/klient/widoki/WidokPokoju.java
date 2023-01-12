@@ -1,5 +1,7 @@
 package klient.widoki;
 
+import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -10,15 +12,22 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import klient.kontroller.KontrolerPokoju;
-import klient.kontroller.KontrolerWidoku;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import klient.kontroler.KontrolerPokoju;
+import klient.kontroler.KontrolerWidoku;
 import klient.model.Model;
 import klient.model.ModelPokoju;
 
@@ -26,7 +35,7 @@ import klient.model.ModelPokoju;
  * Klasa reprezentujaca widok pokoju, w ktorym mozna
  * komunikowac sie z drugim graczem oraz wybrac zasady gry.
  */
-public class WidokPokoju implements Widok {
+public class WidokPokoju extends Widok {
   /** Kontroler widoku */
   private KontrolerPokoju kontroler_;
 
@@ -34,7 +43,7 @@ public class WidokPokoju implements Widok {
   private ModelPokoju model_;
 
   /** Kontener wszystkich elementow widoku */
-  private StackPane okno_;
+  private BorderPane okno_;
 
   /** Kontener chatu, informacji o graczach w pokoju oraz opcji rozgrywki */
   private BorderPane kontenerWidoku_;
@@ -54,10 +63,7 @@ public class WidokPokoju implements Widok {
     this.kontroler_ = (KontrolerPokoju) kontroler;
     this.model_ = (ModelPokoju) model;
 
-    // TODO(Jakub Drzewiecki): Mozliwe dodać więcej elementów graficznych do okna? Jesli nie, trzeba usunac i ustawic kontenerWidoku jako korzen
-    // stackpane jako korzen widoku
-    this.okno_ = new StackPane();
-    this.okno_.setAlignment(Pos.CENTER);
+    this.okno_ = new BorderPane();
     this.okno_.setOnKeyPressed(keyEvent -> {
       if(keyEvent.getCode() == KeyCode.ENTER) {
         this.kontroler_.wyslijWiadomosc();
@@ -68,10 +74,11 @@ public class WidokPokoju implements Widok {
     kontenerWidoku_ = new BorderPane();
 
     // utworz widgety i dodaj je do widoku
+    this.okno_.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
     this.utworzChat();
     this.utworzInformacjeOpcje();
 
-    this.okno_.getChildren().add(kontenerWidoku_);
+    this.okno_.setCenter(kontenerWidoku_);
 
     return this.okno_;
   }
@@ -96,6 +103,7 @@ public class WidokPokoju implements Widok {
     VBox historiaChatu = this.model_.historiaChatu();
     historiaChatu.setAlignment(Pos.BOTTOM_CENTER);
     historiaChatu.setFillWidth(true);
+    historiaChatu.setSpacing(10);
     historiaChatu.heightProperty().addListener(
         (observable) -> kontenerHistoriiChatu.setVvalue(kontenerHistoriiChatu.getVmax()));
 
@@ -144,12 +152,36 @@ public class WidokPokoju implements Widok {
     kontenerInformacji.getRowConstraints().addAll(rzad1, rzad2);
     kontenerInformacji.setPrefWidth(300);
 
+    // uklad konteneru informacji o graczach w lobby
+    BorderPane ukladKonteneruGraczy = new BorderPane();
+    Label opisUkladu = new Label("Gracze");
+    opisUkladu.setFont(new Font("Book Antiqua", 18));
+    opisUkladu.setTextAlignment(TextAlignment.CENTER);
+    opisUkladu.setAlignment(Pos.CENTER);
+    opisUkladu.minWidthProperty().bind(ukladKonteneruGraczy.widthProperty());
+
+    ukladKonteneruGraczy.setTop(opisUkladu);
+
     // kontener informacji o graczach w lobby
     VBox kontenerGraczy = new VBox();
     kontenerGraczy.setAlignment(Pos.CENTER);
-    kontenerGraczy.getChildren().add(new Label("Gracz 1"));
+    kontenerGraczy.setSpacing(60);
+    kontenerGraczy.setBackground(Background.fill(Color.valueOf("#6e6e6e")));
 
-    kontenerInformacji.add(kontenerGraczy, 0, 0);
+    ukladKonteneruGraczy.setCenter(kontenerGraczy);
+
+    // nazwy graczy do wyswietlenia
+    Label nazwaKlienta = this.utworzEtykieteGracza(this.model_.nazwaGracza());
+    if(this.model_.czyWlasciciel())
+      nazwaKlienta.setTextFill(Color.YELLOW);
+
+    Label nazwaDrugiegoGracza = this.utworzEtykieteGracza(this.model_.nazwaDrugiegoGracza());
+    if(!this.model_.czyWlasciciel())
+      nazwaDrugiegoGracza.setTextFill(Color.YELLOW);
+
+    kontenerGraczy.getChildren().addAll(nazwaKlienta, nazwaDrugiegoGracza);
+
+    kontenerInformacji.add(ukladKonteneruGraczy, 0, 0);
 
     // kontener opcji gry
     VBox kontenerOpcjiGry = new VBox();
@@ -165,12 +197,37 @@ public class WidokPokoju implements Widok {
     // przejscie do rozgrywki
     Button przyciskRozpocznijGre = new Button("Start");
     przyciskRozpocznijGre.setOnMouseClicked(
-        mouseEvent -> this.kontroler_.rozpocznijGre(trybyGry.getValue()));
+        mouseEvent -> this.kontroler_.wyslijRozpocznijGre(trybyGry.getValue()));
 
     kontenerOpcjiGry.getChildren().addAll(trybyGry, przyciskRozpocznijGre);
     kontenerInformacji.add(kontenerOpcjiGry, 0, 1);
 
     // ustawienie widgetow w kontenerze
     kontenerWidoku_.setRight(kontenerInformacji);
+  }
+
+  /**
+   * Metoda ta tworzy etykiete nazwy gracza.
+   *
+   * @param nazwa Nazwa gracza do wyswietlenia.
+   * @return Etykieta nazwy gracza.
+   */
+  private Label utworzEtykieteGracza(StringProperty nazwa) {
+    Label etykieta = new Label();
+    etykieta.textProperty().bind(nazwa);
+    etykieta.setFont(new Font("Book Antiqua", 25));
+    etykieta.setPadding(new Insets(5, 5, 5, 5));
+    etykieta.setBorder(
+        new Border(
+            new BorderStroke(Color.valueOf("#1c1c1c"), BorderStrokeStyle.SOLID,
+                new CornerRadii(3), new BorderWidths(1))
+        )
+    );
+    etykieta.setBackground(
+        new Background(
+            new BackgroundFill(Color.valueOf("#949494"), new CornerRadii(3), null)
+        )
+    );
+    return etykieta;
   }
 }

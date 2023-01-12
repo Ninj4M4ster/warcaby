@@ -2,12 +2,18 @@ package serwer.komendy.zasady;
 
 public class Zasady1 extends ZasadyGry {
     public boolean sprawdz() {
+        //System.out.println("przed czy w toku czy kolor");
+        //pokoj.wypiszPlansze(pokoj.getPlansza());
         if(!czyWToku() || !czyKolor()) {
             return false;
         }
+        //System.out.println("Przed sprawdz bicie");
+        //pokoj.wypiszPlansze(pokoj.getPlansza());
         if(sprawdzBicie()) {
             return true;
         }
+        //System.out.println("Po sprawdz bicie");
+        //pokoj.wypiszPlansze(pokoj.getPlansza());
         return (pionek < 3 && ruchPionem()) || (pionek > 2 && ruchKrol());
     }
     boolean sprawdzBicie() {
@@ -15,7 +21,7 @@ public class Zasady1 extends ZasadyGry {
 
         for(int x = 0; x < plansza.length; x += 1) {
             for(int y = 0; y < plansza.length; y += 1) {
-                if(pionek % 2 == plansza[x][y] % 2) {
+                if(pionek % 2 == plansza[x][y] % 2 && plansza[x][y] != 0) {
                     if(plansza[x][y] < 3) {
                         max_bicie = ((max_temp = mozliweBiciePion(x, y, plansza)) > max_bicie ? max_temp : max_bicie);
                     }
@@ -32,7 +38,7 @@ public class Zasady1 extends ZasadyGry {
     }
 
     private int mozliweBiciePion(int x, int y, int[][] plansza) {
-        int[][] plansza_temp = plansza;
+        int[][] plansza_temp = plansza.clone();
         int pionek = plansza_temp[x][y];
         int max = 0;
         int temp;
@@ -46,7 +52,7 @@ public class Zasady1 extends ZasadyGry {
             }
         }
 
-        plansza_temp = plansza;
+        plansza_temp = plansza.clone();
         if(czyWPlanszy(x-1, y+1) && plansza_temp[x-1][y+1] != 0 && plansza_temp[x-1][y+1] % 2 != pionek % 2) {
             if(czyWPlanszy(x-2, y+2) && plansza_temp[x-2][y+2] == 0) {
                 plansza_temp[x-1][y+1] = 0;
@@ -56,7 +62,7 @@ public class Zasady1 extends ZasadyGry {
             }
         }
 
-        plansza_temp = plansza;
+        plansza_temp = plansza.clone();
         if(czyWPlanszy(x+1, y-1) && plansza_temp[x+1][y-1] != 0 && plansza_temp[x+1][y-1] % 2 != pionek % 2) {
             if(czyWPlanszy(x+2, y-2) && plansza_temp[x+2][y-2] == 0) {
                 plansza_temp[x+1][y-1] = 0;
@@ -66,7 +72,7 @@ public class Zasady1 extends ZasadyGry {
             }
         }
 
-        plansza_temp = plansza;
+        plansza_temp = plansza.clone();
         if(czyWPlanszy(x-1, y-1) && plansza_temp[x-1][y-1] != 0 && plansza_temp[x-1][y-1] % 2 != pionek % 2) {
             if(czyWPlanszy(x-2, y-2) && plansza_temp[x-2][y-2] == 0) {
                 plansza_temp[x-1][y-1] = 0;
@@ -80,13 +86,12 @@ public class Zasady1 extends ZasadyGry {
     }
 
     private int mozliweBicieKrol(int x, int y, int[][] plansza) {
-        int[][] plansza_temp = plansza;
-        int pionek = plansza_temp[x][y];
+        int[][] plansza_temp = plansza.clone();
+        int pionek = plansza[x][y];
         int max = 0;
         int temp;
 
         boolean flaga = true;
-        plansza_temp = plansza;
         int x_dozbicia = -1, y_dozbicia = -1, i = 1;
         while(flaga) {
             if(!czyWPlanszy(x+i, y+i)) {
@@ -118,7 +123,7 @@ public class Zasady1 extends ZasadyGry {
         }
 
         flaga = true;
-        plansza_temp = plansza;
+        plansza_temp = plansza.clone();
         x_dozbicia = -1; y_dozbicia = -1; i = 1;
         while(flaga) {
             if(!czyWPlanszy(x-i, y+i)) {
@@ -150,7 +155,7 @@ public class Zasady1 extends ZasadyGry {
         }
 
         flaga = true;
-        plansza_temp = plansza;
+        plansza_temp = plansza.clone();
         x_dozbicia = -1; y_dozbicia = -1; i = 1;
         while(flaga) {
             if(!czyWPlanszy(x-i, y-i)) {
@@ -182,7 +187,7 @@ public class Zasady1 extends ZasadyGry {
         }
 
         flaga = true;
-        plansza_temp = plansza;
+        plansza_temp = plansza.clone();
         x_dozbicia = -1; y_dozbicia = -1; i = 1;
         while(flaga) {
             if(!czyWPlanszy(x+i, y-i)) {
@@ -217,7 +222,7 @@ public class Zasady1 extends ZasadyGry {
     }
 
     private boolean bij() {
-        int[][] plansza_temp = plansza;
+        int[][] plansza_temp = plansza.clone();
 
         for(int i = 0; i + 3 < ruchy.size(); i += 2) {
             if(pionek < 3 && dlugoscBicia(ruchy.get(i), ruchy.get(i + 1), ruchy.get(i + 2), ruchy.get(i + 3))) {

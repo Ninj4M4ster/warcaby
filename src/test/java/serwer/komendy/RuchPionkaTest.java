@@ -7,7 +7,7 @@ import serwer.dane.Pokoj;
 import java.net.Socket;
 
 public class RuchPionkaTest {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         WybierzTrybGry wbg = new WybierzTrybGry();
 
         Gracz gracz = new Gracz();
