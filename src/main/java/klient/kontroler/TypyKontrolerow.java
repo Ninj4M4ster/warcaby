@@ -1,4 +1,4 @@
-package klient.kontroller;
+package klient.kontroler;
 
 /**
  * Enumerator reprezentujacy wszystkie typy kontrolerow widokow.

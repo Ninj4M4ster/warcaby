@@ -11,6 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -20,12 +21,13 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import klient.kontroller.KontrolerWidoku;
-import klient.kontroller.KontrolerWidokuGraczyOnline;
+import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.KontrolerWidokuGraczyOnline;
 import klient.model.ModelGraczyOnline;
 import klient.model.Model;
 import klient.widoki.eventy.OknoKlikniete;
@@ -34,10 +36,10 @@ import klient.widoki.eventy.OknoKlikniete;
  * Klasa reprezentujaca widok menu glownego, w ktorym mozliwe jest
  * zaproszenie jednego z dostepnych graczy do pokoju.
  */
-public class WidokGraczyOnline implements Widok {
+public class WidokGraczyOnline extends Widok {
 
   /** Kontener wszystkich elementow widoku */
-  private VBox okno_;
+  private StackPane okno_;
 
   /** Element widoku z ktorym uzytkownik wchodzi w interakcje */
   private BorderPane oknoGlowne_;
@@ -63,16 +65,33 @@ public class WidokGraczyOnline implements Widok {
    */
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
-    //TODO(Jakub Drzewiecki) przerobić w późniejszym etapie całość na
-    // StackPane i dodać w tle więcej elementów (np pionki)
     if(this.model_ != null || this.kontroler_ != null)
       throw new IllegalStateException("Nie mozna utworzyc juz utworzonego widoku");
     this.kontroler_ = (KontrolerWidokuGraczyOnline) kontroler;
     this.model_ = (ModelGraczyOnline) model;
 
-    this.utworzMenu();
+    this.okno_ = new StackPane();
+    this.okno_.setAlignment(Pos.CENTER);
+    this.okno_.setOnKeyPressed(keyEvent -> {
+      if(keyEvent.getCode() == KeyCode.ENTER
+          && this.model_.centrumMenu().get() != this.model_.kontenerListyGraczy()) {
+        this.kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText());
+      }
+    });
+
+    // layout, gdzie centrum to glowne elementy aplikacji, a dolny element to pasek statusu
+    BorderPane layoutMenu = new BorderPane();
+    layoutMenu.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
+
+    this.okno_.getChildren().add(layoutMenu);
+
+    this.utworzMenu(layoutMenu);
     this.utworzWidokWprowadzaniaNazwy();
-    this.utworzWidokPoWprowadzeniuNazwy();
+    if(this.model_.nazwaGracza() == null)
+      this.utworzWidokPoWprowadzeniuNazwy();
+    else
+      this.listaGraczy_ = this.model_.listaGraczy();
+    this.utworzPasekPowiadomien();
 
     okno_.setOnMouseClicked(mouseEvent ->
         listaGraczy_.fireEvent(new OknoKlikniete((Node)mouseEvent.getTarget(),
@@ -85,12 +104,12 @@ public class WidokGraczyOnline implements Widok {
    * Metoda odpowiedzialna za utworzenie menu,
    * czyli napisu z nazwa aplikacji oraz konteneru z ktorym uzytkownik wchodzi w interakcje.
    */
-  private void utworzMenu() {
+  private void utworzMenu(BorderPane layoutMenu) {
     // glowne okno, w nim znajduja sie wszystkie elementy
-    okno_ = new VBox();
-    okno_.setPadding(new Insets(20, 200, 20, 200));
-    okno_.setAlignment(Pos.CENTER);
-    okno_.setBackground(Background.fill(Color.valueOf("#242424")));
+    VBox kontenerElementowOkna = new VBox();
+    kontenerElementowOkna.setPadding(new Insets(20, 200, 20, 200));
+    kontenerElementowOkna.setAlignment(Pos.CENTER);
+    kontenerElementowOkna.setBackground(Background.fill(Color.valueOf("#242424")));
 
     // kontener napisu z nazwa aplikacji
     HBox poleGlownegoOpisu = new HBox();
@@ -112,11 +131,7 @@ public class WidokGraczyOnline implements Widok {
     poleGlownegoOpisu.getChildren().add(glownyOpis);
 
     // kontener w centrum, z nim klient wchodzi w interakcje
-    oknoGlowne_ = new BorderPane();
-    oknoGlowne_.centerProperty().bind(this.model_.centrumMenu());
-    oknoGlowne_.topProperty().bind(this.model_.goraMenu());
-    oknoGlowne_.setPrefSize(400, 200);
-    oknoGlowne_.setMaxSize(600, 600);
+    oknoGlowne_ = this.model_.oknoGlowne();
     oknoGlowne_.setBorder(
         new Border(
             new BorderStroke(
@@ -136,8 +151,15 @@ public class WidokGraczyOnline implements Widok {
             )
         )
     );
+    // zmien rozmiar okna jesli nastapi zmiana na kontener listy graczy
+    oknoGlowne_.centerProperty().addListener((observableValue, node, t1) -> {
+      if(t1.equals(model_.kontenerListyGraczy())) {
+        oknoGlowne_.setPrefHeight(600);
+      }
+    });
 
-    okno_.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
+    kontenerElementowOkna.getChildren().addAll(poleGlownegoOpisu, oknoGlowne_);
+    layoutMenu.setCenter(kontenerElementowOkna);
   }
 
   /**
@@ -174,9 +196,7 @@ public class WidokGraczyOnline implements Widok {
 
     // zatwierdzenie nazwy gracza i przejscie do widoku graczy online
     przyciskZatwierdzeniaNazwy.setOnMouseClicked((event) ->
-        kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText(),
-            oknoGlowne_));
-    // TODO(Jakub Drzewiecki): Trzeba dodac mozliwosc wprowadzenia nazwy enterem
+        kontroler_.zapiszNazweGracza(poleWprowadzaniaNazwy_.getText()));
 
     kontenerWprowadzaniaNazwy.getChildren().addAll(
         opisWprowadzaniaNazwy,
@@ -240,5 +260,20 @@ public class WidokGraczyOnline implements Widok {
 
     kontenerListyGraczy.setContent(listaGraczy_);
     this.model_.ustawKontenerListyGraczy(kontenerListyGraczy);
+  }
+
+  /**
+   * Metoda tworzaca pasek powiadomien, w ktorym beda pojawiac sie
+   * powiadomienia o zaproszeniach do pokojow.
+   */
+  private void utworzPasekPowiadomien() {
+    VBox kontenerPowiadomien = this.model_.kontenerPowiadomien();
+    kontenerPowiadomien.setAlignment(Pos.TOP_CENTER);
+    kontenerPowiadomien.setPadding(new Insets(5, 5, 5, 5));
+    kontenerPowiadomien.setSpacing(5);
+    kontenerPowiadomien.maxWidthProperty().bind(this.okno_.widthProperty().multiply(0.2));
+
+    this.okno_.setAlignment(Pos.CENTER_RIGHT);
+    this.okno_.getChildren().add(kontenerPowiadomien);
   }
 }

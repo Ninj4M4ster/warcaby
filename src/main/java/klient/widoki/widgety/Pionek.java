@@ -4,7 +4,7 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import klient.kontroller.KontrolerGry;
+import klient.kontroler.KontrolerGry;
 
 /**
  * Klasa reprezentujaca kontener z pionkiem na planszy.
@@ -25,6 +25,7 @@ public class Pionek extends StackPane {
    * @param kolorObramowki Kolor obramowania kola.
    * @param propertySzerokoscPola Szerokosc pola, w ktorym znajduje sie kolo.
    * @param kontroler Kontroler widoku gry.
+   * @param kolorPionka Napis przedstawiajacy kolor pionka.
    */
   public Pionek(Color kolor,
       Color kolorObramowki,

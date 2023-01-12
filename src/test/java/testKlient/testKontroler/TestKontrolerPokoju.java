@@ -1,70 +1,79 @@
 package testKlient.testKontroler;
 
-import klient.kontroller.KontrolerAplikacji;
-import klient.kontroller.KontrolerPokoju;
+import klient.ZasadyGry;
+import klient.komunikacja.Mediator;
+import klient.kontroler.GlownyKontroler;
+import klient.kontroler.KontrolerPokoju;
+import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.TypyKontrolerow;
+import klient.model.Model;
 import klient.model.ModelPokoju;
 import org.junit.Test;
 
-public class TestKontrolerPokoju {
+public class TestKontrolerPokoju extends TestKontroler {
 
   @Test
   public void testPrzekazModel() {
     KontrolerPokoju kontroler = new KontrolerPokoju();
-    ModelPokoju model = new ModelPokoju();
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, false);
     kontroler.przekazModel(model);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testPrzekazModelError() {
-    KontrolerPokoju kontroler = this.utworzGotowyKontroler();
-    ModelPokoju model = new ModelPokoju();
+    KontrolerWidoku kontroler =
+        this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, false);
     kontroler.przekazModel(model);
   }
 
   @Test
-  public void testPrzekazGlownyKontroler() {
-    KontrolerPokoju kontroler = new KontrolerPokoju();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testPrzekazGlownyKontrolerError() {
-    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontroler();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontrolerPokoju.przekazGlownyKontroler(kontrolerAplikacji);
+  public void testOdnowPolaczenie() {
+    KontrolerPokoju kontrolerPokoju =
+        (KontrolerPokoju)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    kontrolerPokoju.odnowPolaczenie();
   }
 
   @Test
-  public void testPrzekazWiadomosc() {
-    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontrolerZWiadomoscia();
+  public void testWyslijWiadomosc() {
+    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontrolerZWiadomoscia(false);
     kontrolerPokoju.wyslijWiadomosc();
   }
 
   @Test
+  public void testOdbierzWiadomosc() {
+    KontrolerPokoju kontrolerPokoju =
+        (KontrolerPokoju)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    kontrolerPokoju.odbierzWiadomosc(new String[]{"a", "b", "c"});
+  }
+
+  @Test
   public void testRozpocznijGre() {
-    KontrolerPokoju kontrolerPokoju = this.utworzGotowyKontroler();
-    kontrolerPokoju.rozpocznijGre("");
+    KontrolerPokoju kontrolerPokoju =
+        (KontrolerPokoju)this.utworzGotowyKontroler(
+            TypyKontrolerow.KONTROLER_POKOJU,
+            false);
+    kontrolerPokoju.wyslijRozpocznijGre("");
   }
 
-  private KontrolerPokoju utworzGotowyKontroler() {
-    KontrolerPokoju kontroler = new KontrolerPokoju();
-    ModelPokoju model = new ModelPokoju();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-
-    kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-    return kontroler;
+  @Test
+  public void testWybierzNumerTrybu() {
+    KontrolerPokoju kontroler =
+        (KontrolerPokoju)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_POKOJU, false);
+    kontroler.wyslijRozpocznijGre(ZasadyGry.KLASYCZNE.toString());
+    kontroler.wyslijRozpocznijGre(ZasadyGry.POLSKIE.toString());
+    kontroler.wyslijRozpocznijGre(ZasadyGry.KANADYJSKIE.toString());
   }
 
-  private KontrolerPokoju utworzGotowyKontrolerZWiadomoscia() {
+  private KontrolerPokoju utworzGotowyKontrolerZWiadomoscia(boolean statusPolaczenia) {
     KontrolerPokoju kontroler = new KontrolerPokoju();
-    ModelPokoju model = new ModelPokoju();
+    ModelPokoju model =
+        (ModelPokoju)this.utworzModel(TypyKontrolerow.KONTROLER_POKOJU, statusPolaczenia);
     model.ustawTekstWiadomosci("abc");
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
 
     kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+    kontroler.przekazMediator(mediator);
     return kontroler;
   }
 }

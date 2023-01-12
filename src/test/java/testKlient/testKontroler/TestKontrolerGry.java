@@ -1,51 +1,54 @@
 package testKlient.testKontroler;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point3D;
+import javafx.scene.Parent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import klient.kontroller.KontrolerAplikacji;
-import klient.kontroller.KontrolerGry;
+import klient.komunikacja.Mediator;
+import klient.kontroler.GlownyKontroler;
+import klient.kontroler.KontrolerGry;
+import klient.kontroler.KontrolerWidoku;
+import klient.kontroler.TypyKontrolerow;
+import klient.model.Model;
 import klient.model.ModelGry;
 import klient.widoki.widgety.Pionek;
 import klient.widoki.widgety.PolePlanszy;
 import org.junit.Test;
 
-public class TestKontrolerGry {
+public class TestKontrolerGry extends TestKontroler {
   @Test
   public void testPrzekazModel() {
     KontrolerGry kontroler = new KontrolerGry();
-    ModelGry model = new ModelGry();
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_GRY, false);
     kontroler.przekazModel(model);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testPrzekazModelError() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
-    ModelGry model = new ModelGry();
+    KontrolerWidoku kontroler =
+        this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_GRY, false);
     kontroler.przekazModel(model);
   }
 
   @Test
-  public void testPrzekazGlownyKontroler() {
-    KontrolerGry kontroler = new KontrolerGry();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testPrzekazGlownyKontrolerError() {
-    KontrolerGry kontroler = utworzPelnyKontroler();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+  public void testOdnowPolaczenie() {
+    KontrolerWidoku kontroler =
+        utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
+    kontroler.odnowPolaczenie();
   }
 
   @Test
   public void testZacznijPrzesuwacPionek() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -62,7 +65,8 @@ public class TestKontrolerGry {
 
   @Test
   public void testPrzesunPionek() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -77,7 +81,8 @@ public class TestKontrolerGry {
 
   @Test
   public void testSkonczPrzesuwacPionek() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -91,8 +96,42 @@ public class TestKontrolerGry {
   }
 
   @Test
+  public void testZaktualizujPlansze() {
+    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
+    KontrolerGry kontroler = new KontrolerGry();
+    BooleanProperty czyPolaczono = new SimpleBooleanProperty();
+    czyPolaczono.set(false);
+    ModelGry model = new ModelGry(czyPolaczono);
+    kontroler.przekazModel(model);
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
+    kontroler.przekazMediator(mediator);
+
+    glownyKontroler.rozpocznijGre("110101010010101011010101000000000"
+            + "00000000020202022020202002020202");
+    Parent[][] polaPlanszy = new Parent[8][8];
+    for(int i=0; i < 8; i++)
+      for(int j=0; j < 8; j++) {
+        StackPane pole = new StackPane();
+        polaPlanszy[i][j] = pole;
+      }
+
+    model.ustawPolaPlanszy(polaPlanszy);
+
+    String plansza = "01010101\n"
+        + "10101010\n"
+        + "01010101\n"
+        + "00000000\n"
+        + "00000000\n"
+        + "20202020\n"
+        + "02020202\n"
+        + "20202020\n";
+    kontroler.zaktualizujPlansze(plansza);
+  }
+
+  @Test
   public void testPuszczonoMyszkeNadPolem() {
-    KontrolerGry kontroler = this.utworzPelnyKontroler();
+    KontrolerGry kontroler =
+        (KontrolerGry)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRY, false);
 
     PolePlanszy pole = new PolePlanszy(0, 0);
     Pionek pionek = this.utworzSztucznyBialyPionek();
@@ -107,14 +146,37 @@ public class TestKontrolerGry {
     kontroler.puszczonoMyszkeNadPolem(pole, wynik);
   }
 
-  private KontrolerGry utworzPelnyKontroler() {
+  @Test
+  public void testProbujUsunPionek() {
+    GlownyKontroler glownyKontroler = GlownyKontroler.instancja();
     KontrolerGry kontroler = new KontrolerGry();
-    ModelGry model = new ModelGry();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-
+    BooleanProperty czyPolaczono = new SimpleBooleanProperty();
+    czyPolaczono.set(false);
+    ModelGry model = new ModelGry(czyPolaczono);
     kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-    return kontroler;
+    Mediator mediator = new Mediator(GlownyKontroler.instancja());
+    kontroler.przekazMediator(mediator);
+
+    glownyKontroler.rozpocznijGre("110101010010101011010101000000000"
+        + "00000000020202022020202002020202");
+    Parent[][] polaPlanszy = new Parent[8][8];
+    for(int i=0; i < 8; i++)
+      for(int j=0; j < 8; j++) {
+        StackPane pole = new StackPane();
+        polaPlanszy[i][j] = pole;
+      }
+    ((StackPane)polaPlanszy[0][0]).getChildren().add(new StackPane());
+    model.ustawPolaPlanszy(polaPlanszy);
+
+    String plansza = "01010101\n"
+        + "10101010\n"
+        + "03030303\n"
+        + "00000000\n"
+        + "00000000\n"
+        + "40404040\n"
+        + "02020202\n"
+        + "20202020\n";
+    kontroler.zaktualizujPlansze(plansza);
   }
 
   private MouseEvent utworzSztucznyMouseEvent() {

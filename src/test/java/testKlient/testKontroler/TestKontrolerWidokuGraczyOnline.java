@@ -2,45 +2,47 @@ package testKlient.testKontroler;
 
 import java.util.List;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import klient.kontroller.KontrolerAplikacji;
-import klient.kontroller.KontrolerWidokuGraczyOnline;
-import klient.model.ModelGraczyOnline;
+import klient.kontroler.GlownyKontroler;
+import klient.kontroler.KontrolerWidokuGraczyOnline;
+import klient.kontroler.TypyKontrolerow;
+import klient.model.Model;
 import klient.widoki.widgety.KafelekGraczaOnline;
 import org.junit.Test;
 
-public class TestKontrolerWidokuGraczyOnline {
+public class TestKontrolerWidokuGraczyOnline extends TestKontroler {
   @Test
   public void testPrzekazModel() {
     KontrolerWidokuGraczyOnline kontroler = new KontrolerWidokuGraczyOnline();
-    ModelGraczyOnline model = new ModelGraczyOnline(new SimpleStringProperty());
+    Model model = this.utworzModel(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
     kontroler.przekazModel(model);
   }
 
   @Test
-  public void testPrzekazGlownyKontroler() {
-    KontrolerWidokuGraczyOnline kontroler = new KontrolerWidokuGraczyOnline();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
+  public void testOdnowPolaczenie() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.odnowPolaczenie();
   }
+
+
 
   @Test
   public void testZapiszNazweGracza() {
-    KontrolerWidokuGraczyOnline kontroler = this.utworzGotowyKontroler();
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(
+            TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
 
-    kontroler.zapiszNazweGracza("", new BorderPane());
-    kontroler.zapiszNazweGracza("abc", new BorderPane());
+    kontroler.zapiszNazweGracza("");
+    kontroler.zapiszNazweGracza("abc");
   }
 
   @Test
   public void testUruchomWydarzenieNaKazdymDziecku() {
-    //TODO(Jakub Drzewiecki): trzeba utworzyc bardziej rozbudowany event w celu testu
     Event event = new Event(MouseEvent.MOUSE_CLICKED);
     KontrolerWidokuGraczyOnline kontroler = new KontrolerWidokuGraczyOnline();
     kontroler.uruchomWydarzenieNaKazdymDziecku(event);
@@ -48,7 +50,9 @@ public class TestKontrolerWidokuGraczyOnline {
 
   @Test
   public void testPrzypiszFunkcjeKafelkowi() {
-    KontrolerWidokuGraczyOnline kontroler = this.utworzGotowyKontroler();
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(
+            TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
 
     ObservableList<KafelekGraczaOnline> lista = new SimpleListProperty<>();
     ListChangeListener.Change<? extends Node> change =
@@ -96,13 +100,31 @@ public class TestKontrolerWidokuGraczyOnline {
     kontroler.przypiszFunkcjeKafelkowi(change);
   }
 
-  private KontrolerWidokuGraczyOnline utworzGotowyKontroler() {
-    KontrolerWidokuGraczyOnline kontroler = new KontrolerWidokuGraczyOnline();
-    KontrolerAplikacji kontrolerAplikacji = new KontrolerAplikacji();
-    ModelGraczyOnline model = new ModelGraczyOnline(new SimpleStringProperty());
+  @Test
+  public void testWyswietlZaproszeneOdGracza() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.wyswietlZaproszenieOdGracza("");
+  }
 
-    kontroler.przekazModel(model);
-    kontroler.przekazGlownyKontroler(kontrolerAplikacji);
-    return kontroler;
+  @Test
+  public void testDolaczDoPokoju() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.dolaczDoPokoju("");
+  }
+
+  @Test
+  public void testOdrzucZaproszenie() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.odrzucZaproszenie("");
+  }
+
+  @Test
+  public void testWyswietlPowiadomienie() {
+    KontrolerWidokuGraczyOnline kontroler =
+        (KontrolerWidokuGraczyOnline)this.utworzGotowyKontroler(TypyKontrolerow.KONTROLER_GRACZY_ONLINE, false);
+    kontroler.wyswietlPowiadomienie("");
   }
 }
