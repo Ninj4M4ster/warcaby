@@ -40,7 +40,6 @@ public class RuchPionka implements Komenda{
         pokoj.getZasadyGry().setStanGry(pokoj.kontroler_stanu_gry.getStan());
         pokoj.getZasadyGry().setGracz(gracz);
         pokoj.getZasadyGry().setRuchy(ruchy);
-        pokoj.getZasadyGry().setPokoj(pokoj);
 
         System.out.println("przed zasadami");
         pokoj.wypiszPlansze(pokoj.getPlansza());
@@ -51,6 +50,9 @@ public class RuchPionka implements Komenda{
                 plansza[ruchy.get(i + 2)][ruchy.get(i + 3)] = plansza[ruchy.get(i)][ruchy.get(i + 1)];
                 plansza[ruchy.get(i)][ruchy.get(i + 1)] = 0;
 
+                System.out.println("przed zbiciem");
+                pokoj.wypiszPlansze(pokoj.getPlansza());
+
                 for(int j = 1; j < Math.abs(ruchy.get(i + 2) - ruchy.get(i)); j += 1) {
                     plansza[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)] = 0;
                 }
@@ -59,6 +61,7 @@ public class RuchPionka implements Komenda{
             if(pokoj.getZasadyGry().promocja(ruchy.get(ruchy.size() - 2), ruchy.get(ruchy.size() - 1))) {
                 plansza[ruchy.get(ruchy.size() - 2)][ruchy.get(ruchy.size() - 1)] += 2;
             }
+
             System.out.println("po ruchu");
             pokoj.wypiszPlansze(pokoj.getPlansza());
 

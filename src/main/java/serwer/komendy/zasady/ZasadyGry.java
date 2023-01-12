@@ -10,7 +10,6 @@ public abstract class ZasadyGry {
     int[][] plansza;
     ArrayList<Integer> ruchy;
     int pionek;
-    Pokoj pokoj;
 
     KontrolerStanuGry.StanGry stan_gry;
     Gracz gracz;
@@ -50,7 +49,7 @@ public abstract class ZasadyGry {
     }
 
     boolean ruchKrol() {
-        if(!czyWPlanszy(ruchy.get(2), ruchy.get(3))) {
+        if(!czyWPlanszy(ruchy.get(2), ruchy.get(3)) || !czyWPlanszy(ruchy.get(0), ruchy.get(1))) {
             return false;
         }
         if(pionek == 0 || plansza[ruchy.get(2)][ruchy.get(3)] != 0 || Math.abs(ruchy.get(2) - ruchy.get(0)) != Math.abs(ruchy.get(3) - ruchy.get(1))) {
@@ -101,13 +100,18 @@ public abstract class ZasadyGry {
         return x < plansza.length && x >= 0 && y < plansza.length && y >= 0;
     }
 
-    public void setPlansza(int[][] plansza) {
-        this.plansza = new int[plansza.length][plansza.length];
+    public int[][] copyPlansza(int[][] plansza) {
+        int[][] plansza_temp = new int[plansza.length][plansza.length];
         for(int x = 0; x < plansza.length; x +=1) {
             for(int y = 0; y < plansza.length; y += 1) {
-                this.plansza[x][y] = plansza[x][y];
+                plansza_temp[x][y] = plansza[x][y];
             }
         }
+        return plansza_temp;
+    }
+
+    public void setPlansza(int[][] plansza) {
+        this.plansza = plansza;
     }
 
     public void setRuchy(ArrayList<Integer> ruchy) {
@@ -124,8 +128,4 @@ public abstract class ZasadyGry {
     }
 
     abstract boolean sprawdzBicie();
-
-    public void setPokoj(Pokoj pokoj) {
-        this.pokoj = pokoj;
-    }
 }

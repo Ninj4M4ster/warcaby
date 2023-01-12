@@ -30,7 +30,7 @@ public class Zasady1 extends ZasadyGry {
 
         for(int x = 0; x < plansza.length; x += 1) {
             for(int y = 0; y < plansza.length; y += 1) {
-                if(pionek % 2 == plansza[x][y] % 2) {
+                if(pionek % 2 == plansza[x][y] % 2 && plansza[x][y] != 0) {
                     if(plansza[x][y] < 3) {
                         max_bicie = ((max_temp = mozliweBiciePion(x, y, plansza)) > max_bicie ? max_temp : max_bicie);
                     }
@@ -42,8 +42,10 @@ public class Zasady1 extends ZasadyGry {
         }
         this.max = max_bicie;
         if(max_bicie + 1 == ruchy.size() / 2) {
+            System.out.println("zle bicie");
             return bij();
         }
+        System.out.println("za krotkie lub brak bicia");
         return false;
     }
 
@@ -55,7 +57,7 @@ public class Zasady1 extends ZasadyGry {
      * @return int liczba bic w jednym ruchu
      */
     private int mozliweBiciePion(int x, int y, int[][] plansza) {
-        int[][] plansza_temp = plansza;
+        int[][] plansza_temp = copyPlansza(plansza);
         int pionek = plansza_temp[x][y];
         int max = 0;
         int temp;
@@ -69,7 +71,7 @@ public class Zasady1 extends ZasadyGry {
             }
         }
 
-        plansza_temp = plansza;
+        plansza_temp =copyPlansza(plansza);
         if(czyWPlanszy(x-1, y+1) && plansza_temp[x-1][y+1] != 0 && plansza_temp[x-1][y+1] % 2 != pionek % 2) {
             if(czyWPlanszy(x-2, y+2) && plansza_temp[x-2][y+2] == 0) {
                 plansza_temp[x-1][y+1] = 0;
@@ -79,7 +81,7 @@ public class Zasady1 extends ZasadyGry {
             }
         }
 
-        plansza_temp = plansza;
+        plansza_temp = copyPlansza(plansza);
         if(czyWPlanszy(x+1, y-1) && plansza_temp[x+1][y-1] != 0 && plansza_temp[x+1][y-1] % 2 != pionek % 2) {
             if(czyWPlanszy(x+2, y-2) && plansza_temp[x+2][y-2] == 0) {
                 plansza_temp[x+1][y-1] = 0;
@@ -89,7 +91,7 @@ public class Zasady1 extends ZasadyGry {
             }
         }
 
-        plansza_temp = plansza;
+        plansza_temp = copyPlansza(plansza);
         if(czyWPlanszy(x-1, y-1) && plansza_temp[x-1][y-1] != 0 && plansza_temp[x-1][y-1] % 2 != pionek % 2) {
             if(czyWPlanszy(x-2, y-2) && plansza_temp[x-2][y-2] == 0) {
                 plansza_temp[x-1][y-1] = 0;
@@ -110,7 +112,7 @@ public class Zasady1 extends ZasadyGry {
      * @return int liczba bic w jednym ruchu
      */
     private int mozliweBicieKrol(int x, int y, int[][] plansza) {
-        int[][] plansza_temp = plansza;
+        int[][] plansza_temp = copyPlansza(plansza);
         int pionek = plansza_temp[x][y];
         int max = 0;
         int temp;
@@ -148,7 +150,7 @@ public class Zasady1 extends ZasadyGry {
         }
 
         flaga = true;
-        plansza_temp = plansza;
+        plansza_temp = copyPlansza(plansza);
         x_dozbicia = -1; y_dozbicia = -1; i = 1;
         while(flaga) {
             if(!czyWPlanszy(x-i, y+i)) {
@@ -180,7 +182,7 @@ public class Zasady1 extends ZasadyGry {
         }
 
         flaga = true;
-        plansza_temp = plansza;
+        plansza_temp = copyPlansza(plansza);
         x_dozbicia = -1; y_dozbicia = -1; i = 1;
         while(flaga) {
             if(!czyWPlanszy(x-i, y-i)) {
@@ -212,7 +214,7 @@ public class Zasady1 extends ZasadyGry {
         }
 
         flaga = true;
-        plansza_temp = plansza;
+        plansza_temp = copyPlansza(plansza);
         x_dozbicia = -1; y_dozbicia = -1; i = 1;
         while(flaga) {
             if(!czyWPlanszy(x+i, y-i)) {
@@ -251,17 +253,24 @@ public class Zasady1 extends ZasadyGry {
      * @return true jesli bicie bylo poprawne
      */
     private boolean bij() {
-        int[][] plansza_temp = plansza;
+        int[][] plansza_temp = copyPlansza(plansza);
 
         for(int i = 0; i + 3 < ruchy.size(); i += 2) {
             if(pionek < 3 && dlugoscBicia(ruchy.get(i), ruchy.get(i + 1), ruchy.get(i + 2), ruchy.get(i + 3))) {
                 int pionek_temp = plansza_temp[(ruchy.get(i) + ruchy.get(i + 2)) / 2][(ruchy.get(i + 1) + ruchy.get(i + 3)) / 2];
 
                 if(pionek_temp != 0 && pionek_temp % 2 != pionek % 2 && plansza_temp[ruchy.get(i + 2)][ruchy.get(i + 3)] == 0) {
-
                     plansza_temp[(ruchy.get(i) + ruchy.get(i + 2)) / 2][(ruchy.get(i + 1) + ruchy.get(i + 3)) / 2] = 0;
                     plansza_temp[ruchy.get(i)][ruchy.get(i + 1)] = 0;
                     plansza_temp[ruchy.get(i + 2)][ruchy.get(i + 3)] = pionek;
+                }
+                else if(plansza_temp[ruchy.get(i + 2)][ruchy.get(i + 3)] != 0){
+                    System.out.println("Dupaaaa nie puste pole");
+                    return false;
+                }
+                else if(pionek_temp % 2 == pionek % 2) {
+                    System.out.println("Dupaaaa pinoek ten sam kolor");
+                    return false;
                 }
             }
             else if(pionek > 2 && dlugoscBicia(ruchy.get(i), ruchy.get(i + 2), ruchy.get(i + 2), ruchy.get(i + 3))) {
@@ -270,11 +279,9 @@ public class Zasady1 extends ZasadyGry {
                 for(int j = 1; j < Math.abs((ruchy.get(j + 2) - ruchy.get(j))); j += 1) {
                     int pionek_temp = plansza_temp[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)];
 
-                    if(pionek_temp % 2 == pionek % 2) {
-                        return false;
-                    }
+
                     if(pionek_temp != 0) {
-                        if(x_dozbicia != -1 || y_dozbicia != -1) {
+                        if(x_dozbicia != -1 || y_dozbicia != -1 || pionek_temp % 2 == pionek % 2) {
                             return false;
                         }
 
@@ -288,6 +295,7 @@ public class Zasady1 extends ZasadyGry {
                 plansza_temp[ruchy.get(i + 2)][ruchy.get(i + 3)] = pionek;
             }
             else {
+                System.out.println("dupa zasady w ogole");
                 return false;
             }
         }
