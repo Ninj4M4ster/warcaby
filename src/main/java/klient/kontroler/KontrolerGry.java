@@ -147,9 +147,14 @@ public class KontrolerGry implements KontrolerWidoku {
     if(kolumnaStartowa_ != -1) {
       Parent[][] polaPlanszy = this.model_.polaPlanszy();
       probujUsunPionek(rzadStartowy_, kolumnaStartowa_);
-      if(Math.abs(rzadStartowy_ - rzadDocelowy_) == 2)
-        probujUsunPionek(Math.abs(rzadStartowy_ - rzadDocelowy_) / 2,
-            Math.abs(kolumnaDocelowa_ - kolumnaStartowa_) / 2);
+      if(Math.abs(rzadStartowy_ - rzadDocelowy_) >= 2) {
+        int iloscPrzeskoczonyPol = Math.abs(rzadStartowy_ - rzadDocelowy_);
+        int lewyDolnyRzad = Math.min(rzadStartowy_, rzadDocelowy_);
+        int lewaDolnaKolumna = Math.min(kolumnaDocelowa_, kolumnaStartowa_);
+        for(int i=0; i < iloscPrzeskoczonyPol; i++) {
+          probujUsunPionek(lewyDolnyRzad + i, lewaDolnaKolumna + i);
+        }
+      }
       if(rzadDocelowy_ == 0 || rzadDocelowy_ == 7) {
         if (this.model_.kolorPionkow().compareTo("bialy") == 0)
             Platform.runLater(() ->
