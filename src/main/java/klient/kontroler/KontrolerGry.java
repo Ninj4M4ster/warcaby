@@ -181,6 +181,8 @@ public class KontrolerGry implements KontrolerWidoku {
     if(Math.abs(rzadStartowy_ - rzadDocelowy_) < 2)
       return false;
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
+    if(polaPlanszy[rzadDocelowy_][kolumnaDocelowa_].getChildrenUnmodifiable().size() > 0)
+      return false;
     StackPane pionekBezKlasy = (StackPane)polaPlanszy[rzadStartowy_][kolumnaStartowa_];
     if(pionekBezKlasy instanceof Krolowka) {
       for(int i=rzadDocelowy_ + 1, j=kolumnaDocelowa_ + 1;
