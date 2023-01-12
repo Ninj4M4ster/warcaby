@@ -2,6 +2,8 @@ package serwer.komendy.zasady;
 
 public class Zasady1 extends ZasadyGry {
 
+    int max;
+
     /**
      * Sprawdza wszytskie zasady warcab dla podanego ruchu (poza tym czy gra skonczona)
      * @return false/true
@@ -12,6 +14,9 @@ public class Zasady1 extends ZasadyGry {
         }
         if(sprawdzBicie()) {
             return true;
+        }
+        if(max != 0) {
+            return false;
         }
         return (pionek < 3 && ruchPionem()) || (pionek > 2 && ruchKrol());
     }
@@ -35,6 +40,7 @@ public class Zasady1 extends ZasadyGry {
                 }
             }
         }
+        this.max = max_bicie;
         if(max_bicie + 1 == ruchy.size() / 2) {
             return bij();
         }
