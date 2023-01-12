@@ -20,8 +20,7 @@ public abstract class Powiadomienie extends VBox {
   protected String gracz_ = "";
 
   /**
-   * Konstruktor. Tworzy powiadomienie oraz przycisk akceptacji i odrzucenia w zaleznosci, czy
-   * powiadomienie jest zaproszeniem.
+   * Konstruktor. Tworzy widget sluzacy do powiadomienia uzytkownika.
    */
   public Powiadomienie() {
     // ustawienie wygladu powiadomienia

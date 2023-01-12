@@ -201,6 +201,9 @@ public class Mediator {
     return argumenty;
   }
 
+  /**
+   * Metoda odpowiedzialna za podjecie proby odnowienia polaczenia z serwerem.
+   */
   public void odnowPolaczenie() {
     try {
       this.polaczenie_ = new Polaczenie(this);
