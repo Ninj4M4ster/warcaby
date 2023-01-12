@@ -5,8 +5,8 @@ public class Zasady1 extends ZasadyGry {
     int max;
 
     /**
-     * Sprawdza wszytskie zasady warcab dla podanego ruchu (poza tym czy gra skonczona)
-     * @return false/true
+     * Sprawdza wszytskie zasady warcab dla podanego ruchu (poza tym czy gra skonczona i czy pionka trzeba promowac)
+     * @return czy ruch byl poprawny
      */
     public boolean sprawdz() {
         if(!czyWToku() || !czyKolor()) {
@@ -23,7 +23,7 @@ public class Zasady1 extends ZasadyGry {
 
     /**
      * Sprawdza czy bicie powinno wystapic, jak dlugie czy wystapilo odpowiednio dlugie oraz czy bylo poprawne
-     * @return
+     * @return czy potrzebnie długie bicie wytapilo
      */
     boolean sprawdzBicie() {
         int max_bicie = 0, max_temp;
@@ -264,12 +264,7 @@ public class Zasady1 extends ZasadyGry {
                     plansza_temp[ruchy.get(i)][ruchy.get(i + 1)] = 0;
                     plansza_temp[ruchy.get(i + 2)][ruchy.get(i + 3)] = pionek;
                 }
-                else if(plansza_temp[ruchy.get(i + 2)][ruchy.get(i + 3)] != 0){
-                    System.out.println("Dupaaaa nie puste pole");
-                    return false;
-                }
-                else if(pionek_temp % 2 == pionek % 2) {
-                    System.out.println("Dupaaaa pinoek ten sam kolor");
+                else {
                     return false;
                 }
             }
@@ -295,7 +290,6 @@ public class Zasady1 extends ZasadyGry {
                 plansza_temp[ruchy.get(i + 2)][ruchy.get(i + 3)] = pionek;
             }
             else {
-                System.out.println("dupa zasady w ogole");
                 return false;
             }
         }
