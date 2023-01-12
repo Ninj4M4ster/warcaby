@@ -109,7 +109,7 @@ public class Mediator {
         this.glownyKontroler_.rozpocznijGre(this.wydobadzArgumenty(wiadomosc)[0]);
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.RUCH_PIONKA) {
       if(wiadomosc.startsWith("true"))
-        this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
+        ((KontrolerGry)this.aktualnyKontroler_).zatwierdzRuch();
     } else if(typOstatniejWiadomosci_ == TypyWiadomosci.ZAPROSZENIE) {
       if(wiadomosc.startsWith("Odrzucono"))
         this.glownyKontroler_.powiadomOdrzucil();
@@ -136,7 +136,7 @@ public class Mediator {
       this.glownyKontroler_.zaktualizujListeGraczy(gracz, true);
     } else if(wiadomosc.startsWith("Zaakceptowano")) {
       this.glownyKontroler_.powiadomDolaczyl();
-    } else if(wiadomosc.startsWith("Plansza")) {
+    } else if(wiadomosc.startsWith("Ruch")) {
       this.wyslijAktualizacjePlanszy(this.wydobadzArgumenty(wiadomosc));
     } else if(wiadomosc.startsWith("Czat")) {
       if(aktualnyKontroler_ instanceof KontrolerPokoju)

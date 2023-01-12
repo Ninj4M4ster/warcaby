@@ -33,6 +33,11 @@ public class KontrolerGry implements KontrolerWidoku {
   /** Czy jakis pionek jest aktualnie przesuwany? */
   private boolean pionekPrzesuwany_;
 
+  private int kolumnaStartowa_ = -1;
+  private int kolumnaDocelowa_ = -1;
+  private int rzadStartowy_ = -1;
+  private int rzadDocelowy_ = -1;
+
   /**
    * Metoda odpowiedzialna za przechowanie modelu widoku gry.
    * @param model Model widoku gry.
@@ -118,17 +123,17 @@ public class KontrolerGry implements KontrolerWidoku {
         && wynikWydarzenia.getIntersectedNode() instanceof Circle) {
       PolePlanszy startowePole =
           (PolePlanszy) this.kontenerAktualniePrzesuwanegoPionka_.getParent();
-      int kolumnaStartowa = startowePole.kolumna();
-      int rzadStartowy = startowePole.rzad();
+      kolumnaStartowa_ = startowePole.kolumna();
+      rzadStartowy_ = startowePole.rzad();
 
-      int docelowaKolumna = pole.kolumna();
-      int docelowyRzad = pole.rzad();
+      kolumnaDocelowa_ = pole.kolumna();
+      rzadDocelowy_ = pole.rzad();
 
       Wiadomosc wiadomosc =
-          new Wiadomosc(kolumnaStartowa,
-              rzadStartowy,
-              docelowaKolumna,
-              docelowyRzad,
+          new Wiadomosc(kolumnaStartowa_,
+              rzadStartowy_,
+              kolumnaDocelowa_,
+              rzadDocelowy_,
               TypyWiadomosci.RUCH_PIONKA);
       this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
     }
@@ -136,54 +141,95 @@ public class KontrolerGry implements KontrolerWidoku {
   }
 
   /**
+   * Metoda odpowiedzialna za zatwierdzenie ruchu, ktory chcial wykonac gracz.
+   */
+  public void zatwierdzRuch() {
+    if(kolumnaStartowa_ != -1) {
+      Parent[][] polaPlanszy = this.model_.polaPlanszy();
+      probujUsunPionek(rzadStartowy_, kolumnaStartowa_);
+      if(Math.abs(rzadStartowy_ - rzadDocelowy_) == 2)
+        probujUsunPionek(Math.abs(rzadStartowy_ - rzadDocelowy_) / 2,
+            Math.abs(kolumnaDocelowa_ - kolumnaStartowa_) / 2);
+      if(rzadDocelowy_ == 0 || rzadDocelowy_ == 7) {
+        if (this.model_.kolorPionkow().compareTo("bialy") == 0)
+            Platform.runLater(() ->
+            ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).getChildren().add(
+                new Krolowka(Color.valueOf("#dbdbdb"),
+                    Color.valueOf("#a3a3a3"),
+                    ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).widthProperty(),
+                    this,
+                    "bialy")));
+        else
+          Platform.runLater(() ->
+            ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).getChildren().add(
+                new Krolowka(Color.valueOf("#363636"),
+                    Color.valueOf("#424242"),
+                    ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).widthProperty(),
+                    this,
+                    "czarny")));
+      } else {
+        if (this.model_.kolorPionkow().compareTo("bialy") == 0)
+          Platform.runLater(() ->
+              ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).getChildren().add(
+                  new Pionek(Color.valueOf("#dbdbdb"),
+                      Color.valueOf("#a3a3a3"),
+                      ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).widthProperty(),
+                      this,
+                      "bialy")));
+        else
+          Platform.runLater(() ->
+              ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).getChildren().add(
+                  new Pionek(Color.valueOf("#363636"),
+                      Color.valueOf("#424242"),
+                      ((StackPane) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_]).widthProperty(),
+                      this,
+                      "czarny")));
+      }
+    }
+  }
+
+  /**
    * Metoda aktualizujaca wszystkie pola planszy na podstawie wiadomosci otrzymanej od serwera.
    *
-   * @param wiadmoscPlansza Wiadomosc z plansza otrzymana od serwera.
+   * @param wiadomoscPlansza Wiadomosc z plansza otrzymana od serwera.
    */
-  public void zaktualizujPlansze(String wiadmoscPlansza) {
-    String[] rzedy = wiadmoscPlansza.split("\n");
+  public void zaktualizujPlansze(String wiadomoscPlansza) {
+    System.out.println(wiadomoscPlansza);
+    String[] rzedy = wiadomoscPlansza.split("");
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
-    for(int i = 0; i < polaPlanszy.length; i++) {
-      String[] otrzymaneRzedy = rzedy[i].split("");
-      for(int j=0; j < polaPlanszy[i].length; j++) {
-        probujUsunPionek(i, j); // sprobowac usunac pionek z aktualnego pola
-        if(otrzymaneRzedy[j].compareTo("1") == 0) {  // dodac bialy pionek
-          int finalI1 = i;
-          int finalJ1 = j;
-          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI1][finalJ1]).getChildren().add(
-              new Pionek(Color.valueOf("#dbdbdb"),
-                  Color.valueOf("#a3a3a3"),
-                  ((StackPane) polaPlanszy[finalI1][finalJ1]).widthProperty(),
-                  this,
-                  "bialy")));
-        } else if(otrzymaneRzedy[j].compareTo("2") == 0) {  // dodac czarny pionek
-          int finalI = i;
-          int finalJ = j;
-          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI][finalJ]).getChildren().add(
-              new Pionek(Color.valueOf("#363636"),
-                  Color.valueOf("#424242"),
-                  ((StackPane) polaPlanszy[finalI][finalJ]).widthProperty(),
-                  this,
-                  "czarny")));
-        } else if(otrzymaneRzedy[j].compareTo("3") == 0) {  // dodac biala krolowa
-          int finalI1 = i;
-          int finalJ1 = j;
-          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI1][finalJ1]).getChildren().add(
-              new Krolowka(Color.valueOf("#dbdbdb"),
-                  Color.valueOf("#a3a3a3"),
-                  ((StackPane) polaPlanszy[finalI1][finalJ1]).widthProperty(),
-                  this,
-                  "bialy")));
-        } else if(otrzymaneRzedy[j].compareTo("4") == 0) {  // dodac czarna krolowa
-          int finalI = i;
-          int finalJ = j;
-          Platform.runLater(() -> ((StackPane) polaPlanszy[finalI][finalJ]).getChildren().add(
-              new Krolowka(Color.valueOf("#363636"),
-                  Color.valueOf("#424242"),
-                  ((StackPane) polaPlanszy[finalI][finalJ]).widthProperty(),
-                  this,
-                  "czarny")));
-        }
+    for(int i = 0; i < rzedy.length; i++) {
+      int rzad = i / 8;
+      int kolumna = i % 8;
+      System.out.println(rzad + " " + kolumna);
+      probujUsunPionek(rzad, kolumna); // sprobowac usunac pionek z aktualnego pola
+      if(rzedy[i].compareTo("1") == 0) {  // dodac bialy pionek
+        Platform.runLater(() -> ((StackPane) polaPlanszy[rzad][kolumna]).getChildren().add(
+            new Pionek(Color.valueOf("#dbdbdb"),
+                Color.valueOf("#a3a3a3"),
+                ((StackPane) polaPlanszy[rzad][kolumna]).widthProperty(),
+                this,
+                "bialy")));
+      } else if(rzedy[i].compareTo("2") == 0) {  // dodac czarny pionek
+        Platform.runLater(() -> ((StackPane) polaPlanszy[rzad][kolumna]).getChildren().add(
+            new Pionek(Color.valueOf("#363636"),
+                Color.valueOf("#424242"),
+                ((StackPane) polaPlanszy[rzad][kolumna]).widthProperty(),
+                this,
+                "czarny")));
+      } else if(rzedy[i].compareTo("3") == 0) {  // dodac biala krolowa
+        Platform.runLater(() -> ((StackPane) polaPlanszy[rzad][kolumna]).getChildren().add(
+            new Krolowka(Color.valueOf("#dbdbdb"),
+                Color.valueOf("#a3a3a3"),
+                ((StackPane) polaPlanszy[rzad][kolumna]).widthProperty(),
+                this,
+                "bialy")));
+      } else if(rzedy[i].compareTo("4") == 0) {  // dodac czarna krolowa
+        Platform.runLater(() -> ((StackPane) polaPlanszy[rzad][kolumna]).getChildren().add(
+            new Krolowka(Color.valueOf("#363636"),
+                Color.valueOf("#424242"),
+                ((StackPane) polaPlanszy[rzad][kolumna]).widthProperty(),
+                this,
+                "czarny")));
       }
     }
   }
@@ -196,7 +242,6 @@ public class KontrolerGry implements KontrolerWidoku {
    * @param kolumna Kolumna pola.
    */
   private void probujUsunPionek(int rzad, int kolumna) {
-
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
     ObservableList<Node> elementyPola = ((StackPane)polaPlanszy[rzad][kolumna]).getChildren();
     if(elementyPola.size() != 0) {

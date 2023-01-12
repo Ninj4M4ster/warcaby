@@ -267,12 +267,12 @@ public class WidokGry extends Widok {
     // i - rzedy, j - kolumny
     for(int i=0; i < iloscPol; i+=2) {
       for(int j=0; j < iloscPol; j += 2) {
-        listaPol[i][j] = this.utworzPolePlanszy(Color.BEIGE, i, j);
-        listaPol[i][j+1] = this.utworzPolePlanszy(Color.valueOf("#212121"), i, j + 1);
+        listaPol[i][j] = this.utworzPolePlanszy(Color.valueOf("#212121"), i, j);
+        listaPol[i][j+1] = this.utworzPolePlanszy(Color.BEIGE, i, j + 1);
       }
       for(int j=0; j < iloscPol; j += 2) {
-        listaPol[i+1][j] = this.utworzPolePlanszy(Color.valueOf("#212121"), i + 1, j);
-        listaPol[i+1][j+1] = this.utworzPolePlanszy(Color.BEIGE, i + 1, j + 1);
+        listaPol[i+1][j] = this.utworzPolePlanszy(Color.BEIGE, i + 1, j);
+        listaPol[i+1][j+1] = this.utworzPolePlanszy(Color.valueOf("#212121"), i + 1, j + 1);
       }
     }
     return listaPol;
@@ -304,7 +304,7 @@ public class WidokGry extends Widok {
     int iloscPol = this.model_.iloscPol();
     for(int rzad=0; rzad < iloscPol/2 - 1; rzad++) {
       for(int kolumna=0; kolumna < iloscPol; kolumna++) {
-        if(rzad%2 == 0 && kolumna%2 == 1 || rzad%2 == 1 && kolumna%2 == 0) {
+        if(rzad%2 == 0 && kolumna%2 == 0 || rzad%2 == 1 && kolumna%2 == 1) {
           this.dodajPionekNaPlansze(kolumna,
               rzad,
               listaPol,
@@ -316,7 +316,7 @@ public class WidokGry extends Widok {
     }
     for(int rzad=iloscPol - 1; rzad > iloscPol/2; rzad--) {
       for(int kolumna=0; kolumna < iloscPol; kolumna++) {
-        if(rzad%2 == 0 && kolumna%2 == 1 || rzad%2 == 1 && kolumna%2 == 0) {
+        if(rzad%2 == 0 && kolumna%2 == 0 || rzad%2 == 1 && kolumna%2 == 1) {
           this.dodajPionekNaPlansze(kolumna,
               rzad,
               listaPol,
@@ -360,7 +360,7 @@ public class WidokGry extends Widok {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
       for(int j=0; j < iloscPol; j++) {
-        this.planszaGry_.add(listaPol[iloscPol - i - 1][iloscPol - j - 1], j + 1, i + 1);
+        this.planszaGry_.add(listaPol[iloscPol - i - 1][j], j + 1, i + 1);
       }
     }
   }
@@ -374,7 +374,7 @@ public class WidokGry extends Widok {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
       for(int j=0; j < iloscPol; j++) {
-        this.planszaGry_.add(listaPol[i][j], j + 1, i + 1);
+        this.planszaGry_.add(listaPol[i][iloscPol - j - 1], j + 1, i + 1);
       }
     }
   }
