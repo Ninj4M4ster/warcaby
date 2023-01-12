@@ -41,17 +41,10 @@ public class RuchPionka implements Komenda{
         pokoj.getZasadyGry().setGracz(gracz);
         pokoj.getZasadyGry().setRuchy(ruchy);
 
-        System.out.println("przed zasadami");
-        pokoj.wypiszPlansze(pokoj.getPlansza());
         if(pokoj.getZasadyGry().sprawdz()) {
-            System.out.println("przed ruchem");
-            pokoj.wypiszPlansze(pokoj.getPlansza());
             for(int i = 0; i + 3 < ruchy.size(); i += 2) {
                 plansza[ruchy.get(i + 2)][ruchy.get(i + 3)] = plansza[ruchy.get(i)][ruchy.get(i + 1)];
                 plansza[ruchy.get(i)][ruchy.get(i + 1)] = 0;
-
-                System.out.println("przed zbiciem");
-                pokoj.wypiszPlansze(pokoj.getPlansza());
 
                 for(int j = 1; j < Math.abs(ruchy.get(i + 2) - ruchy.get(i)); j += 1) {
                     plansza[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)] = 0;

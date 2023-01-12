@@ -42,10 +42,8 @@ public class Zasady1 extends ZasadyGry {
         }
         this.max = max_bicie;
         if(max_bicie + 1 == ruchy.size() / 2) {
-            System.out.println("zle bicie");
             return bij();
         }
-        System.out.println("za krotkie lub brak bicia");
         return false;
     }
 

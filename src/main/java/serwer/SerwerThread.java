@@ -42,7 +42,6 @@ public class SerwerThread extends Thread {
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
 
         String wiadomosc;
-        System.out.println("Polaczono");
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

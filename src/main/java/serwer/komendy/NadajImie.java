@@ -32,7 +32,7 @@ public class NadajImie implements Komenda{
                 gracz.getSt().wyslij("nowy_gracz " + gracz_temp.getNick());
             }
         }
-        System.out.println("Nadano imie ");
+
         return "true";
     }
 }
