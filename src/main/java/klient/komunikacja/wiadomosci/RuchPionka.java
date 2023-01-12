@@ -45,9 +45,7 @@ public class RuchPionka {
    */
   public String napisListaRuchow() {
     StringBuilder napis = new StringBuilder();
-    for(int i=0; i < listaRuchow_.size(); i += 2) {
-      napis.append(listaRuchow_.get(i + 1));
-      napis.append(" ");
+    for(int i=0; i < listaRuchow_.size(); i ++) {
       napis.append(listaRuchow_.get(i));
       if(i != listaRuchow_.size() - 1)
         napis.append(" ");
