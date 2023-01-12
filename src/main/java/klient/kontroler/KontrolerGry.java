@@ -44,9 +44,13 @@ public class KontrolerGry implements KontrolerWidoku {
   /** Wspolrzedne pionka przed rozpoczeciem bicia */
   private int kolumnaPrzedBiciem_ = -1;
   private int rzadPrzedBiciem_ = -1;
+
+  /** Aktualne wspolrzedne ruszonego pionka */
+  private int aktualnyRzadBijacegoPionka_ = -1;
+  private int aktualnaKolumnaBijacegoPionka_ = -1;
+
+  /** Czy pionek wlasnie wykonuje wielokrotne bicie? */
   private boolean seriaRuchow_ = false;
-  private Pionek bijacyPionek_;
-  private PolePlanszy poleBijacegoPionka_;
 
   /** Zmienna przechowujaca wspolrzedne startowe oraz
    * wszystkie kolejne wspolrzedne podczas poruszania pionka */
@@ -150,7 +154,6 @@ public class KontrolerGry implements KontrolerWidoku {
         ruch_.dodajRuch(rzadStartowy_, kolumnaStartowa_);
         kolumnaPrzedBiciem_ = kolumnaStartowa_;
         rzadPrzedBiciem_ = rzadStartowy_;
-        bijacyPionek_ = this.kontenerAktualniePrzesuwanegoPionka_;
       }
 
       ruch_.dodajRuch(rzadDocelowy_, kolumnaDocelowa_);
@@ -279,8 +282,8 @@ public class KontrolerGry implements KontrolerWidoku {
         }
         polaPionkiDoUsuniecia.clear();
       }
-      poleBijacegoPionka_ = (PolePlanszy) polaPlanszy[rzadDocelowy_][kolumnaDocelowa_];
-      System.out.println(poleBijacegoPionka_.rzad() + " " + poleBijacegoPionka_.kolumna());
+      this.aktualnyRzadBijacegoPionka_ = rzadDocelowy_;
+      this.aktualnaKolumnaBijacegoPionka_ = kolumnaDocelowa_;
       if(rzadDocelowy_ == 0 || rzadDocelowy_ == 7) {
         if (this.model_.kolorPionkow().compareTo("bialy") == 0)
             Platform.runLater(() ->
@@ -327,10 +330,13 @@ public class KontrolerGry implements KontrolerWidoku {
     if(this.seriaRuchow_) {
       Platform.runLater(() -> {
         Parent[][] polaPlanszy = this.model_.polaPlanszy();
-        System.out.println(bijacyPionek_.getParent());
-        poleBijacegoPionka_.getChildren().remove(bijacyPionek_);
+        Pionek pionek =
+            (Pionek) ((PolePlanszy)polaPlanszy
+                [aktualnyRzadBijacegoPionka_][aktualnaKolumnaBijacegoPionka_]).getChildren().get(0);
+        ((StackPane) polaPlanszy[aktualnyRzadBijacegoPionka_][aktualnaKolumnaBijacegoPionka_])
+            .getChildren().remove(pionek);
         ((StackPane) polaPlanszy[rzadPrzedBiciem_][kolumnaPrzedBiciem_])
-            .getChildren().add(bijacyPionek_);
+            .getChildren().add(pionek);
       });
     }
     this.seriaRuchow_ = false;
@@ -343,13 +349,11 @@ public class KontrolerGry implements KontrolerWidoku {
    * @param wiadomoscPlansza Wiadomosc z plansza otrzymana od serwera.
    */
   public void zaktualizujPlansze(String wiadomoscPlansza) {
-    System.out.println(wiadomoscPlansza);
     String[] rzedy = wiadomoscPlansza.split("");
     Parent[][] polaPlanszy = this.model_.polaPlanszy();
     for(int i = 0; i < rzedy.length; i++) {
       int rzad = i / 8;
       int kolumna = i % 8;
-      System.out.println(rzad + " " + kolumna);
       probujUsunPionek(rzad, kolumna); // sprobowac usunac pionek z aktualnego pola
       if(rzedy[i].compareTo("1") == 0) {  // dodac bialy pionek
         Platform.runLater(() -> ((StackPane) polaPlanszy[rzad][kolumna]).getChildren().add(

@@ -286,8 +286,8 @@ public class WidokGry extends Widok {
    * @param rzad Numer rzedu, w ktorym dodawany jest pionek.
    * @return Widget reprezentujacy pole planszy.
    */
-  private PolePlanszy utworzPolePlanszy(Color kolor, int kolumna, int rzad) {
-    PolePlanszy pole = new PolePlanszy(kolumna, rzad);
+  private PolePlanszy utworzPolePlanszy(Color kolor, int rzad, int kolumna) {
+    PolePlanszy pole = new PolePlanszy(rzad, kolumna);
     pole.setBackground(Background.fill(kolor));
     pole.setAlignment(Pos.CENTER);
     pole.setOnMouseEntered(
