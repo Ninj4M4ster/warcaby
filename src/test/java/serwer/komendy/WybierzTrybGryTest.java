@@ -1,13 +1,12 @@
 package serwer.komendy;
 
-import serwer.SerwerThread;
+import org.junit.Test;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 
-import java.net.Socket;
-
 public class WybierzTrybGryTest {
-    public static void main(String args[]) {
+    @Test
+    public void testWybierzTrybGry() {
         Gracz gracz = new Gracz();
         WybierzTrybGry wbg = new WybierzTrybGry(gracz);
 

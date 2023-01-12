@@ -1,5 +1,6 @@
 package serwer.komendy;
 
+import org.junit.Test;
 import serwer.SerwerThread;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
@@ -7,7 +8,8 @@ import serwer.dane.Pokoj;
 import java.net.Socket;
 
 public class RuchPionkaTest {
-    public static void main(String args[]) {
+    @Test
+    public void testRuchPionka() {
         Gracz gracz = new Gracz();
         WybierzTrybGry wbg = new WybierzTrybGry(gracz);
 

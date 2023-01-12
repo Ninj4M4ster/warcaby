@@ -1,9 +1,11 @@
 package serwer.dane;
 
+import org.junit.Test;
 import serwer.komendy.WybierzTrybGry;
 
 public class PokojTest {
-    public static void main(String args[]) {
+    @Test
+    public void testPlanszaToString() {
         Gracz gracz = new Gracz();
         WybierzTrybGry wbg = new WybierzTrybGry(gracz);
 
