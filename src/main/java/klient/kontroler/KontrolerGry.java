@@ -50,7 +50,7 @@ public class KontrolerGry implements KontrolerWidoku {
 
   /** Zmienna przechowujaca wspolrzedne startowe oraz
    * wszystkie kolejne wspolrzedne podczas poruszania pionka */
-  private RuchPionka ruch_ = new RuchPionka();
+  private final RuchPionka ruch_ = new RuchPionka();
   /** Zmienna ta przechowuje wszystkie pola nad ktorymi poruszyl sie pionek w celu
    * pozniejszego usuniecia z nich pionkow przeciwnika */
   private final ArrayList<Integer> polaPionkiDoUsuniecia = new ArrayList<>();
@@ -268,7 +268,6 @@ public class KontrolerGry implements KontrolerWidoku {
         int lewyDolnyRzad = Math.min(rzadStartowy_, rzadDocelowy_);
         int lewaDolnaKolumna = Math.min(kolumnaDocelowa_, kolumnaStartowa_);
         for(int i=0; i < iloscPrzeskoczonyPol; i++) {
-          probujUsunPionek(lewyDolnyRzad + i, lewaDolnaKolumna + i);
           polaPionkiDoUsuniecia.add(lewyDolnyRzad + i);
           polaPionkiDoUsuniecia.add(lewaDolnaKolumna + i);
         }
