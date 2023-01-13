@@ -12,6 +12,9 @@ public class KontrolerStanuGry {
         PRZERWANA
     }
 
+    /**
+     * Kontruktor rozpoczyna kontrolowanie stanu gry
+     */
     public KontrolerStanuGry() {
         stan = StanGry.NIEROZPOCZETA;
     }
@@ -20,12 +23,18 @@ public class KontrolerStanuGry {
         return stan;
     }
 
+    /**
+     * Rozpoczyna gre od ruchy bialych
+     */
     public void START() {
         if(stan == StanGry.NIEROZPOCZETA) {
             stan = StanGry.RUCH_BIALYCH;
         }
     }
 
+    /**
+     * Zmienia kolejke i osobe ktora ma sie ruszyc
+     */
     public void RUCH() {
         if(stan == StanGry.RUCH_BIALYCH) {
             stan = StanGry.RUCH_CZARNYCH;
@@ -35,10 +44,16 @@ public class KontrolerStanuGry {
         }
     }
 
+    /**
+     * Konczy rozgrywke
+     */
     public void ZAKONCZ() {
         stan = StanGry.SKONCZONA;
     }
 
+    /**
+     * Przerywa rozgrywke w razie bledow wszelkiego rodzaju
+     */
     public void PRZERWIJ() {
         stan = StanGry.PRZERWANA;
     }

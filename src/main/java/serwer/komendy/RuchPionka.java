@@ -14,6 +14,13 @@ public class RuchPionka implements Komenda{
         this.gracz = gracz;
     }
 
+    /**
+     * zmienia ruchy z stringów na inty, przesyla potrzebne inforamcje zasadom zeby mogly sprawdzic ruch
+     * wywołuje zasady, wykonuje ruch, ewentulanie promuje pionka na krola, powiadamia graczy o ewentualnym zwyciezcy
+     * @param reszta - ruchy pionka/krola
+     * @param pokoj - pokoj w ktorym jest gracz wysylajacy komende
+     * @return czy pomyslnie wykonano komende
+     */
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         plansza = pokoj.getPlansza();
@@ -33,18 +40,13 @@ public class RuchPionka implements Komenda{
         pokoj.getZasadyGry().setStanGry(pokoj.kontroler_stanu_gry.getStan());
         pokoj.getZasadyGry().setGracz(gracz);
         pokoj.getZasadyGry().setRuchy(ruchy);
-        pokoj.getZasadyGry().setPokoj(pokoj);
 
-        System.out.println("przed zasadami");
-        pokoj.wypiszPlansze(pokoj.getPlansza());
         if(pokoj.getZasadyGry().sprawdz()) {
-            System.out.println("przed ruchem");
-            pokoj.wypiszPlansze(pokoj.getPlansza());
             for(int i = 0; i + 3 < ruchy.size(); i += 2) {
                 plansza[ruchy.get(i + 2)][ruchy.get(i + 3)] = plansza[ruchy.get(i)][ruchy.get(i + 1)];
                 plansza[ruchy.get(i)][ruchy.get(i + 1)] = 0;
 
-                for(int j = 1; j < Math.abs(ruchy.get(i + 2) - ruchy.get(i)) - 1; j += 1) {
+                for(int j = 1; j < Math.abs(ruchy.get(i + 2) - ruchy.get(i)); j += 1) {
                     plansza[ruchy.get(i) + ((ruchy.get(i+2) - ruchy.get(i))/Math.abs(ruchy.get(i+2) - ruchy.get(i)) * j)][ruchy.get(i+1) + ((ruchy.get(i+3) - ruchy.get(i+1))/Math.abs(ruchy.get(i+3) - ruchy.get(i+1)) * j)] = 0;
                 }
             }
@@ -52,6 +54,7 @@ public class RuchPionka implements Komenda{
             if(pokoj.getZasadyGry().promocja(ruchy.get(ruchy.size() - 2), ruchy.get(ruchy.size() - 1))) {
                 plansza[ruchy.get(ruchy.size() - 2)][ruchy.get(ruchy.size() - 1)] += 2;
             }
+
             System.out.println("po ruchu");
             pokoj.wypiszPlansze(pokoj.getPlansza());
 

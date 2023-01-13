@@ -1,5 +1,6 @@
 package serwer;
 
+import kontrolerDanych.KontrolerDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 import serwer.komendy.Komenda;
@@ -22,17 +23,26 @@ public class SerwerThread extends Thread {
         gracz = new Gracz(this);
     }
 
+
+    /**
+     * Metoda wysylajaca wiadomosc do gracza
+     * @param wiadomosc
+     */
     public void wyslij(String wiadomosc) {
         out.println(wiadomosc);
         out.flush();
     }
 
+    /**
+     * Główna metoda wątku serwera<br>
+     * Obsługuje wysyła i odbiera wiadomości<br>
+     * W razie potrzeby powiadamia innych uzytkowników o rozłączeniu się gracza
+     */
     @Override
     public void run() {
         PrzetwarzaczWiadomosci pw = new PrzetwarzaczWiadomosci();
 
         String wiadomosc;
-        System.out.println("Polaczono");
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

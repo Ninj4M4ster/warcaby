@@ -1,6 +1,6 @@
 package serwer.komendy;
 
-import serwer.KontrolerDanych;
+import kontrolerDanych.KontrolerDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 
@@ -11,6 +11,13 @@ public class AkceptujZaproszenie implements Komenda {
         this.gracz = gracz;
     }
 
+    /**
+     * Wykonujew akceptacje zaproszenia
+     * wysyla informacje zaakceptowano lub odrzucono do gracz wysylajacego zaproszenie
+     * @param reszta - czy zaakceptowano zaproszenie "Akceptuje" jesli tak
+     * @param pokoj - pokoj do ktorego zapraszano
+     * @return czy pomyslnie zaakceptowano/odzrucono
+     */
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         if(reszta.split(" ")[0].equals("Akceptuje")) {

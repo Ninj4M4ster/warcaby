@@ -1,9 +1,12 @@
 package serwer.dane;
 
-import serwer.KontrolerDanych;
+import kontrolerDanych.KontrolerDanych;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class Pokoj {
+    /**
+     * Gracze bedacy w pokoju
+     */
     private Gracz mistrz, gosc;
     private static int licznik = 0;
     private int id;
@@ -19,7 +22,15 @@ public class Pokoj {
      *  2 = czarne       4 = czrany krol
      */
     private int[][] plansza;
+
+    /**
+     * Zasady ktorymi pokoj bedzie sie poslugiwal by walidowac ruch
+     */
     private ZasadyGry zasady_gry;
+
+    /**
+     * Kontroler sprawdzajacy stan gry
+     */
     public KontrolerStanuGry kontroler_stanu_gry;
 
     public Pokoj(Gracz mistrz, ZasadyGry zasady_gry) {
@@ -29,6 +40,8 @@ public class Pokoj {
         KontrolerDanych.getInstance().addPokoj(this);
         mistrz.setPokoj(this);
         kontroler_stanu_gry = new KontrolerStanuGry();
+        id = licznik;
+        licznik += 1;
     }
 
     public Pokoj(Gracz mistrz, Gracz gosc, ZasadyGry zasady_gry) {
@@ -99,6 +112,10 @@ public class Pokoj {
         this.mistrz = mistrz;
     }
 
+    /**
+     * Metoda zmieniajaca plansze danego pokoju na jeden dlugi string (np. 01010101...202020)
+     * @return
+     */
     public String planszaToString() {
         StringBuilder plansza_temp = new StringBuilder();
 

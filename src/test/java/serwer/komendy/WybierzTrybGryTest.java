@@ -1,13 +1,16 @@
 package serwer.komendy;
 
+import org.junit.Test;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 
 public class WybierzTrybGryTest {
-    public static void main(String[] args) {
-        WybierzTrybGry wbg = new WybierzTrybGry();
+    @Test
+    public void testWybierzTrybGry() {
+        Gracz gracz = new Gracz();
+        WybierzTrybGry wbg = new WybierzTrybGry(gracz);
 
-        Pokoj pokoj = new Pokoj(new Gracz());
+        Pokoj pokoj = new Pokoj(gracz);
         pokoj.setZasadyGry(wbg.wybierz("0"));
 
         int[][] plansza;

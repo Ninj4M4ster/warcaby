@@ -6,6 +6,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Serwer {
+
+  /**
+   * Główna funkcja serwera
+   * Łączy się z nowymi graczami i dla każdego tworzy osobny wątek
+   * @param args
+   */
   public static void main(String[] args) {
   ServerSocket ss = null;
     

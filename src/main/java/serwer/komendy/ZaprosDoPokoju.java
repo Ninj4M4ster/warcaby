@@ -1,6 +1,6 @@
 package serwer.komendy;
 
-import serwer.KontrolerDanych;
+import kontrolerDanych.KontrolerDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 
@@ -10,6 +10,13 @@ public class ZaprosDoPokoju implements Komenda {
     public ZaprosDoPokoju(Gracz gracz) {
         this.gracz = gracz;
     }
+
+    /**
+     * Zaprasaza gracza do pokoju
+     * @param reszta - Nick zapraszanego gracza
+     * @param pokoj - Pokoj w ktorym jest gracz wysylajacy komende
+     * @return czy poprawnie wykonano komende
+     */
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         for(Gracz gracz_temp : KontrolerDanych.getInstance().getGracze()) {

@@ -117,14 +117,14 @@ public class TestKontrolerGry extends TestKontroler {
 
     model.ustawPolaPlanszy(polaPlanszy);
 
-    String plansza = "01010101\n"
-        + "10101010\n"
-        + "01010101\n"
-        + "00000000\n"
-        + "00000000\n"
-        + "20202020\n"
-        + "02020202\n"
-        + "20202020\n";
+    String plansza = "01010101"
+        + "10101010"
+        + "01010101"
+        + "00000000"
+        + "00000000"
+        + "20202020"
+        + "02020202"
+        + "20202020";
     kontroler.zaktualizujPlansze(plansza);
   }
 
@@ -168,14 +168,14 @@ public class TestKontrolerGry extends TestKontroler {
     ((StackPane)polaPlanszy[0][0]).getChildren().add(new StackPane());
     model.ustawPolaPlanszy(polaPlanszy);
 
-    String plansza = "01010101\n"
-        + "10101010\n"
-        + "03030303\n"
-        + "00000000\n"
-        + "00000000\n"
-        + "40404040\n"
-        + "02020202\n"
-        + "20202020\n";
+    String plansza = "01010101"
+        + "10101010"
+        + "03030303"
+        + "00000000"
+        + "00000000"
+        + "40404040"
+        + "02020202"
+        + "20202020";
     kontroler.zaktualizujPlansze(plansza);
   }
 

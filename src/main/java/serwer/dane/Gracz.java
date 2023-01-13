@@ -1,14 +1,30 @@
 package serwer.dane;
 
-import serwer.KontrolerDanych;
+import kontrolerDanych.KontrolerDanych;
 import serwer.SerwerThread;
 
 public class Gracz {
+    /**
+     * Nazwa i identyfikator gracza
+     */
     private String nick;
+    /**
+     * Pokoj w ktorym gra gracz
+     */
     private Pokoj pokoj;
+    /**
+     * Watek serwera obslugujacy gracza
+     */
     private SerwerThread st;
+    /**
+     * kolor bierek gracz
+     */
     private int kolor = 0;
 
+    /**
+     * Konstruktor gracza
+     * @param st - watek serwera obslugujacy gracza
+     */
     public Gracz(SerwerThread st) {
         this.st = st;
         KontrolerDanych.getInstance().addGracz(this);

@@ -1,12 +1,23 @@
 package serwer.komendy;
 
+import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 import serwer.komendy.zasady.Zasady1;
 import serwer.komendy.zasady.ZasadyGry;
 
 public class WybierzTrybGry implements Komenda{
     private int plansza_rozmiar;
+    private Gracz gracz;
 
+    public WybierzTrybGry(Gracz gracz) {
+        this.gracz = gracz;
+    }
+
+    /**
+     * Wybiera rodzaj gry
+     * @param rodzaj - wariant gry
+     * @return zasady przypisane do rodzaju gry
+     */
     public ZasadyGry wybierz(String rodzaj) {
         switch (rodzaj) {
             case "0":
@@ -23,9 +34,19 @@ public class WybierzTrybGry implements Komenda{
         }
     }
 
+    /**
+     * Wykonuje komende, tworzy plansze, losuje kolory graczy iw ysyla obie informacje onu graczom
+     * @param reszta - wariant gry
+     * @param pokoj - pokoj w ktorym jest gracz wysylajacy komende
+     * @return czy poprawnie wykonano komende + kolor i plansze jesli poprawnie
+     */
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
         if(pokoj != null) {
+            if(gracz == pokoj.getGosc()) {
+                return "false";
+            }
+
             pokoj.setZasadyGry(wybierz(reszta));
 
             int[][] plansza = tworzPlansze();
@@ -43,6 +64,10 @@ public class WybierzTrybGry implements Komenda{
         return "false";
     }
 
+    /**
+     * Tworzy plansze
+     * @return plansza
+     */
     public int[][] tworzPlansze() {
         int[][] plansza_temp = new int[plansza_rozmiar][plansza_rozmiar];
 
