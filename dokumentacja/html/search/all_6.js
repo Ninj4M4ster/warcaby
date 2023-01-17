@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['kafelekgraczaonline_0',['KafelekGraczaOnline',['../classklient_1_1widoki_1_1widgety_1_1_kafelek_gracza_online.html#a5826c5617b35181a6941edadf889b63b',1,'klient.widoki.widgety.KafelekGraczaOnline.KafelekGraczaOnline()'],['../classklient_1_1widoki_1_1widgety_1_1_kafelek_gracza_online.html',1,'klient.widoki.widgety.KafelekGraczaOnline']]],
+  ['kanadyjskie_1',['KANADYJSKIE',['../enumklient_1_1_zasady_gry.html#a516f6a5c57c6c90df4f5a3e8d74306af',1,'klient::ZasadyGry']]],
+  ['klasyczne_2',['KLASYCZNE',['../enumklient_1_1_zasady_gry.html#a46768e9a9cc4f095cbd57253c9c5783a',1,'klient::ZasadyGry']]],
+  ['kolejnebiciedostepne_3',['kolejneBicieDostepne',['../classklient_1_1kontroler_1_1_kontroler_gry.html#af8662d2de8eb02208cf1e2298431f7cd',1,'klient::kontroler::KontrolerGry']]],
+  ['kolorpionka_4',['kolorPionka',['../classklient_1_1widoki_1_1widgety_1_1_pionek.html#ad72c33062f45d17fe778bf1974e80e65',1,'klient::widoki::widgety::Pionek']]],
+  ['kolorpionkow_5',['kolorPionkow',['../classklient_1_1model_1_1_model_gry.html#abe0dab07fd31b90d5639ff6822993d5a',1,'klient::model::ModelGry']]],
+  ['kolumna_6',['kolumna',['../classklient_1_1widoki_1_1widgety_1_1_pole_planszy.html#afa61401b3722b639d0d59b088f3d2183',1,'klient::widoki::widgety::PolePlanszy']]],
+  ['komenda_7',['Komenda',['../interfaceserwer_1_1komendy_1_1_komenda.html',1,'serwer::komendy']]],
+  ['kontenerlistygraczy_8',['kontenerListyGraczy',['../classklient_1_1model_1_1_model_graczy_online.html#a6273da3f33d9c4448bb27a937e10b0db',1,'klient::model::ModelGraczyOnline']]],
+  ['konteneropisulistygraczy_9',['kontenerOpisuListyGraczy',['../classklient_1_1model_1_1_model_graczy_online.html#a274e16f61c8ebda975536d999fba662c',1,'klient::model::ModelGraczyOnline']]],
+  ['kontenerpowiadomien_10',['kontenerPowiadomien',['../classklient_1_1model_1_1_model_graczy_online.html#ae92ed2696e66883bff4ae58893b3d222',1,'klient::model::ModelGraczyOnline']]],
+  ['kontroler_5fgraczy_5fonline_11',['KONTROLER_GRACZY_ONLINE',['../enumklient_1_1kontroler_1_1_typy_kontrolerow.html#a75bfbc6878635d49a5759b33a803a766',1,'klient::kontroler::TypyKontrolerow']]],
+  ['kontroler_5fgry_12',['KONTROLER_GRY',['../enumklient_1_1kontroler_1_1_typy_kontrolerow.html#a3f2e0f84442d7839ec3a40be7aa0b11e',1,'klient::kontroler::TypyKontrolerow']]],
+  ['kontroler_5fpokoju_13',['KONTROLER_POKOJU',['../enumklient_1_1kontroler_1_1_typy_kontrolerow.html#ac281682dc555f570751ed6866cdb2f4f',1,'klient::kontroler::TypyKontrolerow']]],
+  ['kontroler_5fstanu_5fgry_14',['kontroler_stanu_gry',['../classserwer_1_1dane_1_1_pokoj.html#a1546c4b9b488c73aacd447d45868d05c',1,'serwer::dane::Pokoj']]],
+  ['kontrolerdanych_15',['KontrolerDanych',['../classkontroler_danych_1_1_kontroler_danych.html',1,'kontrolerDanych']]],
+  ['kontrolergry_16',['KontrolerGry',['../classklient_1_1kontroler_1_1_kontroler_gry.html',1,'klient::kontroler']]],
+  ['kontrolerpokoju_17',['KontrolerPokoju',['../classklient_1_1kontroler_1_1_kontroler_pokoju.html',1,'klient::kontroler']]],
+  ['kontrolerstanugry_18',['KontrolerStanuGry',['../classserwer_1_1dane_1_1_kontroler_stanu_gry.html#a33697ab5e9d809c882a04b0b2b9c68ba',1,'serwer.dane.KontrolerStanuGry.KontrolerStanuGry()'],['../classserwer_1_1dane_1_1_kontroler_stanu_gry.html',1,'serwer.dane.KontrolerStanuGry']]],
+  ['kontrolerwidoku_19',['KontrolerWidoku',['../interfaceklient_1_1kontroler_1_1_kontroler_widoku.html',1,'klient::kontroler']]],
+  ['kontrolerwidokugraczyonline_20',['KontrolerWidokuGraczyOnline',['../classklient_1_1kontroler_1_1_kontroler_widoku_graczy_online.html',1,'klient::kontroler']]],
+  ['krolowka_21',['Krolowka',['../classklient_1_1widoki_1_1widgety_1_1_krolowka.html',1,'klient.widoki.widgety.Krolowka'],['../classklient_1_1widoki_1_1widgety_1_1_krolowka.html#ae8c15cd7faa736096c9de627b878bbab',1,'klient.widoki.widgety.Krolowka.Krolowka()']]]
+];

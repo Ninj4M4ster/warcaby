@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['wiadomosc_0',['Wiadomosc',['../classklient_1_1komunikacja_1_1wiadomosci_1_1_wiadomosc.html',1,'klient::komunikacja::wiadomosci']]],
+  ['wiadomosc_1',['WIADOMOSC',['../enumklient_1_1komunikacja_1_1wiadomosci_1_1_typy_wiadomosci.html#a80f7ffe2faa7599daa13dce68fecaed1',1,'klient::komunikacja::wiadomosci::TypyWiadomosci']]],
+  ['wiadomosc_2',['Wiadomosc',['../classklient_1_1komunikacja_1_1wiadomosci_1_1_wiadomosc.html#a3ff8b5caea8275bd13597820566ea7d4',1,'klient::komunikacja::wiadomosci::Wiadomosc']]],
+  ['widok_3',['Widok',['../classklient_1_1widoki_1_1_widok.html',1,'klient::widoki']]],
+  ['widok_5fgraczy_5fonline_4',['WIDOK_GRACZY_ONLINE',['../enumklient_1_1widoki_1_1_typy_widokow.html#af2858ad4f6d5418335c67f43d6d0448b',1,'klient::widoki::TypyWidokow']]],
+  ['widok_5fgry_5',['WIDOK_GRY',['../enumklient_1_1widoki_1_1_typy_widokow.html#a2138ff05182dab1b652cb00269c010aa',1,'klient::widoki::TypyWidokow']]],
+  ['widok_5fpokoju_6',['WIDOK_POKOJU',['../enumklient_1_1widoki_1_1_typy_widokow.html#a4cab7e3026a476dcf5724c03914ccb9c',1,'klient::widoki::TypyWidokow']]],
+  ['widokgraczyonline_7',['WidokGraczyOnline',['../classklient_1_1widoki_1_1_widok_graczy_online.html',1,'klient::widoki']]],
+  ['widokgry_8',['WidokGry',['../classklient_1_1widoki_1_1_widok_gry.html',1,'klient::widoki']]],
+  ['widokpokoju_9',['WidokPokoju',['../classklient_1_1widoki_1_1_widok_pokoju.html',1,'klient::widoki']]],
+  ['wybierz_10',['wybierz',['../classserwer_1_1komendy_1_1_wybierz_tryb_gry.html#a2f337495ab5cc5a9465a106b2a4748f1',1,'serwer::komendy::WybierzTrybGry']]],
+  ['wybierzkontroler_11',['wybierzKontroler',['../classklient_1_1kontroler_1_1_tworca_kontrolera.html#a1ad8685296464851e893474d5271c336',1,'klient::kontroler::TworcaKontrolera']]],
+  ['wybierztrybgry_12',['WybierzTrybGry',['../classserwer_1_1komendy_1_1_wybierz_tryb_gry.html',1,'serwer::komendy']]],
+  ['wybierzwidok_13',['wybierzWidok',['../classklient_1_1widoki_1_1_tworca_widoku.html#a65522af5d643e91a87d133f5ae9a9686',1,'klient::widoki::TworcaWidoku']]],
+  ['wykonaj_14',['Wykonaj',['../classserwer_1_1komendy_1_1_akceptuj_zaproszenie.html#a8f0731db024c699990585061f3836adc',1,'serwer.komendy.AkceptujZaproszenie.Wykonaj()'],['../classserwer_1_1komendy_1_1_czat.html#a13cac1e66d80b7021c03c30dce4439ad',1,'serwer.komendy.Czat.Wykonaj()'],['../interfaceserwer_1_1komendy_1_1_komenda.html#ae98cb770f8836bcc82a2494a441a123f',1,'serwer.komendy.Komenda.Wykonaj()'],['../classserwer_1_1komendy_1_1_nadaj_imie.html#a591734a7601e5a65ce4ffbd9db5879a3',1,'serwer.komendy.NadajImie.Wykonaj()'],['../classserwer_1_1komendy_1_1_podaj_dostepne_ruchy.html#a32e7248373952e3084dad1b79b656211',1,'serwer.komendy.PodajDostepneRuchy.Wykonaj()'],['../classserwer_1_1komendy_1_1_ruch_pionka.html#af1f4940ea270987e71d3ce446258bb04',1,'serwer.komendy.RuchPionka.Wykonaj()'],['../classserwer_1_1komendy_1_1_wybierz_tryb_gry.html#aa45c65618e213950f61f7d9021e05493',1,'serwer.komendy.WybierzTrybGry.Wykonaj()'],['../classserwer_1_1komendy_1_1_zapros_do_pokoju.html#a6fe07190f17d660e88b1bc57c39726f3',1,'serwer.komendy.ZaprosDoPokoju.Wykonaj()']]],
+  ['wyslij_15',['wyslij',['../classserwer_1_1_serwer_thread.html#ab053b1e440862dc422e310f4188adad5',1,'serwer::SerwerThread']]],
+  ['wyslijrozpocznijgre_16',['wyslijRozpocznijGre',['../classklient_1_1kontroler_1_1_kontroler_pokoju.html#a809d74d3201e7fa60429362b80c6eb66',1,'klient::kontroler::KontrolerPokoju']]],
+  ['wyslijwiadomosc_17',['wyslijWiadomosc',['../classklient_1_1komunikacja_1_1_polaczenie.html#a3b6eeec5672be6cf1c88cc695daa9e6c',1,'klient.komunikacja.Polaczenie.wyslijWiadomosc()'],['../classklient_1_1kontroler_1_1_kontroler_pokoju.html#abc4d6337562cb7365a63034569a29102',1,'klient.kontroler.KontrolerPokoju.wyslijWiadomosc()']]],
+  ['wyslijwiadomoscdoserwera_18',['wyslijWiadomoscDoSerwera',['../classklient_1_1komunikacja_1_1_mediator.html#aa27ff8d79fd963da689e5d675ce69cf5',1,'klient::komunikacja::Mediator']]],
+  ['wyswietlpowiadomienie_19',['wyswietlPowiadomienie',['../classklient_1_1kontroler_1_1_kontroler_widoku_graczy_online.html#aec942f54ea64b3ab196967c688b87360',1,'klient::kontroler::KontrolerWidokuGraczyOnline']]],
+  ['wyswietlzaproszenieodgracza_20',['wyswietlZaproszenieOdGracza',['../classklient_1_1kontroler_1_1_kontroler_widoku_graczy_online.html#aa1301bc4e47cc47362f4db7f71626035',1,'klient::kontroler::KontrolerWidokuGraczyOnline']]]
+];
