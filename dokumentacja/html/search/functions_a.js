@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['pionek_0',['Pionek',['../classklient_1_1widoki_1_1widgety_1_1_pionek.html#a19096ab729804fdb425ee84998ded8ab',1,'klient::widoki::widgety::Pionek']]],
+  ['planszagry_1',['planszaGry',['../classklient_1_1model_1_1_model_gry.html#acae7eaea05bd3da41997c074a1bdad6d',1,'klient::model::ModelGry']]],
+  ['planszatostring_2',['planszaToString',['../classserwer_1_1dane_1_1_pokoj.html#a69b2ad9fbb1b4af03878a396cf4f670d',1,'serwer::dane::Pokoj']]],
+  ['polaczenie_3',['Polaczenie',['../classklient_1_1komunikacja_1_1_polaczenie.html#a992f0a262265f76bc49103957f8189af',1,'klient::komunikacja::Polaczenie']]],
+  ['polaplanszy_4',['polaPlanszy',['../classklient_1_1model_1_1_model_gry.html#a738cff3f9e70253959fd4ba1046eb29b',1,'klient::model::ModelGry']]],
+  ['poleplanszy_5',['PolePlanszy',['../classklient_1_1widoki_1_1widgety_1_1_pole_planszy.html#af33ef9147291bf406b52cc1fadf085fb',1,'klient::widoki::widgety::PolePlanszy']]],
+  ['powiadomdolaczyl_6',['powiadomDolaczyl',['../classklient_1_1kontroler_1_1_glowny_kontroler.html#af85534f03d4ac8fe13b243e574aa5def',1,'klient::kontroler::GlownyKontroler']]],
+  ['powiadomienie_7',['Powiadomienie',['../classklient_1_1widoki_1_1widgety_1_1powiadomienie_1_1_powiadomienie.html#acbbf67723ba2d70af33d14f70a8fda33',1,'klient::widoki::widgety::powiadomienie::Powiadomienie']]],
+  ['powiadomodrzucil_8',['powiadomOdrzucil',['../classklient_1_1kontroler_1_1_glowny_kontroler.html#a5a2b34b4bb5c09364038d32650a7c31a',1,'klient::kontroler::GlownyKontroler']]],
+  ['promocja_9',['promocja',['../classserwer_1_1komendy_1_1zasady_1_1_zasady_gry.html#a2c30685e6f483bf4a2c82a5889869fd2',1,'serwer::komendy::zasady::ZasadyGry']]],
+  ['przejdzdolistygraczy_10',['przejdzDoListyGraczy',['../classklient_1_1kontroler_1_1_kontroler_widoku_graczy_online.html#a4b7be075c37b3167c1bd9e0281432951',1,'klient::kontroler::KontrolerWidokuGraczyOnline']]],
+  ['przekazmediator_11',['przekazMediator',['../classklient_1_1kontroler_1_1_kontroler_gry.html#a423e2bd110edc12493f9c9926d39f6f4',1,'klient.kontroler.KontrolerGry.przekazMediator()'],['../classklient_1_1kontroler_1_1_kontroler_pokoju.html#a03d5ad07241426a48bf049803588e695',1,'klient.kontroler.KontrolerPokoju.przekazMediator()'],['../interfaceklient_1_1kontroler_1_1_kontroler_widoku.html#ab5a0e052374ba35d5f2ea9178a0edc51',1,'klient.kontroler.KontrolerWidoku.przekazMediator()'],['../classklient_1_1kontroler_1_1_kontroler_widoku_graczy_online.html#a92d198de77d6fa75575be577ae1c4620',1,'klient.kontroler.KontrolerWidokuGraczyOnline.przekazMediator()']]],
+  ['przekazmodel_12',['przekazModel',['../classklient_1_1kontroler_1_1_kontroler_gry.html#a46340375e0320aeabd129adb6a3f5493',1,'klient.kontroler.KontrolerGry.przekazModel()'],['../classklient_1_1kontroler_1_1_kontroler_pokoju.html#a8716a02e4469c6e8e01abbb37057a069',1,'klient.kontroler.KontrolerPokoju.przekazModel()'],['../interfaceklient_1_1kontroler_1_1_kontroler_widoku.html#a1580b4776fad6d5118e5fb4d64251446',1,'klient.kontroler.KontrolerWidoku.przekazModel()'],['../classklient_1_1kontroler_1_1_kontroler_widoku_graczy_online.html#ae5641670014bc552c09acd4579dff84d',1,'klient.kontroler.KontrolerWidokuGraczyOnline.przekazModel()']]],
+  ['przekazwiadomoscdoaplikacji_13',['przekazWiadomoscDoAplikacji',['../classklient_1_1komunikacja_1_1_mediator.html#a1a8afd144bcc4440a2122032d0956b5a',1,'klient::komunikacja::Mediator']]],
+  ['przerwij_14',['PRZERWIJ',['../classserwer_1_1dane_1_1_kontroler_stanu_gry.html#a1aefd72084fb4fb60b5b8f539a2d5932',1,'serwer::dane::KontrolerStanuGry']]],
+  ['przesunpionek_15',['przesunPionek',['../classklient_1_1kontroler_1_1_kontroler_gry.html#afbaebd265e3ebdc39fdb6d952472bdf3',1,'klient::kontroler::KontrolerGry']]],
+  ['przyciskzapros_16',['przyciskZapros',['../classklient_1_1widoki_1_1widgety_1_1_kafelek_gracza_online.html#a343ca6ec53fa4654456cb6fded7fa96c',1,'klient::widoki::widgety::KafelekGraczaOnline']]],
+  ['przypiszfunkcjekafelkowi_17',['przypiszFunkcjeKafelkowi',['../classklient_1_1kontroler_1_1_kontroler_widoku_graczy_online.html#a75b1b7c447d1ef3a565b1f0d8d973935',1,'klient::kontroler::KontrolerWidokuGraczyOnline']]],
+  ['puszczonomyszkenadpolem_18',['puszczonoMyszkeNadPolem',['../classklient_1_1kontroler_1_1_kontroler_gry.html#ad63983c689ac9cf3fa42f307b40cd649',1,'klient::kontroler::KontrolerGry']]]
+];

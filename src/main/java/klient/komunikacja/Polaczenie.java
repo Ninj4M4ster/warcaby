@@ -28,7 +28,7 @@ public class Polaczenie extends Thread {
    * @throws IOException Blad polaczenia z serwerem.
    */
   public Polaczenie(Mediator mediator) throws IOException {
-    this.polaczenie_ = new Socket("127.0.0.1", 6666);
+    this.polaczenie_ = new Socket("localhost", 6666);
     this.polaczenie_.setSoTimeout(1);
     this.out_ = new PrintWriter(polaczenie_.getOutputStream(), true);
     this.in_ = new BufferedReader(new InputStreamReader(polaczenie_.getInputStream()));
