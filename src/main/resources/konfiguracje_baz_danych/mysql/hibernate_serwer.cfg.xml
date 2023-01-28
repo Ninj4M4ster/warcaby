@@ -9,7 +9,7 @@
     </property>
 
     <property name = "hibernate.connection.driver_class">
-      com.mysql.jdbc.Driver
+      com.mysql.cj.jdbc.Driver
     </property>
 
     <property name = "hibernate.connection.url">
@@ -17,11 +17,11 @@
     </property>
 
     <property name = "hibernate.connection.username">
-      klient
+      serwer
     </property>
 
     <property name = "hibernate.connection.password">
-      klient
+      serwer
     </property>
 
   </session-factory>

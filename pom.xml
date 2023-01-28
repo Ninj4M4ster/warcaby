@@ -47,14 +47,65 @@
 
   <build>
     <plugins>
+
       <plugin>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-maven-plugin</artifactId>
-        <version>0.0.8</version>
-        <configuration>
-          <mainClass>klient.Aplikacja</mainClass>
-        </configuration>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>build-a</id>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>klient.Aplikacja</mainClass>
+                </manifest>
+              </archive>
+              <!-- <appendAssemblyId>false</appendAssemblyId> -->
+              <finalName>Aplikacja</finalName>
+            </configuration>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+
+          <execution>
+            <id>build-b</id>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>serwer.Serwer</mainClass>
+                </manifest>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <!-- <appendAssemblyId>false</appendAssemblyId> -->
+              <finalName>final output name which will be the jar name</finalName>
+            </configuration>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>build-c</id>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>Serwer</mainClass>
+                </manifest>
+              </archive>
+              <!-- <appendAssemblyId>false</appendAssemblyId> -->
+              <finalName>final output name which will be the jar name</finalName>
+            </configuration>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

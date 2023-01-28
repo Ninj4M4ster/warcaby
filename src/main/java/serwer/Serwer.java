@@ -1,9 +1,9 @@
 package serwer;
 
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import serwer.baza_danych.MenadzerBazyDanych;
 
 public class Serwer {
 
@@ -13,7 +13,8 @@ public class Serwer {
    * @param args
    */
   public static void main(String[] args) {
-  ServerSocket ss = null;
+    ServerSocket ss = null;
+    MenadzerBazyDanych.instancja();  // pierwsza inicjalizacja menadzera, aby potem pierwszy klient nie mial opoznienia
     
     try {
       ss = new ServerSocket(6666);
