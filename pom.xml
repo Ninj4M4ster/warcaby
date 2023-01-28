@@ -31,6 +31,18 @@
       <artifactId>jfx-testrunner</artifactId>
       <version>1.2</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.32</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.1.6.Final</version>
+    </dependency>
   </dependencies>
 
   <build>
