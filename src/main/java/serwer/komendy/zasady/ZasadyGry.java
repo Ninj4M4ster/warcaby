@@ -143,7 +143,7 @@ public abstract class ZasadyGry {
      * @param y - nr wiersza na planszy
      * @return czy wspólrzednę znajdują sie na planszy
      */
-    boolean czyWPlanszy(int x, int y) {
+    protected boolean czyWPlanszy(int x, int y) {
         return x < plansza.length && x >= 0 && y < plansza.length && y >= 0;
     }
 
@@ -179,5 +179,7 @@ public abstract class ZasadyGry {
         this.gracz = gracz;
     }
 
-    abstract boolean sprawdzBicie();
+    boolean sprawdzBicie() {
+        return false;
+    }
 }

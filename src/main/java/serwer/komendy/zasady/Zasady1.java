@@ -25,7 +25,7 @@ public class Zasady1 extends ZasadyGry {
      * Sprawdza czy bicie powinno wystapic, jak dlugie czy wystapilo odpowiednio dlugie oraz czy bylo poprawne
      * @return czy potrzebnie długie bicie wytapilo
      */
-    boolean sprawdzBicie() {
+    protected boolean sprawdzBicie() {
         int max_bicie = 0, max_temp;
 
         for(int x = 0; x < plansza.length; x += 1) {

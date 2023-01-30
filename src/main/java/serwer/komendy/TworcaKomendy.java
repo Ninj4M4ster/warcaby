@@ -16,8 +16,7 @@ public class TworcaKomendy {
             case "WTG":
                 return new WybierzTrybGry(gracz);
             case "PDR":
-                //return new PodajDostepneRuchy();
-                return null;
+                return new PodajDostepneRuchy(gracz);
             case "RP":
                 return new RuchPionka(gracz);
             case "Zapros":
