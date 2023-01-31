@@ -19,8 +19,26 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
     }
 
     class Ruch implements Comparable<Ruch> {
-        private int ilosc_bic = 0;
-        private String ruch = "";
+        private int ilosc_bic;
+        private String ruch;
+
+        public Ruch() {
+            this.ilosc_bic = 0;
+            this.ruch = "";
+        }
+
+        public Ruch(int x, int y) {
+            this.ilosc_bic = 0;
+            this.ruch = "";
+            this.addRuch(x, y);
+        }
+
+        public Ruch(int x, int y, int x1, int y1) {
+            this.ilosc_bic = 0;
+            this.ruch = "";
+            this.addRuch(x, y);
+            this.addRuch(x1, y1);
+        }
 
         void addRuch(int x, int y) {
             if(ruch.length() == 0) {
@@ -88,7 +106,14 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         int[][] plansza = kopiuj(plansza_do_kopii);
 
         if(czyWPlanszy(x + 1, y + 1)) {
+            if(plansza[x+1][y+1] == 0) {
+                if(pionek != 2) {
+                    bez_bicia.add(new Ruch(x, y, x+1, y+1));
+                }
+            }
+            else if(plansza[x+1][y+1] % 2 != pionek % 2) {
 
+            }
         }
         if(czyWPlanszy(x - 1, y + 1)) {
 
