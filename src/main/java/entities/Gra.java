@@ -30,11 +30,18 @@ public class Gra {
   @Column(name = "kolor_gracz2")
   private Integer kolor_gracz2_;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "gry", orphanRemoval = true)
   @JoinColumn(name = "id_gry")
   private Set<StanPlanszy> stanyPlanszy_;
 
   public Gra(){}
+
+  public Gra(String gracz1, String gracz2, int kolorGracz1, int kolorGracz2) {
+    this.gracz1_ = gracz1;
+    this.gracz2_ = gracz2;
+    this.kolor_gracz1_ = kolorGracz1;
+    this.kolor_gracz2_ = kolorGracz2;
+  }
 
   public int getId() {
     return this.id_;
@@ -82,5 +89,10 @@ public class Gra {
 
   public void setStanyPlanszy(Set<StanPlanszy> stanyPlanszy) {
     this.stanyPlanszy_ = stanyPlanszy;
+  }
+
+  public void dodajRuch(StanPlanszy stanPlanszy) {
+    stanyPlanszy_.add(stanPlanszy);
+    stanPlanszy.setGra(this);
   }
 }
