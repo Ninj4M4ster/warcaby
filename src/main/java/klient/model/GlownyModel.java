@@ -24,6 +24,9 @@ public class GlownyModel {
   /** Zmienna przechowujaca model widoku gry */
   private final ModelGry modelGry_;
 
+  /** Zmienna przechowujaca model widoku ogladania gry */
+  private final ModelOgladaniaGry modelOgladaniaGry_;
+
   /**
    * Konstruktor, tworzy wszystkie modele widokow.
    *
@@ -34,6 +37,7 @@ public class GlownyModel {
     this.modelGraczyOnline_ = new ModelGraczyOnline(nazwaGracza_, czyPolaczono_);
     this.modelPokoju_ = new ModelPokoju(nazwaGracza_, czyPolaczono_);
     this.modelGry_ = new ModelGry(czyPolaczono_);
+    this.modelOgladaniaGry_ = new ModelOgladaniaGry(czyPolaczono);
   }
 
   /**
@@ -61,6 +65,15 @@ public class GlownyModel {
    */
   public ModelGry modelGry() {
     return this.modelGry_;
+  }
+
+  /**
+   * Metoda zwracajaca model widoku ogladania gry.
+   *
+   * @return Model widoku ogladania gry.
+   */
+  public ModelOgladaniaGry modelOgladaniaGry() {
+    return this.modelOgladaniaGry_;
   }
 
   /**

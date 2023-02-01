@@ -47,9 +47,6 @@ public class WidokGry extends Widok {
    */
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
-    if(this.model_ != null || this.kontroler_ != null)
-      throw new IllegalStateException("Nie mozna utworzyc juz utworzonego widoku");
-
     this.model_ = (ModelGry) model;
     this.kontroler_ = (KontrolerGry) kontroler;
 

@@ -171,6 +171,14 @@ public class GlownyKontroler {
    * @param gra Gra do obejrzenia.
    */
   public void obejrzyjGre(Gra gra) {
+    this.model_.modelOgladaniaGry().ustawGre(gra);
 
+    KontrolerWidoku kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_OGLADANIA_GRY,
+            this.model_.modelOgladaniaGry(),
+            this.mediator_);
+
+    Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_OGLADANIA_GRY);
+    Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelOgladaniaGry()));
   }
 }
