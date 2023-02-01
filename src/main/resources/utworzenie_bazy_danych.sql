@@ -6,8 +6,7 @@ CREATE TABLE gry (
     gracz1 varchar(250),
     gracz2 varchar(250),
     kolor_gracz1 int,
-    kolor_gracz2 int,
-    czas_rozpoczecia datetime
+    kolor_gracz2 int
 );
 
 CREATE TABLE stan_planszy (

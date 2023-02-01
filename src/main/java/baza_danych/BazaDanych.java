@@ -1,7 +1,8 @@
-package serwer.baza_danych;
+package baza_danych;
 
 import entities.Gra;
 import entities.StanPlanszy;
+import java.util.List;
 
 /**
  * Abstrakcyjna klasa reprezentujaca baze danych.
@@ -21,4 +22,6 @@ public abstract class BazaDanych {
   public abstract void wprowadzGre(Gra gra);
 
   public abstract void wprowadzRuch(StanPlanszy stanPlanszy);
+
+  public abstract List<Gra> pobierzGry();
 }

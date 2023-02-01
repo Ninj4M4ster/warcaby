@@ -1,7 +1,7 @@
 package serwer.komendy;
 
 import entities.Gra;
-import serwer.baza_danych.MenadzerBazyDanych;
+import baza_danych.MenadzerBazyDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 import serwer.komendy.zasady.Zasady1;

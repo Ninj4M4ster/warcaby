@@ -1,4 +1,4 @@
-package serwer.baza_danych;
+package baza_danych;
 
 import entities.Gra;
 import entities.StanPlanszy;
@@ -7,6 +7,13 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import org.hibernate.HibernateException;
 
 /**
@@ -19,9 +26,9 @@ public class BazaDanychMysql extends BazaDanych {
   /**
    * Konstruktor. Tworzy obiekt obslugujacy interakcje z baza danych.
    */
-  public BazaDanychMysql() {
+  public BazaDanychMysql(String plikDostepu) {
     try {
-      EntityManagerFactory factory = Persistence.createEntityManagerFactory("serwer.warcaby");
+      EntityManagerFactory factory = Persistence.createEntityManagerFactory(plikDostepu);
       entityManager = factory.createEntityManager();
       this.ustawCzyPolaczono(true);
     } catch(Throwable ex) {
@@ -69,5 +76,21 @@ public class BazaDanychMysql extends BazaDanych {
         transaction.rollback();
       System.out.println("Nie udalo sie wprowadzic ruchu do bazy danych");
     }
+  }
+
+  /**
+   * Metoda odpowiedzialna za pobranie listy gier.
+   *
+   * @return Lista gier.
+   */
+  @Override
+  public List<Gra> pobierzGry() {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Gra> criteriaQuery = criteriaBuilder.createQuery(Gra.class);
+    Root<Gra> root = criteriaQuery.from(Gra.class);
+    CriteriaQuery<Gra> all = criteriaQuery.select(root);
+
+    TypedQuery<Gra> typedQuery = entityManager.createQuery(all);
+    return typedQuery.getResultList();
   }
 }

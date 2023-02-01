@@ -3,7 +3,7 @@ package serwer;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import serwer.baza_danych.MenadzerBazyDanych;
+import baza_danych.MenadzerBazyDanych;
 
 public class Serwer {
 
@@ -14,7 +14,8 @@ public class Serwer {
    */
   public static void main(String[] args) {
     ServerSocket ss = null;
-    MenadzerBazyDanych.instancja();  // pierwsza inicjalizacja menadzera, aby potem pierwszy klient nie mial opoznienia
+    MenadzerBazyDanych menadzerBazyDanych = MenadzerBazyDanych.instancja();
+    menadzerBazyDanych.konfiguruj(new String[]{"serwer.warcaby"});
     
     try {
       ss = new ServerSocket(6666);

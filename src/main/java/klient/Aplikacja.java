@@ -1,5 +1,6 @@
 package klient;
 
+import baza_danych.MenadzerBazyDanych;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,6 +25,9 @@ public class Aplikacja extends javafx.application.Application {
    */
   @Override
   public void start(Stage stage) throws Exception {
+    MenadzerBazyDanych menadzerBazyDanych = MenadzerBazyDanych.instancja();
+    menadzerBazyDanych.konfiguruj(new String[]{"klient.warcaby"});
+
     kontroler_ = GlownyKontroler.instancja();
     scena_ = new Scene(kontroler_.utworzPodstawowaScene());
     stage.setTitle("Warcaby");

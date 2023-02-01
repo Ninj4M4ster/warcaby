@@ -1,8 +1,9 @@
-package serwer.baza_danych;
+package baza_danych;
 
 import entities.Gra;
 import entities.StanPlanszy;
 import java.util.ArrayList;
+import java.util.List;
 import kontrolerDanych.KontrolerDanych;
 
 /**
@@ -15,10 +16,17 @@ public class MenadzerBazyDanych {
 
   /**
    * Prywatny konstruktor.
-   * Tworzy bazy danych, ktore zapisuja gry oraz ruchy.
    */
-  private MenadzerBazyDanych() {
-    BazaDanychMysql bazaDanych = new BazaDanychMysql();
+  private MenadzerBazyDanych() {}
+
+  /**
+   * Metoda odpowiedzialna za konfiguracje.
+   * Tworzy bazy danych, ktore zapisuja gry oraz ruchy.
+   *
+   * @param plikiDostepu Nazwy plikow z uprawnieniami dla poszczegolnych baz danych.
+   */
+  public void konfiguruj(String[] plikiDostepu) {
+    BazaDanychMysql bazaDanych = new BazaDanychMysql(plikiDostepu[0]);
     listaBazDanych.add(bazaDanych);
   }
 
@@ -71,6 +79,22 @@ public class MenadzerBazyDanych {
       if(bazaDanych.czyPolaczono())
         bazaDanych.wprowadzRuch(stanPlanszy);
     }
+  }
+
+  /**
+   * Metoda odpowiedzialna za pobranie listy gier z baz danych.
+   *
+   * @return Lista gier.
+   */
+  public ArrayList<Gra> pobierzGry() {
+    ArrayList<Gra> listaGier = new ArrayList<>();
+    for(BazaDanych bazaDanych: listaBazDanych) {
+      if(bazaDanych.czyPolaczono()) {
+        List<Gra> lista = bazaDanych.pobierzGry();
+        listaGier.addAll(lista);
+      }
+    }
+    return listaGier;
   }
 
 }
