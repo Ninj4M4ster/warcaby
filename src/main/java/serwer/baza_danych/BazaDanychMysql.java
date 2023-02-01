@@ -2,50 +2,71 @@ package serwer.baza_danych;
 
 import entities.Gra;
 import entities.StanPlanszy;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.PersistenceContext;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
+/**
+ * Klasa reprezentujaca polaczenie z baza danych MySql.
+ */
 public class BazaDanychMysql extends BazaDanych {
-  private SessionFactory factory_;
+  @PersistenceContext
+  private EntityManager entityManager;
+
+  /**
+   * Konstruktor. Tworzy obiekt obslugujacy interakcje z baza danych.
+   */
   public BazaDanychMysql() {
     try {
-      factory_ = new Configuration().configure(
-          "konfiguracje_baz_danych/mysql/hibernate_serwer.cfg.xml").buildSessionFactory();
+      EntityManagerFactory factory = Persistence.createEntityManagerFactory("serwer.warcaby");
+      entityManager = factory.createEntityManager();
       this.ustawCzyPolaczono(true);
     } catch(Throwable ex) {
       System.err.println("Nie udalo sie polaczyc z baza danych");
+      System.err.println(ex);
     }
   }
 
+  /**
+   * Metoda odpowiedzialna za dodanie rekordu gry do tabeli.
+   *
+   * @param gra Rekord gry do wprowadzenia.
+   */
   @Override
   public void wprowadzGre(Gra gra) {
-    Transaction tx = null;
-
-    try (Session sesja = factory_.openSession()) {
-      tx = sesja.beginTransaction();
-      sesja.persist(gra);
-      tx.commit();
+    EntityTransaction transaction = null;
+    try {
+      transaction = entityManager.getTransaction();
+      transaction.begin();
+      entityManager.persist(gra);
+      transaction.commit();
     } catch (HibernateException e) {
-      if (tx != null)
-        tx.rollback();
+      if (transaction != null)
+        transaction.rollback();
       System.out.println("Nie udalo sie wprowadzic gry do bazy danych.");
     }
   }
 
+  /**
+   * Metoda odpowiedzialna za wprowadzenie ruchu do bazy danych.
+   *
+   * @param stanPlanszy Rekord ruchu do wprowadzenia.
+   */
   @Override
   public void wprowadzRuch(StanPlanszy stanPlanszy) {
-    Transaction tx = null;
+    EntityTransaction transaction = null;
 
-    try (Session sesja = factory_.openSession()) {
-      tx = sesja.beginTransaction();
-      sesja.persist(stanPlanszy);
-      tx.commit();
+    try {
+      transaction = entityManager.getTransaction();
+      transaction.begin();
+      entityManager.persist(stanPlanszy);
+      transaction.commit();
     } catch(HibernateException e) {
-      if(tx != null)
-        tx.rollback();
+      if(transaction != null)
+        transaction.rollback();
       System.out.println("Nie udalo sie wprowadzic ruchu do bazy danych");
     }
   }

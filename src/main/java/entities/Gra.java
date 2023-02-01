@@ -9,11 +9,19 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import jakarta.persistence.UniqueConstraint;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Klasa reprezentujaca rekord z tabeli gry.
+ */
 @Entity
-@Table(name = "gry")
-public class Gra {
+@Table(name = "gry", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "id")
+})
+public class Gra implements Serializable {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private int id_;
@@ -30,8 +38,7 @@ public class Gra {
   @Column(name = "kolor_gracz2")
   private Integer kolor_gracz2_;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "gry", orphanRemoval = true)
-  @JoinColumn(name = "id_gry")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "gra_", orphanRemoval = true)
   private Set<StanPlanszy> stanyPlanszy_;
 
   public Gra(){}
@@ -92,6 +99,8 @@ public class Gra {
   }
 
   public void dodajRuch(StanPlanszy stanPlanszy) {
+    if(stanyPlanszy_ == null)
+      stanyPlanszy_ = new HashSet<>();
     stanyPlanszy_.add(stanPlanszy);
     stanPlanszy.setGra(this);
   }

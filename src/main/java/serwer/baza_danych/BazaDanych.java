@@ -3,6 +3,10 @@ package serwer.baza_danych;
 import entities.Gra;
 import entities.StanPlanszy;
 
+/**
+ * Abstrakcyjna klasa reprezentujaca baze danych.
+ * Kazda obslugiwana przez serwer baza danych musi dziedziczyc po tej klasie.
+ */
 public abstract class BazaDanych {
   private boolean czyPolaczono_;
 
