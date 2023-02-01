@@ -3,12 +3,12 @@ package serwer.komendy;
 import serwer.dane.Gracz;
 import serwer.dane.KontrolerStanuGry;
 import serwer.dane.Pokoj;
-import serwer.komendy.zasady.Zasady1;
+import serwer.komendy.zasady.ZasadyGry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PodajDostepneRuchy extends Zasady1 implements Komenda {
+public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
     Gracz gracz;
     Pokoj pokoj;
     boolean flaga_bicia;
@@ -25,6 +25,12 @@ public class PodajDostepneRuchy extends Zasady1 implements Komenda {
         public Ruch() {
             this.ilosc_bic = 0;
             this.ruch = "";
+        }
+
+        public Ruch(int x, int y) {
+            this.ilosc_bic = 0;
+            this.ruch = "";
+            this.addRuch(x, y);
         }
 
         public Ruch(int x, int y, int x1, int y1) {
@@ -53,6 +59,14 @@ public class PodajDostepneRuchy extends Zasady1 implements Komenda {
             return ruch_temp;
         }
 
+        public Ruch kopiujRuch(int x, int y) {
+            Ruch ruch_temp = new Ruch();
+            ruch_temp.ruch = this.ruch;
+            ruch_temp.ilosc_bic = this.ilosc_bic + 1;
+            ruch_temp.addRuch(x, y);
+            return ruch_temp;
+        }
+
         @Override
         public int compareTo(Ruch o) {
             return this.ilosc_bic - o.ilosc_bic;
@@ -70,7 +84,23 @@ public class PodajDostepneRuchy extends Zasady1 implements Komenda {
     public String Wykonaj(String reszta, Pokoj pokoj) {
         this.pokoj = pokoj;
         flaga_bicia = false;
-        wypiszRuchy(pokoj.getPlansza());
+
+        List<Ruch> ruchy = wypiszRuchy(pokoj.getPlansza());
+        List<Ruch> wynik = new ArrayList<Ruch>();
+        ruchy.sort(null);
+
+        int max = 0;
+        for(Ruch ruch : ruchy) {
+            if(ruch.ilosc_bic > max) {
+                max = ruch.ilosc_bic;
+                wynik.clear();
+                wynik.add(ruch);
+            }
+            else if(ruch.ilosc_bic == max) {
+                wynik.add(ruch);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
         return "true";
     }
 
@@ -111,7 +141,26 @@ public class PodajDostepneRuchy extends Zasady1 implements Komenda {
             }
         }
         else if(pionek == 3 || pionek == 4) {
+            for(int i = 1; i > -2; i -= 2) {
+                for(int j = 1; j > -2; j -= 2) {
+                    int nowy_x = x + i;
+                    int nowy_y = y + j;
+                    while(czyDozwolonyRuch(plansza, nowy_x, nowy_y) && !flaga_bicia) {
+                        ruchy.add(new Ruch(x, y, nowy_x, nowy_y));
+                        nowy_x += i;
+                        nowy_y += j;
+                    }
+                }
+            }
 
+            List<Ruch> bicia = sprawdzBiciaKrol(plansza, x, y, null);
+            if(flaga_bicia) {
+                ruchy.addAll(bicia);
+            }
+            else if(!bicia.isEmpty()) {
+                flaga_bicia = true;
+                ruchy = bicia;
+            }
         }
 
         return ruchy;
@@ -120,10 +169,11 @@ public class PodajDostepneRuchy extends Zasady1 implements Komenda {
     private List<Ruch> sprawdzBiciaPion(int[][] plansza, int x, int y, Ruch ruch) {
         plansza = kopiuj(plansza);
         List<Ruch> bicia = new ArrayList<Ruch>();
+        List<Ruch> bicia_temp = new ArrayList<Ruch>();
 
         for(int i = 1; i > -2; i -= 2) {
             for(int j = 1; j > -2; j -= 2) {
-                if(czyDozwoloneBicie(plansza, x, y , i, j, plansza[x][y])) {
+                if(czyDozwoloneBiciePion(plansza, x, y, i, j, plansza[x][y])) {
                     if(ruch == null) {
                         ruch = new Ruch(x, y, x + 2*i, y + 2*j);
                         ruch.ilosc_bic += 1;
@@ -138,11 +188,58 @@ public class PodajDostepneRuchy extends Zasady1 implements Komenda {
                     plansza_temp[x+i][y+j] = 0;
                     plansza_temp[x][y] = 0;
 
-                    List<Ruch> bicia_temp = sprawdzBiciaPion(plansza_temp, x+2*i, y+2*j, ruch.kopiujRuch());
-                    if(bicia_temp.isEmpty()) {
-                        bicia.add(ruch);
+                    bicia_temp.addAll(sprawdzBiciaPion(plansza_temp, x+2*i, y+2*j, ruch.kopiujRuch()));
+                }
+            }
+        }
+
+        if(bicia_temp.isEmpty()) {
+            if(ruch != null) {
+                bicia.add(ruch);
+            }
+        }
+
+        return bicia;
+    }
+
+    private List<Ruch> sprawdzBiciaKrol(int[][] plansza, int x, int y, Ruch ruch) {
+        plansza = kopiuj(plansza);
+
+        List<Ruch> bicia = new ArrayList<Ruch>();
+        List<Ruch> bicia_temp = new ArrayList<Ruch>();
+
+        for(int i = 1; i > -2; i -= 2) {
+            for(int j = 1; j > -2; j -= 2) {
+                int nowy_x = x + i;
+                int nowy_y = y + j;
+                while(czyDozwolonyRuch(plansza, nowy_x, nowy_y)) {
+                    nowy_x += i;
+                    nowy_y += j;
+                }
+                if(czyWPlanszy(nowy_x, nowy_y) && plansza[nowy_x][nowy_y] % 2 != plansza[x][y]) {
+                    int[][] plansza_temp = kopiuj(plansza);
+                    plansza_temp[nowy_x][nowy_y] = 0;
+
+                    nowy_x += i;
+                    nowy_y += j;
+                    while(czyDozwolonyRuch(plansza, nowy_x, nowy_y)) {
+                        if(ruch == null) {
+                            ruch = new Ruch(x, y);
+                        }
+
+                        plansza_temp[nowy_x][nowy_y] = plansza_temp[x][y];
+                        plansza_temp[x][y] = 0;
+                        bicia_temp.addAll(sprawdzBiciaPion(plansza_temp, nowy_x, nowy_y, ruch.kopiujRuch(nowy_x, nowy_y)));
+
+                        nowy_x += i;
+                        nowy_y += j;
                     }
                 }
+            }
+        }
+        if(bicia_temp.isEmpty()) {
+            if(ruch != null) {
+                bicia.add(ruch);
             }
         }
 
@@ -162,7 +259,7 @@ public class PodajDostepneRuchy extends Zasady1 implements Komenda {
         return y >= 0 && y < plansza.length && x >= 0 && x < plansza.length && plansza[x][y] == 0;
     }
 
-    private boolean czyDozwoloneBicie(int[][] plansza, int x, int y, int i, int j, int pionek) {
+    private boolean czyDozwoloneBiciePion(int[][] plansza, int x, int y, int i, int j, int pionek) {
         return y + 2*j >= 0 && y + 2*j < plansza.length && x + 2*i >= 0 && x + 2*i < plansza.length && plansza[x+i][y+j] % 2 != pionek && plansza[x+i][y+j] != 0 && plansza[x + 2*i][y + 2*j] == 0;
     }
 }

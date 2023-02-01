@@ -4,6 +4,8 @@ import org.junit.Test;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 
+import static org.junit.Assert.assertEquals;
+
 public class PodajDostepneRuchyTest {
     @Test
     public void testPodajDostepneRuchy() {
@@ -15,17 +17,13 @@ public class PodajDostepneRuchyTest {
         pokoj.setPlansza(plansza);
         pokoj.kontroler_stanu_gry.START();
         pdr.pokoj = pokoj;
+        String wynik = "";
         for(PodajDostepneRuchy.Ruch ruch : pdr.wypiszRuchy(plansza)) {
             System.out.println(ruch.getRuch());
+            wynik += ruch.getRuch();
+            wynik += "\n";
         }
 
-        for(int y = plansza.length - 1; y >= 0; y -= 1) {
-            for(int x = 0; x < plansza.length; x += 1) {
-                System.out.print(plansza[x][y]);
-                if(x == plansza.length - 1) {
-                    System.out.print("\n");
-                }
-            }
-        }
+        assertEquals("0 2 1 3\n2 2 3 3\n2 2 1 3\n4 2 5 3\n4 2 3 3\n6 2 7 3\n6 2 5 3\n", wynik);
     }
 }
