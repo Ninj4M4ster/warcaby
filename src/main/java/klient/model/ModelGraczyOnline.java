@@ -27,8 +27,11 @@ public class ModelGraczyOnline implements Model {
   /** Element reprezentujacy centralna czesc widgetu, z ktorym uzytkownik wchodzi w interakcje */
   private final ObjectProperty<Node> centrumMenu_ = new SimpleObjectProperty<>();
 
-  /** Element reprezentujacy gorna czesc widgetu, z ktorym uzytkownik wchodzi w interkacje */
+  /** Element reprezentujacy gorna czesc widgetu, z ktorym uzytkownik wchodzi w interakcje */
   private final ObjectProperty<Node> goraMenu_ = new SimpleObjectProperty<>();
+
+  /** Element reprezentujacy dolna czesc widgetu, z ktorym uzytkownik wchodzi w interakcje */
+  private final ObjectProperty<Node> dolMenu_ = new SimpleObjectProperty<>();
 
   /** Glowne okno menu, z nim uzytkownik wchodzi w interakcje */
   private final BorderPane oknoGlowne_ = new BorderPane();
@@ -40,9 +43,24 @@ public class ModelGraczyOnline implements Model {
   private ScrollPane kontenerListyGraczy_;
 
   /** Kontener przechowujacy kafelki z dostepnymi graczami */
-  private VBox listaGraczy_;
+  private VBox listaGraczy_ = null;
   /** Kontener na powiadomienia dla klienta */
   private final VBox kontenerPowiadomien_ = new VBox();
+
+  /** Kontener na przycisk przejscia do widoku listy rozegranych gier */
+  private VBox kontenerPrzyciskuPrzejsciaDoRozegranychGier_ = null;
+
+  /** Kontener przechowujacy opis menu, gdy widoczne sa wszystkie rozegrane gry */
+  private VBox kontenerOpisuListyRozegranychGier_ = null;
+
+  /** Kontener przechowujacy liste zawierajaca wszystkie rozegrane gry */
+  private ScrollPane kontenerListyRozegranychGier_ = null;
+
+  /** Kontener przechowujacy wszystkie rozegrane gry */
+  private VBox listaGier_ = null;
+
+  /** Kontener przechowujacy przycisk sluzacy do przejscia do listy graczy online */
+  private VBox kontenerPrzyciskuPrzejsciaDoListyGraczy_ = null;
 
   /**
    * Konstruktor.
@@ -56,6 +74,7 @@ public class ModelGraczyOnline implements Model {
     this.ustawCzyPolaczono(czyPolaczono);
     this.oknoGlowne_.centerProperty().bind(this.centrumMenu_);
     this.oknoGlowne_.topProperty().bind(this.goraMenu_);
+    this.oknoGlowne_.bottomProperty().bind(this.dolMenu_);
     this.oknoGlowne_.setPrefSize(400, 200);
     this.oknoGlowne_.setMaxSize(600, 600);
   }
@@ -134,6 +153,34 @@ public class ModelGraczyOnline implements Model {
    */
   public void ustawGoreMenu(Node widget) {
     this.goraMenu_.set(widget);
+  }
+
+  /**
+   * Metoda zmieniajaca zawartosc elementu reprezentujacego dolna czesc widgetu,
+   * z ktorym uzytkownik wchodzi w interakcje.
+   *
+   * @param widget Widget, ktory wyswietlony bedzie na dole.
+   */
+  public void ustawDolMenu(Node widget) {this.dolMenu_.set(widget);}
+
+  /**
+   * Metoda zwracajaca kontener przechowujacy przycisk sluzacy do przejscia
+   * do listy rozegranych gier.
+   *
+   * @return Kontener przycisku przejscia do rozegranych gier.
+   */
+  public VBox kontenerPrzyciskuPrzejsciaDoRozegranychGier() {
+    return this.kontenerPrzyciskuPrzejsciaDoRozegranychGier_;
+  }
+
+  /**
+   * Metoda zmienajaca wartosc zmiennej przechowujacej kontener przycisku
+   * sluzacego do przejscia do listy rozegranych gier.
+   *
+   * @param kontener Kontener przycisku przejscia do rozegranych gier.
+   */
+  public void ustawKontenerPrzyciskuPrzejsciaDoRozegranychGier(VBox kontener) {
+    this.kontenerPrzyciskuPrzejsciaDoRozegranychGier_ = kontener;
   }
 
   /**
@@ -219,4 +266,79 @@ public class ModelGraczyOnline implements Model {
     return this.kontenerPowiadomien_;
   }
 
+  /**
+   * Metoda zwracajaca kontener opisu menu, gdy widoczna jest lista rozegranych gier.
+   *
+   * @return Kontener opisu listy rozegranych gier.
+   */
+  public VBox kontenerOpisuListyRozegranychGier() {
+    return this.kontenerOpisuListyRozegranychGier_;
+  }
+
+  /**
+   * Metoda zmieniajaca wartosc zmiennej przedstawiajacej opis menu,
+   * gdy widoczna jest lista rozegranych gier.
+   *
+   * @param kontener Kontener opisu listy rozegranych gier.
+   */
+  public void ustawKontenerOpisuListyRozegranychGier(VBox kontener) {
+    this.kontenerOpisuListyRozegranychGier_ = kontener;
+  }
+
+  /**
+   * Metoda zwracajaca kontener przechowujacy liste wszystkich rozegranych gier.
+   *
+   * @return Kontener listy rozegranych gier.
+   */
+  public ScrollPane kontenerListyRozegranychGier() {
+    return this.kontenerListyRozegranychGier_;
+  }
+
+  /**
+   * Metoda ustawiajaca wartosc zmiennej przedstawiajacej kontener przechowujacy
+   * liste wszystkich rozegranych gier.
+   *
+   * @param kontener Kontener przechowujacy liste wszystkich rozegranych gier.
+   */
+  public void ustawKontenerListyRozegranychGier(ScrollPane kontener) {
+    this.kontenerListyRozegranychGier_ = kontener;
+  }
+
+  /**
+   * Metoda zwracajaca kontener przechowujacy wszystkie rozegrane gry.
+   *
+   * @return Kontener przechowujacy wszystkie rozegrane gry.
+   */
+  public VBox listaGier() {
+    return this.listaGier_;
+  }
+
+  /**
+   * Metoda ustawiajaca wartosc zmiennej przechowujacej wszystkie rozegrane gry.
+   *
+   * @param listaGier Kontener przechowujacy wszystkie rozegrane gry.
+   */
+  public void ustawListeGier(VBox listaGier) {
+    this.listaGier_ = listaGier;
+  }
+
+  /**
+   * Metoda zwracajaca kontener przechowujacy przycisk sluzacy
+   * do przejscia do listy graczy aktualnie online.
+   *
+   * @return Kontener przycisku przejscia do listy graczy online.
+   */
+  public VBox kontenerPrzyciskuPrzejsciaDoListyGraczy() {
+    return this.kontenerPrzyciskuPrzejsciaDoListyGraczy_;
+  }
+
+  /**
+   * Metoda ustawiajaca wartosc zmiennej przechowujacej kontener na przycisk sluzacy
+   * do przejscia do listy graczy aktualnie online.
+   *
+   * @param kontener Kontener przycisku przejscia do listy graczy online.
+   */
+  public void ustawKontenerPrzyciskuPrzejsciaDoListyGraczy(VBox kontener) {
+    this.kontenerPrzyciskuPrzejsciaDoListyGraczy_ = kontener;
+  }
 }

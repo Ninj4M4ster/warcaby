@@ -80,6 +80,19 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
     Platform.runLater(() -> {
       this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyGraczy());
       this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
+      this.model_.ustawDolMenu(this.model_.kontenerPrzyciskuPrzejsciaDoRozegranychGier());
+    });
+  }
+
+  /**
+   * Metoda odpowiedzialna za ukazanie listy rozegranych gier.
+   * Pobiera ona wszystkie gry z serwera i tworzy dla kazdej widget na liscie.
+   */
+  public void przejdzDoListyRozegranychGier() {
+    Platform.runLater(() -> {
+      this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyRozegranychGier());
+      this.model_.ustawCentrumMenu(this.model_.kontenerListyRozegranychGier());
+      this.model_.ustawDolMenu(this.model_.kontenerPrzyciskuPrzejsciaDoListyGraczy());
     });
   }
 
