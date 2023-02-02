@@ -95,7 +95,7 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         this.pokoj = pokoj;
         flaga_bicia = false;
 
-        List<Ruch> ruchy = wypiszRuchy(pokoj.getPlansza());
+        List<Ruch> ruchy = wypiszRuchy(pokoj.getPlansza(), 1);
         wynik = new ArrayList<Ruch>();
         ruchy.sort(null);
 
@@ -124,15 +124,14 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         return sb.toString();
     }
 
-    public String planszePoRuchach(int[][] plansza) {
+    public String planszePoRuchach(int[][] plansza, int kolor) {
         flaga_bicia = false;
 
-        List<Ruch> ruchy = wypiszRuchy(kopiuj(plansza));
+        List<Ruch> ruchy = wypiszRuchy(plansza, kolor);
         wynik = new ArrayList<Ruch>();
         ruchy.sort(null);
 
         int max = -100;
-        System.out.println(ruchy.isEmpty());
         for(Ruch ruch : ruchy) {
             if(ruch.ilosc_bic > max) {
                 max = ruch.ilosc_bic;
@@ -148,18 +147,16 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
             if(sb.toString().length() != 0) {
                 sb.append(" ");
             }
-            System.out.println(ruch.getPlanszaPoRuchu());
             sb.append(ruch.getPlanszaPoRuchu());
         }
-        System.out.println(sb.toString());
         return sb.toString();
     }
 
-    public List<Ruch> wypiszRuchy(int[][] plansza) {
+    public List<Ruch> wypiszRuchy(int[][] plansza, int kolor_p) {
         plansza = kopiuj(plansza);
         List<Ruch> ruchy = new ArrayList<Ruch>();
 
-        int kolor = pokoj.kontroler_stanu_gry.getStan() == KontrolerStanuGry.StanGry.RUCH_BIALYCH ? 1 : 0;
+        int kolor = kolor_p;
 
         for (int x = 0; x < plansza.length; x += 1) {
             for (int y = 0; y < plansza.length; y += 1) {
@@ -175,7 +172,6 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         int pionek = plansza[x][y];
         plansza = kopiuj(plansza);
         List<Ruch> ruchy = new ArrayList<Ruch>();
-        System.out.println(pionek);
         if(pionek < 3) {
             int kierunek = pionek == 1 ? 1 : -1;
 
@@ -220,6 +216,7 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
             }
         }
 
+        wynik = ruchy;
         return ruchy;
     }
 
