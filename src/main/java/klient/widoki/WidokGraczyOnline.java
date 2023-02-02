@@ -93,6 +93,8 @@ public class WidokGraczyOnline extends Widok {
       this.listaGraczy_ = this.model_.listaGraczy();
     this.utworzPasekPowiadomien();
 
+    this.utworzListeRozegranychGier();
+
     okno_.setOnMouseClicked(mouseEvent ->
         listaGraczy_.fireEvent(new OknoKlikniete((Node)mouseEvent.getTarget(),
             mouseEvent.getTarget())));
@@ -260,6 +262,142 @@ public class WidokGraczyOnline extends Widok {
 
     kontenerListyGraczy.setContent(listaGraczy_);
     this.model_.ustawKontenerListyGraczy(kontenerListyGraczy);
+
+    // kontener przycisku przejscia do widoku rozegranych gier
+    VBox kontenerPrzyciskuPrzejsciaDoRozegranychGier;
+    if(this.model_.kontenerPrzyciskuPrzejsciaDoRozegranychGier() == null) {
+      kontenerPrzyciskuPrzejsciaDoRozegranychGier = new VBox();
+      kontenerPrzyciskuPrzejsciaDoRozegranychGier.setAlignment(Pos.CENTER);
+      kontenerPrzyciskuPrzejsciaDoRozegranychGier.setPadding(new Insets(5, 0, 5, 0));
+      kontenerPrzyciskuPrzejsciaDoRozegranychGier.setSpacing(5);
+
+      linia = new Rectangle();
+      linia.setArcHeight(5);
+      linia.setArcWidth(5);
+      linia.setHeight(2);
+      linia.setWidth(300);
+      linia.setFill(Color.valueOf("ffffff"));
+
+      kontenerPrzyciskuPrzejsciaDoRozegranychGier.getChildren().add(linia);
+
+      Button przyciskPrzejsciaDoRozegranychGier =
+          new Button("Przejdz do listy rozegranych gier");
+      przyciskPrzejsciaDoRozegranychGier.setPrefSize(300, 30);
+      przyciskPrzejsciaDoRozegranychGier.setFont(new Font("Book Antiqua", 18));
+      przyciskPrzejsciaDoRozegranychGier.setBackground(
+          Background.fill(Color.valueOf("#cccccc")));
+      DropShadow cien = new DropShadow();
+      cien.setRadius(5.0);
+      cien.setOffsetX(3.0);
+      cien.setOffsetY(3.0);
+      cien.setColor(Color.valueOf("#2e2e2e"));
+      przyciskPrzejsciaDoRozegranychGier.setEffect(cien);
+
+      przyciskPrzejsciaDoRozegranychGier.setOnMouseClicked((mouseEvent ->
+          this.kontroler_.przejdzDoListyRozegranychGier()));
+
+      kontenerPrzyciskuPrzejsciaDoRozegranychGier.getChildren()
+          .add(przyciskPrzejsciaDoRozegranychGier);
+
+      this.model_.ustawKontenerPrzyciskuPrzejsciaDoRozegranychGier(
+          kontenerPrzyciskuPrzejsciaDoRozegranychGier);
+    }
+  }
+
+  /**
+   * Metoda odpowiedzialna za utworzenie widgetow sluzacych do przegladania i obejrzenia
+   * jednej z poprzednio rozegranych przez graczy gier.
+   */
+  private void utworzListeRozegranychGier() {
+    // kontener z opisem menu
+    VBox kontenerOpisuListyRozegranychGier;
+    if(this.model_.kontenerOpisuListyRozegranychGier() == null) {
+      kontenerOpisuListyRozegranychGier = new VBox();
+      kontenerOpisuListyRozegranychGier.setAlignment(Pos.CENTER);
+      kontenerOpisuListyRozegranychGier.setPadding(new Insets(5, 0, 5, 0));
+
+      // opis listy graczy online
+      Label opisOkna = new Label("Lista rozegranych gier");
+      opisOkna.setTextFill(
+          Color.valueOf("ffffff")
+      );
+      opisOkna.setFont(new Font("Book Antiqua", 20));
+      kontenerOpisuListyRozegranychGier.getChildren().add(opisOkna);
+
+      // linia oddzielajaca opis okna listy graczy i liste
+      Rectangle linia = new Rectangle();
+      linia.setArcHeight(5);
+      linia.setArcWidth(5);
+      linia.setHeight(2);
+      linia.setWidth(300);
+      linia.setFill(Color.valueOf("ffffff"));
+
+      kontenerOpisuListyRozegranychGier.getChildren().add(linia);
+      this.model_.ustawKontenerOpisuListyRozegranychGier(kontenerOpisuListyRozegranychGier);
+    }
+
+    // kontener z lista rozegranych gier
+    ScrollPane kontenerListyRozegranychGier;
+    if(this.model_.kontenerListyRozegranychGier() == null) {
+      kontenerListyRozegranychGier = new ScrollPane();
+      kontenerListyRozegranychGier.setVbarPolicy(ScrollBarPolicy.NEVER);
+      kontenerListyRozegranychGier.setHbarPolicy(ScrollBarPolicy.NEVER);
+      kontenerListyRozegranychGier.setFitToWidth(true);
+      kontenerListyRozegranychGier.setFitToHeight(true);
+      kontenerListyRozegranychGier.setPadding(new Insets(10, 2, 15, 2));
+      kontenerListyRozegranychGier.setStyle("-fx-background: rgba(255,255,255,0);"
+          + "-fx-background-color: rgba(255,255,255,0);");
+
+      // lista graczy online
+      VBox listaGier = new VBox();
+      listaGier.setSpacing(5);
+      listaGier.setAlignment(Pos.TOP_CENTER);
+      listaGier.setMaxHeight(600);
+      this.model_.ustawListeGier(listaGier);
+
+      kontenerListyRozegranychGier.setContent(listaGier);
+      this.model_.ustawKontenerListyRozegranychGier(kontenerListyRozegranychGier);
+    }
+
+    // kontener przycisku przejscia do widoku listy graczy
+    VBox kontenerPrzyciskuPrzejsciaDoListyGraczy;
+    if(this.model_.kontenerPrzyciskuPrzejsciaDoListyGraczy() == null) {
+      kontenerPrzyciskuPrzejsciaDoListyGraczy = new VBox();
+      kontenerPrzyciskuPrzejsciaDoListyGraczy.setAlignment(Pos.CENTER);
+      kontenerPrzyciskuPrzejsciaDoListyGraczy.setPadding(new Insets(5, 0, 5, 0));
+      kontenerPrzyciskuPrzejsciaDoListyGraczy.setSpacing(5);
+
+      Rectangle linia = new Rectangle();
+      linia.setArcHeight(5);
+      linia.setArcWidth(5);
+      linia.setHeight(2);
+      linia.setWidth(300);
+      linia.setFill(Color.valueOf("ffffff"));
+
+      kontenerPrzyciskuPrzejsciaDoListyGraczy.getChildren().add(linia);
+
+      Button przyciskPrzejsciaDoListyGraczy =
+          new Button("Przejdz do listy graczy online");
+      przyciskPrzejsciaDoListyGraczy.setPrefSize(280, 30);
+      przyciskPrzejsciaDoListyGraczy.setFont(new Font("Book Antiqua", 18));
+      przyciskPrzejsciaDoListyGraczy.setBackground(
+          Background.fill(Color.valueOf("#cccccc")));
+      DropShadow cien = new DropShadow();
+      cien.setRadius(5.0);
+      cien.setOffsetX(3.0);
+      cien.setOffsetY(3.0);
+      cien.setColor(Color.valueOf("#2e2e2e"));
+      przyciskPrzejsciaDoListyGraczy.setEffect(cien);
+
+      przyciskPrzejsciaDoListyGraczy.setOnMouseClicked((mouseEvent ->
+          this.kontroler_.przejdzDoListyGraczy()));
+
+      kontenerPrzyciskuPrzejsciaDoListyGraczy.getChildren()
+          .add(przyciskPrzejsciaDoListyGraczy);
+
+      this.model_.ustawKontenerPrzyciskuPrzejsciaDoListyGraczy(
+          kontenerPrzyciskuPrzejsciaDoListyGraczy);
+    }
   }
 
   /**

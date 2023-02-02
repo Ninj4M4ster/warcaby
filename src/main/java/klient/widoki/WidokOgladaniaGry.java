@@ -1,37 +1,39 @@
 package klient.widoki;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import klient.kontroler.KontrolerGry;
+import javafx.scene.text.Font;
+import klient.kontroler.KontrolerOgladaniaGry;
 import klient.kontroler.KontrolerWidoku;
 import klient.model.Model;
-import klient.model.ModelGry;
+import klient.model.ModelOgladaniaGry;
+import klient.widoki.widgety.NieaktywnyPionek;
 import klient.widoki.widgety.Pionek;
 import klient.widoki.widgety.PolePlanszy;
 
 /**
- * Klasa reprezentujaca widok rozgrywki w warcaby.
+ * Klasa reprezentujaca widok ogladania rozgrywki zapisanej w bazie danych.
  */
-public class WidokGry extends Widok {
-  /** Model widoku */
-  private ModelGry model_;
-
-  /** Kontroler widoku. */
-  private KontrolerGry kontroler_;
-
-  /** Kontener zawierajacy wszystkie elementy widoku */
+public class WidokOgladaniaGry extends Widok {
   private BorderPane okno_;
+  /** Kontroler widoku */
+  private KontrolerOgladaniaGry kontroler_;
+  /** Model widoku */
+  private ModelOgladaniaGry model_;
 
-  /** Kontener przechowujacy plansze gry, czyli wszystkie jej pola */
   private GridPane planszaGry_;
 
   /** Zmienna okreslajaca procentowa szerokosc lub/i
@@ -39,7 +41,7 @@ public class WidokGry extends Widok {
   private static final double SZEROKOSC_INDEKSOW = 4;
 
   /**
-   * Metoda tworzaca wszystkie elementy widoku oraz zwracajaca kontener przechowujacy je.
+   * Metoda odpowiedzialna za utworzenie widoku.
    *
    * @param kontroler Kontroler widoku.
    * @param model Model widoku.
@@ -47,13 +49,13 @@ public class WidokGry extends Widok {
    */
   @Override
   public Parent utworzWidok(KontrolerWidoku kontroler, Model model) {
-    this.model_ = (ModelGry) model;
-    this.kontroler_ = (KontrolerGry) kontroler;
+    this.model_ = (ModelOgladaniaGry) model;
+    this.kontroler_ = (KontrolerOgladaniaGry) kontroler;
 
     this.okno_ = new BorderPane();
     this.okno_.setBackground(Background.fill(Color.valueOf("#242424")));
 
-    this.okno_.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
+    this.okno_.setBottom(this.utworzPasekStatusu(model, kontroler));
     this.utworzPlanszeGry();
 
     return this.okno_;
@@ -63,12 +65,16 @@ public class WidokGry extends Widok {
    * Metoda odpowiedzialna za utworzenie planszy gry razem ze wszystkimi polami.
    */
   public void utworzPlanszeGry() {
+    BorderPane kontenerPlanszyGry = new BorderPane();
+
     // plansza gry
     planszaGry_ = this.model_.planszaGry();
     planszaGry_.setStyle("-fx-background-color: #222222;");
-    planszaGry_.maxHeightProperty().bind(this.okno_.heightProperty().multiply(0.98));
+    planszaGry_.maxHeightProperty().bind(this.okno_.heightProperty().multiply(0.9));
     planszaGry_.maxWidthProperty().bind(planszaGry_.maxHeightProperty());
     planszaGry_.setAlignment(Pos.CENTER);
+
+    kontenerPlanszyGry.setCenter(planszaGry_);
 
     int iloscPol = this.model_.iloscPol();
 
@@ -91,12 +97,12 @@ public class WidokGry extends Widok {
     Parent[][] listaPol = this.stworzListePolPlanszy();
     this.model_.ustawPolaPlanszy(listaPol);
     this.utworzStartowePionki(listaPol);
-    if(this.model_.kolorPionkow().equals("bialy"))
-      this.wyswietlWidokBialy(listaPol);
-    else
-      this.wyswietlWidokCzarny(listaPol);
+    this.wyswietlPola(listaPol);
 
-    this.okno_.setCenter(planszaGry_);
+    this.ustawNazwyGraczy(kontenerPlanszyGry);
+    this.utworzPrzyciskiDoPrzewijaniaRuchow(kontenerPlanszyGry);
+
+    this.okno_.setCenter(kontenerPlanszyGry);
   }
 
   /**
@@ -138,7 +144,6 @@ public class WidokGry extends Widok {
     // utworzenie indeksow z wymaganymi opisami
     String[] znakiIndeksow = this.model_.znakiIndeksow();
     for(int i=1; i < iloscPol + 1; i+=2) {
-      if(this.model_.kolorPionkow().equals("bialy")) {
         // normalna kolejnosc wyswietlania indeksow
         planszaGry_.add(
             this.utworzIndeksPlanszy(znakiIndeksow[iloscPol - i], Color.valueOf("#382100")),
@@ -174,47 +179,7 @@ public class WidokGry extends Widok {
         planszaGry_.add(
             this.utworzIndeksPlanszy(String.valueOf(i+1), Color.valueOf("#382100")),
             i + 1, iloscPol + 1);
-      } else {
-        // odwrocona kolejnosc wyswietlania indeksow
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(znakiIndeksow[i-1], Color.valueOf("#382100")),
-            0,
-            i);
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(znakiIndeksow[i], Color.valueOf("#5c3600")),
-            0,
-            i + 1);
 
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(znakiIndeksow[i-1], Color.valueOf("#5c3600")),
-            iloscPol + 1,
-            i);
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(znakiIndeksow[i], Color.valueOf("#382100")),
-            iloscPol + 1,
-            i + 1);
-
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(
-                String.valueOf(iloscPol - i + 1), Color.valueOf("#382100")),
-            i,
-            0);
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(
-                String.valueOf(iloscPol - i), Color.valueOf("#5c3600")),
-            i + 1,
-            0);
-
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(
-                String.valueOf(iloscPol - i + 1), Color.valueOf("#5c3600")),
-            i,
-            iloscPol + 1);
-        planszaGry_.add(
-            this.utworzIndeksPlanszy(
-                String.valueOf(iloscPol - i), Color.valueOf("#382100")),
-            i + 1, iloscPol + 1);
-      }
     }
   }
 
@@ -287,8 +252,6 @@ public class WidokGry extends Widok {
     PolePlanszy pole = new PolePlanszy(rzad, kolumna);
     pole.setBackground(Background.fill(kolor));
     pole.setAlignment(Pos.CENTER);
-    pole.setOnMouseEntered(
-        mouseDragEvent -> kontroler_.puszczonoMyszkeNadPolem(pole, mouseDragEvent.getPickResult()));
     return pole;
   }
 
@@ -342,7 +305,7 @@ public class WidokGry extends Widok {
       Color kolorObramowki,
       String kolorPionka) {
     StackPane pole = (StackPane) listaPol[rzad][kolumna];
-    Pionek pionek =
+    NieaktywnyPionek pionek =
         new Pionek(kolor, kolorObramowki, pole.widthProperty(), this.kontroler_, kolorPionka);
 
     pole.getChildren().add(pionek);
@@ -353,7 +316,7 @@ public class WidokGry extends Widok {
    *
    * @param listaPol Lista wszystkich pol na planszy.
    */
-  private void wyswietlWidokBialy(Parent[][] listaPol) {
+  private void wyswietlPola(Parent[][] listaPol) {
     int iloscPol = this.model_.iloscPol();
     for(int i=0; i < iloscPol; i++) {
       for(int j=0; j < iloscPol; j++) {
@@ -363,16 +326,86 @@ public class WidokGry extends Widok {
   }
 
   /**
-   * Metoda ta wyswietla podane pola z perspektywy uzytkownika grajacego czarnymi pionkami.
+   * Metoda sluzaca do utworzenia opisow z nazwami graczy po stronie,
+   * po ktorej grali w oryginalnej grze.
    *
-   * @param listaPol Lista wszystkich pol na planszy.
+   * @param kontenerPlanszy Kontener zawierajacy plansze w centrum.
    */
-  private void wyswietlWidokCzarny(Parent[][] listaPol) {
-    int iloscPol = this.model_.iloscPol();
-    for(int i=0; i < iloscPol; i++) {
-      for(int j=0; j < iloscPol; j++) {
-        this.planszaGry_.add(listaPol[i][iloscPol - j - 1], j + 1, i + 1);
-      }
+  private void ustawNazwyGraczy(BorderPane kontenerPlanszy) {
+    HBox kontenerNazwyCzarnych = new HBox();
+    kontenerNazwyCzarnych.setAlignment(Pos.CENTER);
+    kontenerNazwyCzarnych.setPadding(new Insets(5, 0, 5, 0));
+
+    Label nazwaGraczaGrajacegoCzarnymi = new Label();
+    nazwaGraczaGrajacegoCzarnymi.setTextFill(Color.WHITE);
+    nazwaGraczaGrajacegoCzarnymi.setBackground(Background.fill(Color.GRAY));
+    nazwaGraczaGrajacegoCzarnymi.setPadding(new Insets(2, 5, 2, 5));
+    nazwaGraczaGrajacegoCzarnymi.setFont(new Font("Book Antiqua", 16));
+    nazwaGraczaGrajacegoCzarnymi.setBorder(Border.stroke(Color.BLACK));
+    kontenerNazwyCzarnych.getChildren().add(nazwaGraczaGrajacegoCzarnymi);
+
+    kontenerPlanszy.setTop(kontenerNazwyCzarnych);
+
+    HBox kontenerNazwyBialych = new HBox();
+    kontenerNazwyBialych.setAlignment(Pos.CENTER);
+    kontenerNazwyBialych.setPadding(new Insets(5, 0, 5, 0));
+
+    Label nazwaGraczaGrajacegoBialymi = new Label();
+    nazwaGraczaGrajacegoBialymi.setTextFill(Color.WHITE);
+    nazwaGraczaGrajacegoBialymi.setBackground(Background.fill(Color.GRAY));
+    nazwaGraczaGrajacegoBialymi.setPadding(new Insets(2, 5, 2, 5));
+    nazwaGraczaGrajacegoBialymi.setFont(new Font("Book Antiqua", 16));
+    nazwaGraczaGrajacegoBialymi.setBorder(Border.stroke(Color.BLACK));
+    kontenerNazwyBialych.getChildren().add(nazwaGraczaGrajacegoBialymi);
+
+    kontenerPlanszy.setBottom(kontenerNazwyBialych);
+    if(this.model_.kolorGracza1() == 1) {
+      nazwaGraczaGrajacegoBialymi.setText(this.model_.nazwaGracza1());
+      nazwaGraczaGrajacegoCzarnymi.setText(this.model_.nazwaGracza2());
+    } else {
+      nazwaGraczaGrajacegoBialymi.setText(this.model_.nazwaGracza2());
+      nazwaGraczaGrajacegoCzarnymi.setText(this.model_.nazwaGracza1());
     }
+  }
+
+  /**
+   * Metoda odpowiedzialna za utworzenie przyciskow sluzacych do przewijania
+   * kolejnych ruchow ogladanej gry.
+   *
+   * @param kontenerPlanszy kontener z plansza w centrum.
+   */
+  private void utworzPrzyciskiDoPrzewijaniaRuchow(BorderPane kontenerPlanszy) {
+    // kontener na lewy przycisk
+    VBox kontenerPrzyciskLewy = new VBox();
+    kontenerPrzyciskLewy.setAlignment(Pos.CENTER);
+    kontenerPrzyciskLewy.setPadding(new Insets(20, 20, 20, 20));
+
+    // lewy przycisk
+    Button przyciskLewy = new Button("<");
+    przyciskLewy.setPrefSize(50, 50);
+    przyciskLewy.setBackground(Background.fill(Color.WHITE));
+    przyciskLewy.setBorder(Border.stroke(Color.GRAY));
+    przyciskLewy.disableProperty().bind(this.model_.numerRuchuRownyZero());
+    przyciskLewy.setOnMouseClicked((mouseEvent -> this.kontroler_.poprzedniRuch()));
+
+    kontenerPrzyciskLewy.getChildren().add(przyciskLewy);
+
+    // kontener na prawy przycisk
+    VBox kontenerPrzyciskPrawy = new VBox();
+    kontenerPrzyciskPrawy.setAlignment(Pos.CENTER);
+    kontenerPrzyciskPrawy.setPadding(new Insets(20, 20, 20, 20));
+
+    // prawy przycisk
+    Button przyciskPrawy = new Button(">");
+    przyciskPrawy.setPrefSize(50, 50);
+    przyciskPrawy.setBackground(Background.fill(Color.WHITE));
+    przyciskPrawy.setBorder(Border.stroke(Color.GRAY));
+    przyciskPrawy.disableProperty().bind(this.model_.numerRuchuMaksymalny());
+    przyciskPrawy.setOnMouseClicked((mouseEvent -> this.kontroler_.nastepnyRuch()));
+
+    kontenerPrzyciskPrawy.getChildren().add(przyciskPrawy);
+
+    kontenerPlanszy.setLeft(kontenerPrzyciskLewy);
+    kontenerPlanszy.setRight(kontenerPrzyciskPrawy);
   }
 }

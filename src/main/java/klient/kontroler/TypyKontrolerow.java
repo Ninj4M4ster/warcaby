@@ -11,5 +11,8 @@ public enum TypyKontrolerow {
   KONTROLER_POKOJU,
 
   /** Kontroler widoku gry */
-  KONTROLER_GRY
+  KONTROLER_GRY,
+
+  /** kontroler widoku ogladania gry */
+  KONTROLER_OGLADANIA_GRY
 }

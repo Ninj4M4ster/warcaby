@@ -34,6 +34,9 @@ public class TworcaKontrolera {
       case KONTROLER_GRY:
         kontroler = new KontrolerGry();
         break;
+      case KONTROLER_OGLADANIA_GRY:
+        kontroler = new KontrolerOgladaniaGry();
+        break;
       default:
         throw new IllegalStateException("Unexpected value: " + typ);
     }

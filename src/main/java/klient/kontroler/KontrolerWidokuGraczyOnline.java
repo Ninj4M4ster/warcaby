@@ -1,5 +1,8 @@
 package klient.kontroler;
 
+import baza_danych.MenadzerBazyDanych;
+import entities.Gra;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener.Change;
@@ -14,6 +17,7 @@ import klient.model.Model;
 import klient.model.ModelGraczyOnline;
 import klient.widoki.eventy.OknoKlikniete;
 import klient.widoki.widgety.KafelekGraczaOnline;
+import klient.widoki.widgety.KafelekGry;
 import klient.widoki.widgety.powiadomienie.Powiadomienie;
 import klient.widoki.widgety.powiadomienie.Zaproszenie;
 import klient.widoki.widgety.powiadomienie.ZnikajacePowiadomienie;
@@ -80,6 +84,28 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
     Platform.runLater(() -> {
       this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyGraczy());
       this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
+      this.model_.ustawDolMenu(this.model_.kontenerPrzyciskuPrzejsciaDoRozegranychGier());
+    });
+  }
+
+  /**
+   * Metoda odpowiedzialna za ukazanie listy rozegranych gier.
+   * Pobiera ona wszystkie gry z serwera i tworzy dla kazdej widget na liscie.
+   */
+  public void przejdzDoListyRozegranychGier() {
+    VBox listaGier = this.model_.listaGier();
+    listaGier.getChildren().removeAll(listaGier.getChildren());  // usun wszystkie wprowadzone wczesniej do listy gry
+    ArrayList<Gra> lista = MenadzerBazyDanych.instancja().pobierzGry();
+    for(Gra gra: lista) {
+      KafelekGry kafelek = new KafelekGry(gra);
+      kafelek.przycisk().setOnMouseClicked((mouseEvent ->
+          this.kontrolerGlowny_.obejrzyjGre(kafelek.gra())));
+      listaGier.getChildren().add(kafelek);
+    }
+    Platform.runLater(() -> {
+      this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyRozegranychGier());
+      this.model_.ustawCentrumMenu(this.model_.kontenerListyRozegranychGier());
+      this.model_.ustawDolMenu(this.model_.kontenerPrzyciskuPrzejsciaDoListyGraczy());
     });
   }
 

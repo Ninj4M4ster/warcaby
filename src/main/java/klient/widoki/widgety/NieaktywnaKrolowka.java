@@ -2,13 +2,11 @@ package klient.widoki.widgety;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.paint.Color;
-import klient.kontroler.KontrolerGry;
+import javafx.scene.shape.Circle;
 import klient.kontroler.KontrolerWidoku;
 
-/**
- * Klasa reprezentujaca krolowa. Z zalozenia jest tym samym co pionek, ale ma inny wyglad.
- */
-public class Krolowka extends NieaktywnaKrolowka {
+public class NieaktywnaKrolowka extends Pionek {
+  protected final Circle srodkoweKolo_;
 
   /**
    * Konstruktor, tworzy kolo reprezentujace pionek i dodaje do niego wszystkie wymagane wydarzenia.
@@ -19,20 +17,17 @@ public class Krolowka extends NieaktywnaKrolowka {
    * @param kontroler             Kontroler widoku gry.
    * @param kolorPionka           Napis przedstawiajacy kolor pionka.
    */
-  public Krolowka(Color kolor, Color kolorObramowki,
+  public NieaktywnaKrolowka(Color kolor, Color kolorObramowki,
       ReadOnlyDoubleProperty propertySzerokoscPola,
       KontrolerWidoku kontroler, String kolorPionka) {
     super(kolor, kolorObramowki, propertySzerokoscPola, kontroler, kolorPionka);
+    this.srodkoweKolo_ = new Circle();
+    this.srodkoweKolo_.setFill(kolor);
+    this.srodkoweKolo_.radiusProperty().bind(propertySzerokoscPola.multiply(0.2));
+    this.srodkoweKolo_.setStroke(Color.YELLOW);
+    this.srodkoweKolo_.setStrokeWidth(4);
 
-    if(kontroler instanceof KontrolerGry) {
-      this.srodkoweKolo_.setOnMousePressed(
-          mouseEvent -> ((KontrolerGry) kontroler)
-              .zacznijPrzesuwacPionek(mouseEvent, this));
-      this.srodkoweKolo_.setOnMouseDragged(
-          mouseEvent -> ((KontrolerGry) kontroler)
-              .przesunPionek(mouseEvent, this));
-      this.srodkoweKolo_.setOnMouseReleased(mouseEvent -> ((KontrolerGry) kontroler)
-          .skonczPrzesuwacPionek());
-    }
+    this.getChildren().add(this.srodkoweKolo_);
   }
+
 }

@@ -12,5 +12,8 @@ public enum TypyWidokow {
   WIDOK_POKOJU,
 
   /** Widok gry, dajacy mozliwosc przeprowadzenia rozgrywki w warcaby */
-  WIDOK_GRY
+  WIDOK_GRY,
+
+  /** Widok ogladania przebiegu zapisanej w bazie danych gry */
+  WIDOK_OGLADANIA_GRY
 }

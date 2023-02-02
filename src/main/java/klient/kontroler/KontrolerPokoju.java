@@ -27,8 +27,6 @@ public class KontrolerPokoju implements KontrolerWidoku {
    */
   @Override
   public void przekazModel(Model model) {
-    if(this.model_ != null)
-      throw new IllegalStateException("Nie mozna dwa razy przekazac modelu do kontrolera widoku.");
     this.model_ = (ModelPokoju) model;
   }
 
