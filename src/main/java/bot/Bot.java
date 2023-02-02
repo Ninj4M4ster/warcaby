@@ -86,7 +86,7 @@ public class Bot extends SerwerThread {
 
     int bestMove(String plansza, int licznik) {
         if(licznik == poziom) {
-            int max = -100;
+            int max = poziom % 2 == 0 ? 100 : -100;
             String[] dozwolone_ruchy = pdr.planszePoRuchach(null, stringToPlansza(plansza)).split(" ");
             for(String plansza2 : dozwolone_ruchy) {
                 int wynik = 0;
@@ -95,7 +95,11 @@ public class Bot extends SerwerThread {
                         wynik += plansza2.charAt(i) % 2 == gracz.getKolor() ? 1 : -1;
                     }
                 }
-                if(wynik > max) {
+                if(poziom % 2 == 0 && wynik > max) {
+                    best_plansza = plansza2;
+                    max = wynik;
+                }
+                else if(poziom % 2 == 1 && wynik < max) {
                     best_plansza = plansza2;
                     max = wynik;
                 }
