@@ -126,6 +126,7 @@ public class Mediator {
    * @return Czy podana wiadomosc jest odpowiedzia na poprzednio wyslane informacje?
    */
   private boolean czyOdpowiedz(String wiadomosc) {
+    System.out.println(wiadomosc);
     if(wiadomosc.startsWith("Zaproszenie")) {
       String[] argumenty = this.wydobadzArgumenty(wiadomosc);
       if(this.aktualnyKontroler_ instanceof KontrolerWidokuGraczyOnline) {

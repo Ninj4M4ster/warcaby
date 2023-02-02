@@ -57,7 +57,8 @@ public class Bot extends SerwerThread {
 
         switch(komenda) {
             case "plansza":
-                this.gracz.setKolor(reszta.charAt(0));
+                this.gracz.setKolor(Integer.parseInt(String.valueOf(reszta.charAt(0))));
+                System.out.println("Kolor bota - " + reszta.charAt(0));
                 reszta = reszta.substring(1);
                 this.plansza = stringToPlansza(reszta);
                 StringBuilder sb = new StringBuilder();
@@ -83,15 +84,15 @@ public class Bot extends SerwerThread {
         while(flaga) {
 
             if(planszaToString(plansza_stara).compareTo(planszaToString(plansza)) != 0) {
-                String ruchy = pdr.planszePoRuchach(plansza, gracz.getKolor());
-                int liczba = (int) (Math.random() * (ruchy.length() + 1));
-                new RuchPionka(this.gracz).Wykonaj(pdr.getRuch(ruchy.split(" ")[liczba]), gracz.getPokoj());
-                /*bestMove(planszaToString(plansza), 0);
+//                String ruchy = pdr.planszePoRuchach(plansza, gracz.getKolor());
+//                int liczba = (int) (Math.random() * (ruchy.length() + 1));
+//                new RuchPionka(this.gracz).Wykonaj(pdr.getRuch(ruchy.split(" ")[liczba]), gracz.getPokoj());
+                bestMove(planszaToString(plansza), 0);
 
                 String ruch = pdr.getRuch(best_plansza);
                 System.out.println(best_plansza);
                 System.out.println(ruch);
-                System.out.println(new RuchPionka(this.gracz).Wykonaj(ruch, gracz.getPokoj()));*/
+                System.out.println(new RuchPionka(this.gracz).Wykonaj(ruch, gracz.getPokoj()));
 
                 plansza_stara = plansza;
             }
