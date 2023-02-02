@@ -338,4 +338,8 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         }
         return "false";
     }
+
+    public void setPokoj(Pokoj pokoj) {
+        this.pokoj = pokoj;
+    }
 }
