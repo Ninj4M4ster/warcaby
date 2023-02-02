@@ -375,25 +375,33 @@ public class WidokOgladaniaGry extends Widok {
    * @param kontenerPlanszy kontener z plansza w centrum.
    */
   private void utworzPrzyciskiDoPrzewijaniaRuchow(BorderPane kontenerPlanszy) {
+    // kontener na lewy przycisk
     VBox kontenerPrzyciskLewy = new VBox();
     kontenerPrzyciskLewy.setAlignment(Pos.CENTER);
     kontenerPrzyciskLewy.setPadding(new Insets(20, 20, 20, 20));
 
+    // lewy przycisk
     Button przyciskLewy = new Button("<");
     przyciskLewy.setPrefSize(50, 50);
     przyciskLewy.setBackground(Background.fill(Color.WHITE));
     przyciskLewy.setBorder(Border.stroke(Color.GRAY));
+    przyciskLewy.disableProperty().bind(this.model_.numerRuchuRownyZero());
+    przyciskLewy.setOnMouseClicked((mouseEvent -> this.kontroler_.poprzedniRuch()));
 
     kontenerPrzyciskLewy.getChildren().add(przyciskLewy);
 
+    // kontener na prawy przycisk
     VBox kontenerPrzyciskPrawy = new VBox();
     kontenerPrzyciskPrawy.setAlignment(Pos.CENTER);
     kontenerPrzyciskPrawy.setPadding(new Insets(20, 20, 20, 20));
 
+    // prawy przycisk
     Button przyciskPrawy = new Button(">");
     przyciskPrawy.setPrefSize(50, 50);
     przyciskPrawy.setBackground(Background.fill(Color.WHITE));
     przyciskPrawy.setBorder(Border.stroke(Color.GRAY));
+    przyciskPrawy.disableProperty().bind(this.model_.numerRuchuMaksymalny());
+    przyciskPrawy.setOnMouseClicked((mouseEvent -> this.kontroler_.nastepnyRuch()));
 
     kontenerPrzyciskPrawy.getChildren().add(przyciskPrawy);
 
