@@ -7,6 +7,7 @@ import serwer.komendy.RuchPionka;
 
 import java.net.Socket;
 import java.util.List;
+import java.util.Random;
 
 import static java.lang.Math.sqrt;
 
@@ -82,12 +83,15 @@ public class Bot extends SerwerThread {
         while(flaga) {
 
             if(planszaToString(plansza_stara).compareTo(planszaToString(plansza)) != 0) {
-                bestMove(planszaToString(plansza), 0);
+                String ruchy = pdr.planszePoRuchach(plansza, gracz.getKolor());
+                int liczba = (int) (Math.random() * (ruchy.length() + 1));
+                new RuchPionka(this.gracz).Wykonaj(pdr.getRuch(ruchy.split(" ")[liczba]), gracz.getPokoj());
+                /*bestMove(planszaToString(plansza), 0);
 
                 String ruch = pdr.getRuch(best_plansza);
                 System.out.println(best_plansza);
                 System.out.println(ruch);
-                System.out.println(new RuchPionka(this.gracz).Wykonaj(ruch, gracz.getPokoj()));
+                System.out.println(new RuchPionka(this.gracz).Wykonaj(ruch, gracz.getPokoj()));*/
 
                 plansza_stara = plansza;
             }
@@ -97,7 +101,7 @@ public class Bot extends SerwerThread {
     int bestMove(String plansza, int licznik) {
         if(licznik == poziom) {
             int max = poziom % 2 == 0 ? -100 : 100;
-            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza), ((licznik + 1) % 2)).split(" ");
+            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza), licznik % 2).split(" ");
             for(String plansza2 : dozwolone_ruchy) {
                 int wynik = 0;
                 for(int i = 0; i < plansza2.length(); i += 1) {
@@ -117,7 +121,7 @@ public class Bot extends SerwerThread {
         }
         else if(licznik % 2 == 0) {
             int max = -100;
-            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza), ((licznik + 1) % 2)).split(" ");
+            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza), licznik % 2).split(" ");
             for(String plansza2 : dozwolone_ruchy) {
                 int wynik = bestMove(plansza2, licznik+1);
                 if(wynik >= max) {
@@ -129,7 +133,7 @@ public class Bot extends SerwerThread {
         }
         else {
             int min = 100;
-            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza), ((licznik + 1) % 2)).split(" ");
+            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza), (licznik % 2)).split(" ");
             for(String plansza2 : dozwolone_ruchy) {
                 int wynik = bestMove(plansza2, licznik+1);
                 if(wynik < min) {

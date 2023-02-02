@@ -19,13 +19,13 @@ public class PodajDostepneRuchyTest {
         pokoj.kontroler_stanu_gry.START();
         pdr.pokoj = pokoj;
         String wynik = "";
-        for(String plansza2 : pdr.planszePoRuchach(pokoj.getPlansza()).split(" ")) {
+        for(String plansza2 : pdr.planszePoRuchach(pokoj.getPlansza(), 1).split(" ")) {
             System.out.println(plansza2);
             wynik += plansza2;
             wynik += "\n";
         }
 
-        int[][] plansza10 = stringToPlansza("1010101001010101101010000000010000000000020202022020202002020202");
+        int[][] plansza10 = stringToPlansza("1010101001010101100010100001000000002000020200022020200002020202");
         for(int y = plansza10.length - 1; y >= 0; y -= 1) {
             for(int x = 0; x < plansza10.length; x += 1) {
                 System.out.print(plansza10[x][y]);
