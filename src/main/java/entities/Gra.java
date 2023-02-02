@@ -4,7 +4,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -66,36 +65,12 @@ public class Gra implements Serializable {
     return this.kolor_gracz1_;
   }
 
-  public Integer getKolorGracz2() {
-    return this.kolor_gracz2_;
-  }
-
   public Set<StanPlanszy> getStanyPlanszy() {
     return this.stanyPlanszy_;
   }
 
   public void setId(int id) {
     this.id_ = id;
-  }
-
-  public void setGracz1(String gracz) {
-    this.gracz1_ = gracz;
-  }
-
-  public void setGracz2(String gracz) {
-    this.gracz2_ = gracz1_;
-  }
-
-  public void setKolorGracz1(int kolor) {
-    this.kolor_gracz1_ = kolor;
-  }
-
-  public void setKolorGracz2(int kolor) {
-    this.kolor_gracz2_ = kolor;
-  }
-
-  public void setStanyPlanszy(Set<StanPlanszy> stanyPlanszy) {
-    this.stanyPlanszy_ = stanyPlanszy;
   }
 
   public void dodajRuch(StanPlanszy stanPlanszy) {
