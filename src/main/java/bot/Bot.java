@@ -43,7 +43,7 @@ public class Bot extends SerwerThread {
         int[][] plansza2 = new int[dlugosc][dlugosc];
         for(int y = 0; y < dlugosc; y += 1) {
             for(int x = 0; x < dlugosc; x += 1) {
-                plansza2[x][y] = plansza.charAt(y * dlugosc + x);
+                plansza2[x][y] = Integer.parseInt(String.valueOf(plansza.charAt(y * dlugosc + x)));
             }
         }
         return plansza2;

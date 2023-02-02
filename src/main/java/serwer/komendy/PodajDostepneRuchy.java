@@ -175,7 +175,7 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         int pionek = plansza[x][y];
         plansza = kopiuj(plansza);
         List<Ruch> ruchy = new ArrayList<Ruch>();
-
+        System.out.println(pionek);
         if(pionek < 3) {
             int kierunek = pionek == 1 ? 1 : -1;
 
