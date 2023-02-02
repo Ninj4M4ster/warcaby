@@ -23,6 +23,9 @@ public class SerwerThread extends Thread {
         gracz = new Gracz(this);
     }
 
+    public SerwerThread() {
+    }
+
 
     /**
      * Metoda wysylajaca wiadomosc do gracza

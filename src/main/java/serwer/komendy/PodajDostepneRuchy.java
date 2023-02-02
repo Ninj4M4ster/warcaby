@@ -12,6 +12,7 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
     Gracz gracz;
     Pokoj pokoj;
     boolean flaga_bicia;
+    List<Ruch> wynik;
 
 
     public PodajDostepneRuchy(Gracz gracz) {
@@ -21,6 +22,7 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
     class Ruch implements Comparable<Ruch> {
         private int ilosc_bic;
         private String ruch;
+        String plansza;
 
         public Ruch() {
             this.ilosc_bic = 0;
@@ -30,17 +32,17 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         public Ruch(int x, int y) {
             this.ilosc_bic = 0;
             this.ruch = "";
-            this.addRuch(x, y);
+            this.addRuch(x, y, null);
         }
 
-        public Ruch(int x, int y, int x1, int y1) {
+        public Ruch(int x, int y, int x1, int y1, String plansza) {
             this.ilosc_bic = 0;
             this.ruch = "";
-            this.addRuch(x, y);
-            this.addRuch(x1, y1);
+            this.addRuch(x, y, plansza);
+            this.addRuch(x1, y1, plansza);
         }
 
-        void addRuch(int x, int y) {
+        void addRuch(int x, int y, String plansza) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(this.ruch);
             if(ruch.length() == 0) {
@@ -50,20 +52,20 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
                 stringBuilder.append(" " + x + " " + y);
             }
             this.ruch = stringBuilder.toString();
+            this.setPlanszaPoRuchu(plansza);
         }
 
         public Ruch kopiujRuch() {
             Ruch ruch_temp = new Ruch();
             ruch_temp.ruch = this.ruch;
             ruch_temp.ilosc_bic = this.ilosc_bic;
+            ruch_temp.setPlanszaPoRuchu(plansza);
             return ruch_temp;
         }
 
-        public Ruch kopiujRuch(int x, int y) {
-            Ruch ruch_temp = new Ruch();
-            ruch_temp.ruch = this.ruch;
-            ruch_temp.ilosc_bic = this.ilosc_bic + 1;
-            ruch_temp.addRuch(x, y);
+        public Ruch kopiujRuch(int x, int y, String plansza) {
+            Ruch ruch_temp = this.kopiujRuch();
+            ruch_temp.addRuch(x, y, plansza);
             return ruch_temp;
         }
 
@@ -79,6 +81,14 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         public String getRuch() {
             return ruch;
         }
+
+        public String getPlanszaPoRuchu() {
+            return plansza;
+        }
+
+        private void setPlanszaPoRuchu(String plansza) {
+            this.plansza = plansza;
+        }
     }
     @Override
     public String Wykonaj(String reszta, Pokoj pokoj) {
@@ -86,6 +96,38 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         flaga_bicia = false;
 
         List<Ruch> ruchy = wypiszRuchy(pokoj.getPlansza());
+        wynik = new ArrayList<Ruch>();
+        ruchy.sort(null);
+
+        int max = 0;
+        for(Ruch ruch : ruchy) {
+            if(ruch.ilosc_bic > max) {
+                max = ruch.ilosc_bic;
+                wynik.clear();
+                wynik.add(ruch);
+            }
+            else if(ruch.ilosc_bic == max) {
+                wynik.add(ruch);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("true");
+        for(Ruch ruch : wynik) {
+            sb.append(" ");
+            for(String s : ruch.getRuch().split(" ")) {
+                if(s != ruch.getRuch().split(" ")[0]) {
+                    sb.append("-");
+                }
+                sb.append(s);
+            }
+        }
+        return sb.toString();
+    }
+
+    public String planszePoRuchach(String reszta, int[][] plansza) {
+        flaga_bicia = false;
+
+        List<Ruch> ruchy = wypiszRuchy(kopiuj(plansza));
         List<Ruch> wynik = new ArrayList<Ruch>();
         ruchy.sort(null);
 
@@ -101,7 +143,14 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
             }
         }
         StringBuilder sb = new StringBuilder();
-        return "true";
+        for(Ruch ruch : wynik) {
+            if(sb.toString().length() != 0) {
+                sb.append(" ");
+            }
+
+            sb.append(ruch.getPlanszaPoRuchu());
+        }
+        return sb.toString();
     }
 
     public List<Ruch> wypiszRuchy(int[][] plansza) {
@@ -130,7 +179,10 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
 
             for(int i = 1; i > -2; i -= 2) {
                 if(czyDozwolonyRuch(plansza, x + i, y + kierunek) && !flaga_bicia) {
-                    ruchy.add(new Ruch(x, y, x + i, y + kierunek));
+                    int[][] plansza_temp = kopiuj(plansza);
+                    plansza_temp[x + i][y + kierunek] = plansza_temp[x][y];
+                    plansza_temp[x][y] = 0;
+                    ruchy.add(new Ruch(x, y, x + i, y + kierunek, planszaToString(plansza_temp)));
                 }
             }
 
@@ -146,7 +198,10 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
                     int nowy_x = x + i;
                     int nowy_y = y + j;
                     while(czyDozwolonyRuch(plansza, nowy_x, nowy_y) && !flaga_bicia) {
-                        ruchy.add(new Ruch(x, y, nowy_x, nowy_y));
+                        int[][] plansza_temp = kopiuj(plansza);
+                        plansza_temp[nowy_x][nowy_y] = plansza_temp[x][y];
+                        plansza_temp[x][y] = 0;
+                        ruchy.add(new Ruch(x, y, nowy_x, nowy_y, planszaToString(plansza_temp)));
                         nowy_x += i;
                         nowy_y += j;
                     }
@@ -174,19 +229,18 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         for(int i = 1; i > -2; i -= 2) {
             for(int j = 1; j > -2; j -= 2) {
                 if(czyDozwoloneBiciePion(plansza, x, y, i, j, plansza[x][y])) {
+                    int[][] plansza_temp = kopiuj(plansza);
+                    plansza_temp[x + 2*i][y + 2*j] = plansza_temp[x][y];
+                    plansza_temp[x][y] = 0;
+                    plansza_temp[x + i][y + j] = 0;
                     if(ruch == null) {
-                        ruch = new Ruch(x, y, x + 2*i, y + 2*j);
+                        ruch = new Ruch(x, y, x + 2*i, y + 2*j, planszaToString(plansza_temp));
                         ruch.ilosc_bic += 1;
                     }
                     else {
-                        ruch.addRuch(x + 2*i, y + 2*j);
+                        ruch.addRuch(x + 2*i, y + 2*j, planszaToString(plansza_temp));
                         ruch.ilosc_bic += 1;
                     }
-
-                    int[][] plansza_temp = kopiuj(plansza);
-                    plansza_temp[x+2*i][y+2*j] = plansza_temp[x][y];
-                    plansza_temp[x+i][y+j] = 0;
-                    plansza_temp[x][y] = 0;
 
                     bicia_temp.addAll(sprawdzBiciaPion(plansza_temp, x+2*i, y+2*j, ruch.kopiujRuch()));
                 }
@@ -216,20 +270,22 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
                     nowy_x += i;
                     nowy_y += j;
                 }
-                if(czyWPlanszy(nowy_x, nowy_y) && plansza[nowy_x][nowy_y] % 2 != plansza[x][y]) {
+                if(czyWPlanszy(nowy_x, nowy_y) && plansza[nowy_x][nowy_y] % 2 != plansza[x][y] && plansza[nowy_x][nowy_y] != 0) {
                     int[][] plansza_temp = kopiuj(plansza);
                     plansza_temp[nowy_x][nowy_y] = 0;
 
                     nowy_x += i;
                     nowy_y += j;
                     while(czyDozwolonyRuch(plansza, nowy_x, nowy_y)) {
+                        int[][] plansza_temp_temp = kopiuj(plansza_temp);
                         if(ruch == null) {
                             ruch = new Ruch(x, y);
+                            ruch.ilosc_bic += 1;
                         }
 
-                        plansza_temp[nowy_x][nowy_y] = plansza_temp[x][y];
-                        plansza_temp[x][y] = 0;
-                        bicia_temp.addAll(sprawdzBiciaPion(plansza_temp, nowy_x, nowy_y, ruch.kopiujRuch(nowy_x, nowy_y)));
+                        plansza_temp_temp[nowy_x][nowy_y] = plansza_temp[x][y];
+                        plansza_temp_temp[x][y] = 0;
+                        bicia_temp.addAll(sprawdzBiciaPion(plansza_temp_temp, nowy_x, nowy_y, ruch.kopiujRuch(nowy_x, nowy_y, planszaToString(plansza_temp_temp))));
 
                         nowy_x += i;
                         nowy_y += j;
@@ -261,5 +317,25 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
 
     private boolean czyDozwoloneBiciePion(int[][] plansza, int x, int y, int i, int j, int pionek) {
         return y + 2*j >= 0 && y + 2*j < plansza.length && x + 2*i >= 0 && x + 2*i < plansza.length && plansza[x+i][y+j] % 2 != pionek && plansza[x+i][y+j] != 0 && plansza[x + 2*i][y + 2*j] == 0;
+    }
+
+    public String planszaToString(int[][] plansza) {
+        StringBuilder plansza_temp = new StringBuilder();
+
+        for(int y = 0; y < plansza.length; y += 1) {
+            for(int x = 0; x < plansza.length; x += 1) {
+                plansza_temp.append(plansza[x][y]);
+            }
+        }
+        return plansza_temp.toString();
+    }
+
+    public String getRuch(String plansza) {
+        for(Ruch ruch : wynik) {
+            if(plansza.compareTo(ruch.getPlanszaPoRuchu()) == 0) {
+                return ruch.getRuch();
+            }
+        }
+        return "false";
     }
 }

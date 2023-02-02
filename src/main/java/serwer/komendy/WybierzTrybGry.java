@@ -53,11 +53,16 @@ public class WybierzTrybGry implements Komenda{
 
             pokoj.setPlansza(plansza);
 
-            pokoj.getMistrz().setKolor((int) (Math.random() * (2 - 1) + 1));
+            pokoj.getMistrz().setKolor((int) (Math.random() * (3 - 1) + 1));
             pokoj.getGosc().setKolor(3 - pokoj.getMistrz().getKolor());
+
 
             pokoj.getGosc().getSt().wyslij("plansza " + pokoj.getGosc().getKolor() + pokoj.planszaToString());
             pokoj.kontroler_stanu_gry.START();
+
+            if(pokoj.getGosc().getSt() instanceof bot.Bot) {
+                pokoj.getGosc().getSt().start();
+            }
 
             return "true " + pokoj.getMistrz().getKolor() + pokoj.planszaToString();
         }

@@ -27,6 +27,8 @@ public class TworcaKomendy {
                 return new NadajImie(gracz);
             case "Czat":
                 return new Czat(gracz);
+            case "Bot":
+                return new Bot(gracz);
             default:
                 return null;
         }
