@@ -128,7 +128,7 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         flaga_bicia = false;
 
         List<Ruch> ruchy = wypiszRuchy(kopiuj(plansza));
-        List<Ruch> wynik = new ArrayList<Ruch>();
+        wynik = new ArrayList<Ruch>();
         ruchy.sort(null);
 
         int max = 0;

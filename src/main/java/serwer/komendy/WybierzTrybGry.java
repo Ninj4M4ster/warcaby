@@ -62,9 +62,6 @@ public class WybierzTrybGry implements Komenda{
             pokoj.getGosc().getSt().wyslij("plansza " + pokoj.getGosc().getKolor() + pokoj.planszaToString());
             pokoj.kontroler_stanu_gry.START();
 
-            if(pokoj.getGosc().getSt() instanceof bot.Bot) {
-                pokoj.getGosc().getSt().start();
-            }
 
             // wprowadz nowa gre i poczatkowy stan planszy do bazy danych
             Gra gra = MenadzerBazyDanych.instancja().wprowadzNowaGre(

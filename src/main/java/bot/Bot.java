@@ -59,6 +59,9 @@ public class Bot extends SerwerThread {
                 this.gracz.setKolor(reszta.charAt(0));
                 reszta = reszta.substring(1);
                 this.plansza = stringToPlansza(reszta);
+                this.plansza_stara = kopiuj(plansza);
+                plansza_stara[0][0] = 0;
+                this.start();
                 break;
             case "Ruch":
                 this.plansza_stara = plansza;
@@ -71,10 +74,10 @@ public class Bot extends SerwerThread {
 
     @Override
     public void run() {
-        pdr.setPokoj(this.gracz.getPokoj());
         pdr = new PodajDostepneRuchy(this.gracz);
-
+        pdr.setPokoj(this.gracz.getPokoj());
         while(flaga) {
+
             if(planszaToString(plansza_stara).compareTo(planszaToString(plansza)) == 0) {
                 bestMove(planszaToString(plansza), 0);
 
@@ -148,5 +151,15 @@ public class Bot extends SerwerThread {
             }
         }
         return plansza_temp.toString();
+    }
+
+    private int[][] kopiuj(int[][] plansza_do_kopii) {
+        int[][] plansza = new int[plansza_do_kopii.length][plansza_do_kopii.length];
+        for (int x = 0; x < plansza_do_kopii.length; x += 1) {
+            for (int y = 0; y < plansza_do_kopii.length; y += 1) {
+                plansza[x][y] = plansza_do_kopii[x][y];
+            }
+        }
+        return plansza;
     }
 }
