@@ -75,5 +75,17 @@ public enum TypyWiadomosci {
     public String toString() {
       return "Czat";
     }
+  },
+  /** Typ wiadomosci wyslanej przy tworzeniu pokoju do gry z botem */
+  BOT {
+    /**
+     * Metoda zwraca napis reprezentujacy polecenie rozumiane przez serwer.
+     *
+     * @return Polecenie rozumiane przez serwer.
+     */
+    @Override
+    public String toString() {
+      return "Bot";
+    }
   }
 }

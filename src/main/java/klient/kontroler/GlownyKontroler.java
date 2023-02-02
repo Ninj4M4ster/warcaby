@@ -181,4 +181,25 @@ public class GlownyKontroler {
     Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_OGLADANIA_GRY);
     Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelOgladaniaGry()));
   }
+
+  /**
+   * Metoda odpowiedzialna za utworzenie pokoju z botem.
+   *
+   * @param trudnosc Wybrany poziom trudności bota.
+   */
+  public void utworzPokojBot(String trudnosc) {
+    Wiadomosc wiadomosc = new Wiadomosc(trudnosc, TypyWiadomosci.BOT);
+    this.mediator_.wyslijWiadomoscDoSerwera(wiadomosc);
+
+    this.model_.modelPokoju().ustawCzyWlasciciel(true);
+    this.model_.modelPokoju().ustawNazweDrugiegoGracza("Bot");
+
+    KontrolerWidoku kontroler =
+        TworcaKontrolera.wybierzKontroler(TypyKontrolerow.KONTROLER_POKOJU,
+            this.model_.modelPokoju(),
+            this.mediator_);
+
+    Widok widok = TworcaWidoku.wybierzWidok(TypyWidokow.WIDOK_POKOJU);
+    Aplikacja.ustawNowyKorzen(widok.utworzWidok(kontroler, model_.modelPokoju()));
+  }
 }

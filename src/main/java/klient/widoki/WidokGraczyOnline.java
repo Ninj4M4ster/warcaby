@@ -83,12 +83,16 @@ public class WidokGraczyOnline extends Widok {
     BorderPane layoutMenu = new BorderPane();
     layoutMenu.setBottom(this.utworzPasekStatusu(this.model_, this.kontroler_));
 
+    BorderPane layoutAplikacji = new BorderPane();
+
     this.okno_.getChildren().add(layoutMenu);
 
-    this.utworzMenu(layoutMenu);
+    layoutMenu.setCenter(layoutAplikacji);
+
+    this.utworzMenu(layoutAplikacji);
     this.utworzWidokWprowadzaniaNazwy();
     if(this.model_.nazwaGracza() == null)
-      this.utworzWidokPoWprowadzeniuNazwy();
+      this.utworzWidokPoWprowadzeniuNazwy(layoutAplikacji);
     else
       this.listaGraczy_ = this.model_.listaGraczy();
     this.utworzPasekPowiadomien();
@@ -214,7 +218,7 @@ public class WidokGraczyOnline extends Widok {
    * Utworzenie elementow sluzacych do wyswietlenia dostepnych graczy i
    * umozliwiajacych zaproszenie jednego z nich do pokoju.
    */
-  private void utworzWidokPoWprowadzeniuNazwy() {
+  private void utworzWidokPoWprowadzeniuNazwy(BorderPane layoutAplikacji) {
     // kontener na opis listy graczy online, zostanie wyswietlony po wprowadzeniu swojej nazwy
     VBox kontenerOpisuListyGraczy = new VBox();
     kontenerOpisuListyGraczy.setAlignment(Pos.CENTER);
@@ -302,6 +306,37 @@ public class WidokGraczyOnline extends Widok {
       this.model_.ustawKontenerPrzyciskuPrzejsciaDoRozegranychGier(
           kontenerPrzyciskuPrzejsciaDoRozegranychGier);
     }
+
+    // utworz przyciski do gry z botem
+    HBox kontenerPrzyciskuZagrajBot = new HBox();
+    kontenerPrzyciskuZagrajBot.setAlignment(Pos.CENTER);
+    kontenerPrzyciskuZagrajBot.setPadding(new Insets(10, 10, 10, 10));
+    kontenerPrzyciskuZagrajBot.setBackground(Background.fill(Color.valueOf("#242424")));
+    kontenerPrzyciskuZagrajBot.setSpacing(20);
+
+    if(this.model_.kontenerZagrajBot() == null) {
+      kontenerPrzyciskuZagrajBot.setVisible(false);
+      kontenerPrzyciskuZagrajBot.setManaged(false);
+    }
+
+    Button button = new Button("Zagraj z latwym botem");
+    button.setOnMouseClicked((mouseEvent) ->  this.kontroler_.przejdzDoPokojuBot("latwy"));
+
+    kontenerPrzyciskuZagrajBot.getChildren().add(button);
+
+    button = new Button("Zagraj ze srednim botem");
+    button.setOnMouseClicked((mouseEvent -> this.kontroler_.przejdzDoPokojuBot("sredni")));
+
+    kontenerPrzyciskuZagrajBot.getChildren().add(button);
+
+    button = new Button("Zagraj z trudnym botem");
+    button.setOnMouseClicked((mouseEvent -> this.kontroler_.przejdzDoPokojuBot("trudny")));
+
+    kontenerPrzyciskuZagrajBot.getChildren().add(button);
+
+
+    layoutAplikacji.setBottom(kontenerPrzyciskuZagrajBot);
+    this.model_.ustawKontenerZagrajBot(kontenerPrzyciskuZagrajBot);
   }
 
   /**

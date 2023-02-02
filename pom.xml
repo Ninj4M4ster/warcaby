@@ -76,27 +76,8 @@
                   <mainClass>serwer.Serwer</mainClass>
                 </manifest>
               </archive>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
               <!-- <appendAssemblyId>false</appendAssemblyId> -->
-              <finalName>final output name which will be the jar name</finalName>
-            </configuration>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>build-c</id>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>Serwer</mainClass>
-                </manifest>
-              </archive>
-              <!-- <appendAssemblyId>false</appendAssemblyId> -->
-              <finalName>final output name which will be the jar name</finalName>
+              <finalName>Serwer</finalName>
             </configuration>
             <phase>package</phase>
             <goals>

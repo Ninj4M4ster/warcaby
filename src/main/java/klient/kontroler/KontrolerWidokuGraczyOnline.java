@@ -85,6 +85,8 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
       this.model_.ustawGoreMenu(this.model_.kontenerOpisuListyGraczy());
       this.model_.ustawCentrumMenu(this.model_.kontenerListyGraczy());
       this.model_.ustawDolMenu(this.model_.kontenerPrzyciskuPrzejsciaDoRozegranychGier());
+      this.model_.kontenerZagrajBot().setVisible(true);
+      this.model_.kontenerZagrajBot().setManaged(true);
     });
   }
 
@@ -193,5 +195,14 @@ public class KontrolerWidokuGraczyOnline implements KontrolerWidoku {
   public void wyswietlPowiadomienie(String wiadomosc) {
     Platform.runLater(() -> this.model_.kontenerPowiadomien().getChildren().add(
         new ZnikajacePowiadomienie(wiadomosc)));
+  }
+
+  /**
+   * Metoda odpowiedzialna za przejscie do pokoju z botem.
+   *
+   * @param trudnosc Wybrany poziom trudnosci bota.
+   */
+  public void przejdzDoPokojuBot(String trudnosc) {
+    Platform.runLater(() -> this.kontrolerGlowny_.utworzPokojBot(trudnosc));
   }
 }

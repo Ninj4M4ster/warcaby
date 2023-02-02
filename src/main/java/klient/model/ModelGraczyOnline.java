@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import klient.widoki.widgety.KafelekGraczaOnline;
 
@@ -61,6 +62,9 @@ public class ModelGraczyOnline implements Model {
 
   /** Kontener przechowujacy przycisk sluzacy do przejscia do listy graczy online */
   private VBox kontenerPrzyciskuPrzejsciaDoListyGraczy_ = null;
+
+  /** Kontener na przyciski do gry z botem */
+  private HBox kontenerZagrajBot_ = null;
 
   /**
    * Konstruktor.
@@ -340,5 +344,24 @@ public class ModelGraczyOnline implements Model {
    */
   public void ustawKontenerPrzyciskuPrzejsciaDoListyGraczy(VBox kontener) {
     this.kontenerPrzyciskuPrzejsciaDoListyGraczy_ = kontener;
+  }
+
+  /**
+   * Metoda ustawiajaca wartosc zmiennej przechowujacej kontener na przyciski
+   * do gry z botem.
+   *
+   * @param kontener Kontener na przyciski do gry z botem.
+   */
+  public void ustawKontenerZagrajBot(HBox kontener) {
+    this.kontenerZagrajBot_ = kontener;
+  }
+
+  /**
+   * Metoda zwracajaca kontener przechoujacy przyciski do gry z botem.
+   *
+   * @return Kontener przechowujacy przyciski do gry z botem.
+   */
+  public HBox kontenerZagrajBot() {
+    return this.kontenerZagrajBot_;
   }
 }
