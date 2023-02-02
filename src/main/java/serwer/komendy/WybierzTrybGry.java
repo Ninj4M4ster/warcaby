@@ -1,5 +1,7 @@
 package serwer.komendy;
 
+import entities.Gra;
+import baza_danych.MenadzerBazyDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 import serwer.komendy.zasady.Zasady1;
@@ -63,6 +65,18 @@ public class WybierzTrybGry implements Komenda{
             if(pokoj.getGosc().getSt() instanceof bot.Bot) {
                 pokoj.getGosc().getSt().start();
             }
+
+            // wprowadz nowa gre i poczatkowy stan planszy do bazy danych
+            Gra gra = MenadzerBazyDanych.instancja().wprowadzNowaGre(
+                    pokoj.getMistrz().getNick(),
+                pokoj.getGosc().getNick(),
+                pokoj.getMistrz().getKolor(),
+                pokoj.getGosc().getKolor());
+
+            MenadzerBazyDanych.instancja().wprowadzNowyRuch(gra, pokoj.getLicznik(),
+                pokoj.planszaToString());
+            pokoj.incrementLicznik();
+            pokoj.setGra(gra);
 
             return "true " + pokoj.getMistrz().getKolor() + pokoj.planszaToString();
         }

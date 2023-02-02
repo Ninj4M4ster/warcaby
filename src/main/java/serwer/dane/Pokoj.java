@@ -1,5 +1,6 @@
 package serwer.dane;
 
+import entities.Gra;
 import kontrolerDanych.KontrolerDanych;
 import serwer.komendy.zasady.ZasadyGry;
 
@@ -27,6 +28,16 @@ public class Pokoj {
      * Zasady ktorymi pokoj bedzie sie poslugiwal by walidowac ruch
      */
     private ZasadyGry zasady_gry;
+
+    /**
+     * Rekord gry odnoszący się do bazy danych.
+     */
+    private Gra gra;
+
+    /**
+     * Licznik wykonaych ruchow.
+     */
+    private int licznikRuchow = 0;
 
     /**
      * Kontroler sprawdzajacy stan gry
@@ -110,6 +121,22 @@ public class Pokoj {
 
     public void setMistrz(Gracz mistrz) {
         this.mistrz = mistrz;
+    }
+
+    public Gra getGra() {
+        return this.gra;
+    }
+
+    public void setGra(Gra gra) {
+        this.gra = gra;
+    }
+
+    public int getLicznik() {
+        return this.licznikRuchow;
+    }
+
+    public void incrementLicznik() {
+        this.licznikRuchow++;
     }
 
     /**

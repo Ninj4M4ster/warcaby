@@ -24,6 +24,8 @@ public class TworcaWidoku {
         return new WidokPokoju();
       case WIDOK_GRY:
         return new WidokGry();
+      case WIDOK_OGLADANIA_GRY:
+        return new WidokOgladaniaGry();
       default:
         throw new IllegalStateException("Unexpected value: " + typ);
     }

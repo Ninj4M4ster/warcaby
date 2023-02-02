@@ -1,5 +1,6 @@
 package serwer.komendy;
 
+import baza_danych.MenadzerBazyDanych;
 import serwer.dane.Gracz;
 import serwer.dane.Pokoj;
 
@@ -60,6 +61,10 @@ public class RuchPionka implements Komenda{
 
             Gracz gracz_temp = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
             gracz_temp.getSt().wyslij("Ruch " + pokoj.planszaToString());
+
+            // wprowadz ruch do bazy danych
+            MenadzerBazyDanych.instancja().wprowadzNowyRuch(pokoj.getGra(), pokoj.getLicznik(), pokoj.planszaToString());
+            pokoj.incrementLicznik();
 
             if(pokoj.getZasadyGry().czyWygrana() == 0) {
                 pokoj.kontroler_stanu_gry.RUCH();

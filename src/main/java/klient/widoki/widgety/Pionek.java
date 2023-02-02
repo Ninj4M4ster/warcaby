@@ -1,23 +1,14 @@
 package klient.widoki.widgety;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import klient.kontroler.KontrolerGry;
+import klient.kontroler.KontrolerWidoku;
 
 /**
- * Klasa reprezentujaca kontener z pionkiem na planszy.
+ * Klasa reprezentujaca kontener z pionkiem na planszy, ktorego mozna przesuwac.
  */
-public class Pionek extends StackPane {
-  /** Startowa pozycja x myszki podczas przesuwania pionka */
-  private double startowaPozycjaX_ = 0.0;
-
-  /** Startowa pozycja y myszki podczas przesuwania pionka */
-  private double startowaPozycjaY_ = 0.0;
-
-  /** Zmienna reprezentujaca kolor pionka - 'bialy' lub 'czarny' */
-  private final String kolorPionka_;
+public class Pionek extends NieaktywnyPionek {
 
   /**
    * Konstruktor, tworzy kolo reprezentujace pionek i dodaje do niego wszystkie wymagane wydarzenia.
@@ -30,67 +21,20 @@ public class Pionek extends StackPane {
   public Pionek(Color kolor,
       Color kolorObramowki,
       ReadOnlyDoubleProperty propertySzerokoscPola,
-      KontrolerGry kontroler,
+      KontrolerWidoku kontroler,
       String kolorPionka) {
-    super();
-    this.kolorPionka_ = kolorPionka;
+    super(kolor, kolorObramowki, propertySzerokoscPola, kontroler, kolorPionka);
 
-    Circle kolo = new Circle();
-    kolo.setFill(kolor);
-    kolo.radiusProperty().bind(propertySzerokoscPola.multiply(0.35));
-    kolo.setStroke(kolorObramowki);
-    kolo.setStrokeWidth(5);
-
-    kolo.setOnMousePressed(
-        mouseEvent -> kontroler.zacznijPrzesuwacPionek(mouseEvent, this));
-    kolo.setOnMouseDragged(
-        mouseEvent -> kontroler.przesunPionek(mouseEvent, this));
-    kolo.setOnMouseReleased(mouseEvent -> kontroler.skonczPrzesuwacPionek());
-    this.getChildren().add(kolo);
+    if(kontroler instanceof KontrolerGry) {
+      this.ksztaltPionka_.setOnMousePressed(
+          mouseEvent -> ((KontrolerGry) kontroler)
+              .zacznijPrzesuwacPionek(mouseEvent, this));
+      this.ksztaltPionka_.setOnMouseDragged(
+          mouseEvent -> ((KontrolerGry) kontroler)
+              .przesunPionek(mouseEvent, this));
+      this.ksztaltPionka_.setOnMouseReleased(mouseEvent -> ((KontrolerGry) kontroler)
+          .skonczPrzesuwacPionek());
+    }
   }
 
-  /**
-   * Metoda zwracajaca startowa pozycje x myszki podczas przesuwania pionka.
-   *
-   * @return Startowa pozycja x myszki podczas przesuwania pionka.
-   */
-  public double startowaPozycjaX() {
-    return this.startowaPozycjaX_;
-  }
-
-  /**
-   * Metoda ustawiajaca startowa pozycje x myszki uzywana do przesuwania pionka.
-   *
-   * @param x Startowa pozycja myszki w osi X.
-   */
-  public void ustawStartowaPozycjaX(double x) {
-    this.startowaPozycjaX_ = x;
-  }
-
-  /**
-   * Metoda zwracajaca startowa pozycje y myszki podczas przesuwania pionka.
-   *
-   * @return Startowa pozycja y myszki podczas przesuwania pionka.
-   */
-  public double startowaPozycjaY() {
-    return this.startowaPozycjaY_;
-  }
-
-  /**
-   * Metoda ustawiajaca startowa pozycje y myszki uzywana do przesuwania pionka.
-   *
-   * @param y Startowa pozycja myszki w osi Y.
-   */
-  public void ustawStartowaPozycjaY(double y) {
-    this.startowaPozycjaY_ = y;
-  }
-
-  /**
-   * Metoda zwracajaca napis reprezentujacy kolor pionka.
-   *
-   * @return Kolor pionka - 'bialy' lub 'czarny'.
-   */
-  public String kolorPionka() {
-    return this.kolorPionka_;
-  }
 }
