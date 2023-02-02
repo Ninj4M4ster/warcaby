@@ -73,7 +73,7 @@ public class Bot extends SerwerThread {
     public void run() {
         pdr = new PodajDostepneRuchy(this.gracz);
         while(flaga) {
-            if(plansza_stara != plansza) {
+            if(planszaToString(plansza_stara).compareTo(planszaToString(plansza)) == 0) {
                 bestMove(planszaToString(plansza), 0);
 
                 String ruch = pdr.getRuch(best_plansza);
