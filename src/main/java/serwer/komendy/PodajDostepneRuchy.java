@@ -124,14 +124,15 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
         return sb.toString();
     }
 
-    public String planszePoRuchach(String reszta, int[][] plansza) {
+    public String planszePoRuchach(int[][] plansza) {
         flaga_bicia = false;
 
         List<Ruch> ruchy = wypiszRuchy(kopiuj(plansza));
         wynik = new ArrayList<Ruch>();
         ruchy.sort(null);
 
-        int max = 0;
+        int max = -100;
+        System.out.println(ruchy.isEmpty());
         for(Ruch ruch : ruchy) {
             if(ruch.ilosc_bic > max) {
                 max = ruch.ilosc_bic;
@@ -147,9 +148,10 @@ public class PodajDostepneRuchy extends ZasadyGry implements Komenda {
             if(sb.toString().length() != 0) {
                 sb.append(" ");
             }
-
+            System.out.println(ruch.getPlanszaPoRuchu());
             sb.append(ruch.getPlanszaPoRuchu());
         }
+        System.out.println(sb.toString());
         return sb.toString();
     }
 

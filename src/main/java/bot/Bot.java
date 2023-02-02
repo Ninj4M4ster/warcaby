@@ -59,11 +59,15 @@ public class Bot extends SerwerThread {
                 this.gracz.setKolor(reszta.charAt(0));
                 reszta = reszta.substring(1);
                 this.plansza = stringToPlansza(reszta);
-                this.plansza_stara = kopiuj(plansza);
-                plansza_stara[0][0] = 0;
+                StringBuilder sb = new StringBuilder();
+                for(int i = 0; i < reszta.length(); i += 1) {
+                    sb.append("0");
+                }
+                this.plansza_stara = stringToPlansza(sb.toString());
                 this.start();
                 break;
             case "Ruch":
+                System.out.println("dupa dostal ruch" + reszta);
                 this.plansza_stara = plansza;
                 this.plansza = stringToPlansza(reszta);
                 break;
@@ -78,21 +82,26 @@ public class Bot extends SerwerThread {
         pdr.setPokoj(this.gracz.getPokoj());
         while(flaga) {
 
-            if(planszaToString(plansza_stara).compareTo(planszaToString(plansza)) == 0) {
+            if(planszaToString(plansza_stara).compareTo(planszaToString(plansza)) != 0) {
                 bestMove(planszaToString(plansza), 0);
 
                 String ruch = pdr.getRuch(best_plansza);
+                System.out.println(ruch);
                 new RuchPionka(this.gracz).Wykonaj(ruch, gracz.getPokoj());
 
                 plansza_stara = plansza;
+                System.out.println(best_plansza);
             }
         }
     }
 
     int bestMove(String plansza, int licznik) {
+        System.out.println("licze");
         if(licznik == poziom) {
-            int max = poziom % 2 == 0 ? 100 : -100;
-            String[] dozwolone_ruchy = pdr.planszePoRuchach(null, stringToPlansza(plansza)).split(" ");
+            System.out.println("licznik = poziom");
+            int max = poziom % 2 == 0 ? -100 : 100;
+            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza)).split(" ");
+            System.out.println(dozwolone_ruchy[0]);
             for(String plansza2 : dozwolone_ruchy) {
                 int wynik = 0;
                 for(int i = 0; i < plansza2.length(); i += 1) {
@@ -100,12 +109,11 @@ public class Bot extends SerwerThread {
                         wynik += plansza2.charAt(i) % 2 == gracz.getKolor() ? 1 : -1;
                     }
                 }
-                if(poziom % 2 == 0 && wynik > max) {
-                    best_plansza = plansza2;
+                if(poziom % 2 == 0 && wynik >= max) {
+                    best_plansza = licznik == 0 ? plansza2 : "0";
                     max = wynik;
                 }
                 else if(poziom % 2 == 1 && wynik < max) {
-                    best_plansza = plansza2;
                     max = wynik;
                 }
             }
@@ -113,11 +121,12 @@ public class Bot extends SerwerThread {
         }
         else if(licznik % 2 == 0) {
             int max = -100;
-            String[] dozwolone_ruchy = pdr.planszePoRuchach(null, stringToPlansza(plansza)).split(" ");
+            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza)).split(" ");
+            System.out.println(dozwolone_ruchy);
             for(String plansza2 : dozwolone_ruchy) {
                 int wynik = bestMove(plansza2, licznik+1);
-                if(wynik > max) {
-                    best_plansza = plansza2;
+                if(wynik >= max) {
+                    best_plansza = licznik == 0 ? plansza2 : "0";
                     max = wynik;
                 }
             }
@@ -125,11 +134,10 @@ public class Bot extends SerwerThread {
         }
         else {
             int min = 100;
-            String[] dozwolone_ruchy = pdr.planszePoRuchach(null, stringToPlansza(plansza)).split(" ");
+            String[] dozwolone_ruchy = pdr.planszePoRuchach(stringToPlansza(plansza)).split(" ");
             for(String plansza2 : dozwolone_ruchy) {
                 int wynik = bestMove(plansza2, licznik+1);
                 if(wynik < min) {
-                    best_plansza = plansza2;
                     min = wynik;
                 }
             }

@@ -18,9 +18,9 @@ public class PodajDostepneRuchyTest {
         pokoj.kontroler_stanu_gry.START();
         pdr.pokoj = pokoj;
         String wynik = "";
-        for(PodajDostepneRuchy.Ruch ruch : pdr.wypiszRuchy(plansza)) {
-            System.out.println(ruch.getRuch());
-            wynik += ruch.getRuch();
+        for(String plansza2 : pdr.planszePoRuchach(pokoj.getPlansza()).split(" ")) {
+            System.out.println(plansza2);
+            wynik += plansza2;
             wynik += "\n";
         }
 

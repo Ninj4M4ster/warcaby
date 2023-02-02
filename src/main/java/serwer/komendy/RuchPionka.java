@@ -56,9 +56,6 @@ public class RuchPionka implements Komenda{
                 plansza[ruchy.get(ruchy.size() - 2)][ruchy.get(ruchy.size() - 1)] += 2;
             }
 
-            System.out.println("po ruchu");
-            pokoj.wypiszPlansze(pokoj.getPlansza());
-
             Gracz gracz_temp = (gracz.equals(pokoj.getMistrz()) ? pokoj.getGosc() : pokoj.getMistrz());
             gracz_temp.getSt().wyslij("Ruch " + pokoj.planszaToString());
 
